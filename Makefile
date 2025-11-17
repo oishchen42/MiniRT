@@ -7,8 +7,9 @@ LIBS := -ldl -lglfw -pthread -lm
 
 SRC_DIR := src
 OBJ_DIR := obj
+MINIRT_INC := -Iinclude
 
-SRC_FILES := main.c
+SRC_FILES := main.c vec_op.c parsing.c dummy_utils.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
@@ -26,7 +27,7 @@ MIX_INCLUDE := -I$(LIBNAME)/libft/includes/ \
 		-I$(LIBNAME)/get_next_line/includes/
 
 $(NAME) : $(OBJ) $(MLX_LIB) | $(LIBNAME_A)
-	$(CC) $(CFLAGS) $(LIBS) $(MLX_INC) $(MIX_INCLUDE) $(OBJ) $(MLX_LIB) $(LIBNAME_A) -o $(NAME)
+	$(CC) $(CFLAGS) $(LIBS) $(MLX_INC) $(MINIRT_INC) $(MIX_INCLUDE) $(OBJ) $(MLX_LIB) $(LIBNAME_A) -o $(NAME)
 
 all: $(NAME) | $(LIBNAME) $(MLX_PATH)
 
@@ -53,9 +54,9 @@ $(LIBNAME):
 $(LIBNAME_A): $(LIBNAME)
 	make -C $(LIBNAME);
 
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(MLX_LIB) $(LIBNAME)
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(MLX_INC) $(MIX_INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) $(MLX_INC) $(MIX_INCLUDE) $(MINIRT_INC) -c $< -o $@
 
 clean:
 	@make clean -C $(LIBNAME)
