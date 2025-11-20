@@ -23,6 +23,16 @@ typedef struct	s_mtx
 	double	mtx[4][4];
 }	t_mtx4;
 
+typedef struct	s_mtx
+{
+	double	mtx[2][2];
+}	t_mtx2;
+
+typedef struct	s_mtx
+{
+	double	mtx[3][3];
+}	t_mtx3;
+
 typedef struct s_test //delete
 {
 	char	*type;
@@ -47,13 +57,18 @@ double	vec_dot(t_vcpnt *vec1, t_vcpnt *vec2);
 t_vcpnt	vec_cross(t_vcpnt *vec1, t_vcpnt *vec2);
 
 // op matrixes
-t_mtx4 mtxs_mult(t_mtx4 *mtx1, t_mtx4 *mtx2);
+t_mtx4	mtxs_mult4(t_mtx4 *mtx1, t_mtx4 *mtx2);
+double	std_determ(t_mtx2 *mtx1);
+//t_mtx4	id_mtx(t_mtx4 *mtx);
 
 //delete
 void 	free_double(char **split);
 void	pirnt_split_content(char **split);
-void	create_mtx(t_mtx4 *mtx);
+void	create_mtx_rnd(t_mtx4 *mtx);
 void	print_mtx(t_mtx4 *mtx);
+void	create_mtx_stb2(t_mtx4 *mtx);
+void	create_mtx_stb(t_mtx4 *mtx);
+
 
 
 #endif

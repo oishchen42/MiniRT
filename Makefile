@@ -10,7 +10,7 @@ OBJ_DIR := obj
 MINIRT_INC := -Iinclude
 
 SRC_FILES := main.c vec_op.c parsing.c  math_utils.c \
-			test_utils.c test_main.c dummy_utils.c
+			test_utils.c test_main.c dummy_utils.c matrix_op.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
