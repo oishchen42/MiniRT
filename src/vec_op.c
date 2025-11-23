@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 22:11:13 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/19 22:22:35 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/11/21 14:58:38 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,10 @@ t_vcpnt	vec_scale(t_vcpnt *vec, double scale)
 
 void	vec_div(t_vcpnt *vec, double divisor)
 {
-	t_vcpnt res;
-
-	res.vp[0] = vec->vp[0] / divisor;
-	res.vp[1] = vec->vp[1] / divisor;
-	res.vp[2] = vec->vp[2] / divisor;
-	res.vp[3] = vec->vp[3] / divisor;
+	vec->vp[0] = vec->vp[0] / divisor;
+	vec->vp[1] = vec->vp[1] / divisor;
+	vec->vp[2] = vec->vp[2] / divisor;
+	vec->vp[3] = vec->vp[3] / divisor;
 }
 
 double	vec_dot(t_vcpnt *vec1, t_vcpnt *vec2)

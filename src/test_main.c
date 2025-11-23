@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:21:32 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/20 21:57:48 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/11/22 16:12:34 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,95 @@ int	main()
 	t_mtx4	mtx1;
 	t_mtx4	mtx2;
 	t_mtx4	mtx3;
-	t_mtx4	mtx3_cp;
+	//t_mtx4	mtx3_cp;
 
-	create_mtx_stb(&mtx1);
-	create_mtx_stb2(&mtx2);
+	t_mtx3	mtx3_test;
+	t_mtx2	sub_mtx;
 
-	print_mtx(&mtx1);
+	double	determ;
+
+	printf("CREATION TEST: MTX4\n");
+	create_mtx4_stb(&mtx1);
+	create_mtx4_stb2(&mtx2);
+	print_mtx4(&mtx1);
 	printf("\n");
-	print_mtx(&mtx2);
-	mtx3 = mtxs_mult(&mtx1, &mtx2);
+	print_mtx4(&mtx2);
+	printf("---------------------------\n");
+
+	printf("OP TEST: MULTY MTXS4\n");
+	mtx3 = mtxs_mult4(&mtx1, &mtx2);
+	print_mtx4(&mtx3);
+	printf("---------------------------\n");
+	
+	printf("CREATION TEST: MTX3\n");
+	create_mtx3_stb(&mtx3_test);
+	print_mtx3(&mtx3_test);
+	printf("---------------------------\n");
+	//mtx3_cp = id_mtx(&mtx3);
+	//print_mtx(&mtx3_cp);
+
+	printf("OP TEST: SUBMTX\n");
+	sub_mtx = sub_mtx3(&mtx3_test, 1, 1);
+	print_mtx2(&sub_mtx);
+	printf("---------------------------\n");
+
+	printf("CREATION TEST: MTX4\n");
+	create_mtx2_stb(&sub_mtx);
+	print_mtx2(&sub_mtx);
+	printf("---------------------------\n");
+
+	printf("OP TEST: determ_MTX2\n");
+	determ = mtx2_determ(&sub_mtx);
+	printf("determ_mtx2: %f\n", determ);
+	printf("---------------------------\n");
+
+	printf("OP TEST: determ_MTX2\n");
+	determ = mtx2_determ(&sub_mtx);
+	printf("determ_mtx2: %f\n", determ);
+	printf("---------------------------\n");
+
+	printf("OP TEST: determ_MTX3\n");
+	create_mtx3_stb(&mtx3_test);
+	determ = mtx3_determ(&mtx3_test);
+	printf("determ_mtx3: %f\n", determ);
+	printf("---------------------------\n");
+
+	printf("OP TEST: SUBMTX4\n");
+	create_mtx4_stb2(&mtx1);
+	mtx3_test = sub_mtx4(&mtx1, 1, 1);
+	print_mtx3(&mtx3_test);
+	printf("---------------------------\n");
+
+	printf("OP TEST: determ_MTX4\n");
+	determ = mtx4_determ(&mtx1);
+	printf("determ_mtx3: %f\n", determ);
+	printf("---------------------------\n");
+
+	printf("OP TEST: inverse_MTX4\n");
+	create_mtx4_stb(&mtx2);
+	mtx1 = mtx4_inverse(&mtx2);
+	print_mtx4(&mtx1);
+	printf("---------------------------\n");
+
+	printf("OP TEST: MATRIX MUL && INVERSE\n");
+	t_mtx4 A;
+	t_mtx4 B;
+	t_mtx4 AB;
+	create_mtx4_stb(&A);
+	create_mtx4_stb2(&B);
+	print_mtx4(&A);
 	printf("\n");
-	print_mtx(&mtx3);
+	print_mtx4(&B);
 	printf("\n");
-	mtx3_cp = id_mtx(&mtx3);
-	print_mtx(&mtx3_cp);
+	AB = mtxs_mult4(&A, &B);
+	print_mtx4(&AB);
+	t_mtx4 inv = mtx4_inverse(&A);
+	printf("\n");
+	print_inv4(&inv);
+	printf("\n");
+	t_mtx4 res = mtxs_mult4(&inv, &AB);
+	print_mtx4(&res);
+	printf("---------------------------\n");
+
 	return (0);
 }

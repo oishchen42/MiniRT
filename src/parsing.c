@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 14:05:08 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/16 16:40:06 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/11/21 13:42:31 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ int	check_split_value(char **value)
 
 int	is_rt(char *str)
 {
-	int		i;
+	//int		i;
 	char	*ext;
 
-	i = -1;
+	//i = -1;
 	ext = ft_strchr(str, '.');
 	printf("%s\n", ext);
 	if (ft_strncmp(ext, ".rt", ft_strlen(ext) + 1) != 0)

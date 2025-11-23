@@ -28,7 +28,7 @@ MIX_INCLUDE := -I$(LIBNAME)/libft/includes/ \
 		-I$(LIBNAME)/get_next_line/includes/
 
 $(NAME) : $(OBJ) $(MLX_LIB) | $(LIBNAME_A)
-	$(CC) $(CFLAGS) $(LIBS) $(MLX_INC) $(MINIRT_INC) $(MIX_INCLUDE) $(OBJ) $(MLX_LIB) $(LIBNAME_A) -o $(NAME)
+	$(CC) $(CFLAGS) $(MLX_INC) $(MINIRT_INC) $(MIX_INCLUDE) $(OBJ) $(MLX_LIB) $(LIBNAME_A) $(LIBS) -o $(NAME)
 
 all: $(NAME) | $(LIBNAME) $(MLX_PATH)
 

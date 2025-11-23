@@ -12,23 +12,26 @@
 
 int		is_rt(char *str);
 
+# define SIZE_MTX4 4
+# define SIZE_MTX3 3
+# define SIZE_MTX2 2
 
 typedef struct	s_vcpnt
 {
 	double	vp[4];
 }	t_vcpnt;
 
-typedef struct	s_mtx
+typedef struct	s_mtx4
 {
 	double	mtx[4][4];
 }	t_mtx4;
 
-typedef struct	s_mtx
+typedef struct	s_mtx2
 {
 	double	mtx[2][2];
 }	t_mtx2;
 
-typedef struct	s_mtx
+typedef struct	s_mtx3
 {
 	double	mtx[3][3];
 }	t_mtx3;
@@ -58,17 +61,27 @@ t_vcpnt	vec_cross(t_vcpnt *vec1, t_vcpnt *vec2);
 
 // op matrixes
 t_mtx4	mtxs_mult4(t_mtx4 *mtx1, t_mtx4 *mtx2);
-double	std_determ(t_mtx2 *mtx1);
+double	mtx2_determ(t_mtx2 *mtx1);
+double	mtx3_determ(t_mtx3 *mtx3);
+double	mtx4_determ(t_mtx4 *mtx4);
+t_mtx4	mtx4_inverse(t_mtx4 *mtx);
+t_mtx3	sub_mtx4(t_mtx4 *mtx, int row, int col);
+t_mtx2	sub_mtx3(t_mtx3 *mtx, int row, int col);
 //t_mtx4	id_mtx(t_mtx4 *mtx);
 
 //delete
 void 	free_double(char **split);
+void	print_inv4(t_mtx4 *mtx);
 void	pirnt_split_content(char **split);
-void	create_mtx_rnd(t_mtx4 *mtx);
-void	print_mtx(t_mtx4 *mtx);
-void	create_mtx_stb2(t_mtx4 *mtx);
-void	create_mtx_stb(t_mtx4 *mtx);
+void	print_mtx4(t_mtx4 *mtx);
+void	print_mtx3(t_mtx3 *mtx);
+void	print_mtx2(t_mtx2 *mtx);
 
-
+// create && print matrixes
+void	create_mtx2_stb(t_mtx2 *mtx);
+void	create_mtx3_stb(t_mtx3 *mtx);
+void	create_mtx4_rnd(t_mtx4 *mtx);
+void	create_mtx4_stb2(t_mtx4 *mtx);
+void	create_mtx4_stb(t_mtx4 *mtx);
 
 #endif
