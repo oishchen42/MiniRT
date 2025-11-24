@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 11:48:36 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/22 16:01:06 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:41:45 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,10 +173,25 @@ t_mtx4	mtx4_inverse(t_mtx4 *mtx)
 				mtx_inver.mtx[j][i] = minor / determ * pow(-1.0, (double)i + j);
 			}
 		}
+		return (mtx_inver);
 	}
-	return (mtx_inver);
+	return (*mtx);
 }
 
+
+void	get_empty_mtx4(t_mtx4 *mtx)
+{
+	int	j;
+	int	i;
+
+	i = -1;
+	while (++i < SIZE_MTX4)
+	{
+		j = -1;
+		while (++j < SIZE_MTX4)
+			mtx->mtx[i][j] = 0;
+	}
+}
 //t_mtx4	id_mtx(t_mtx4 *mtx)
 //{
 //	int		i;

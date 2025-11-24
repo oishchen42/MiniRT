@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:21:32 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/22 16:12:34 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/11/24 16:07:44 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,27 @@ int	main()
 	printf("\n");
 	t_mtx4 res = mtxs_mult4(&inv, &AB);
 	print_mtx4(&res);
+	printf("---------------------------\n");
+
+	printf("OP TEST: TRANSLATION INV\n");
+	t_vcpnt vp = {5, -3, 2, 0};
+	get_empty_mtx4(&A);
+	translation4(&vp, &A);
+	print_mtx4(&A);
+	double dtrm = mtx4_determ(&A);
+	printf("determ: %f\n", dtrm);
+	inv = mtx4_inverse(&A);
+	print_inv4(&inv);
+	printf("---------------------------\n");
+
+	printf("OP TEST: TRANSFORM\n");
+	t_vcpnt pnt = {-3, 4, 5, 0};
+	t_vcpnt	new_ptr = {2, 1, 0, 1};
+	t_mtx4 trans_pnt;
+	get_empty_mtx4(&trans_pnt);
+	translation4(&pnt, &trans_pnt);
+	new_ptr = transform4(&new_ptr, &trans_pnt);
+	print_vpnt4(&new_ptr);
 	printf("---------------------------\n");
 
 	return (0);

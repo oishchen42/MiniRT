@@ -16,6 +16,13 @@ int		is_rt(char *str);
 # define SIZE_MTX3 3
 # define SIZE_MTX2 2
 
+typedef struct s_sphere
+{
+	double	radi;
+	t_vcpnt	orig;
+}	t_spere;
+
+
 typedef struct	s_vcpnt
 {
 	double	vp[4];
@@ -59,7 +66,18 @@ void	vec_div(t_vcpnt *vec, double divisor);
 double	vec_dot(t_vcpnt *vec1, t_vcpnt *vec2);
 t_vcpnt	vec_cross(t_vcpnt *vec1, t_vcpnt *vec2);
 
+// op matrixes/pointers/vectors
+t_vcpnt	mult_mtx4_vcpnt4(t_mtx4 *mtx, t_vcpnt *pnt);
+
+// op: rotation, scaling, transition
+t_vcpnt	rotate_x(double rad_2_rotate, t_vcpnt *p_2_rotate);
+t_vcpnt	rotate_y(double rad_2_rotate, t_vcpnt *p_2_rotate);
+t_vcpnt	rotate_z(double rad_2_rotate, t_vcpnt *p_2_rotate);
+t_vcpnt	scale4(t_vcpnt *scale_vec, t_vcpnt *p_2_scale);
+t_vcpnt	trnas4(t_vcpnt *trans_vec, t_vcpnt *p_to_move);
+
 // op matrixes
+void	get_empty_mtx4(t_mtx4 *mtx);
 t_mtx4	mtxs_mult4(t_mtx4 *mtx1, t_mtx4 *mtx2);
 double	mtx2_determ(t_mtx2 *mtx1);
 double	mtx3_determ(t_mtx3 *mtx3);
@@ -70,6 +88,7 @@ t_mtx2	sub_mtx3(t_mtx3 *mtx, int row, int col);
 //t_mtx4	id_mtx(t_mtx4 *mtx);
 
 //delete
+void	print_vpnt4(t_vcpnt *ent);
 void 	free_double(char **split);
 void	print_inv4(t_mtx4 *mtx);
 void	pirnt_split_content(char **split);

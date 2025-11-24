@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:26:11 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/22 16:08:49 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:19:03 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,4 +155,9 @@ void	print_mtx2(t_mtx2 *mtx)
 			printf("[%.1f]", mtx->mtx[i][j]);
 		printf("\n");
 	}
+}
+
+void	print_vpnt4(t_vcpnt *ent)
+{
+	printf("{%f, %f, %f, %f}\n", ent->vp[0], ent->vp[1], ent->vp[2], ent->vp[3]);
 }
