@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 22:11:13 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/21 14:58:38 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/11/25 22:26:18 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_vcpnt	vec_subs(t_vcpnt *vec1, t_vcpnt *vec2)
 	res.vp[0] = vec1->vp[0] - vec2->vp[0];
 	res.vp[1] = vec1->vp[1] - vec2->vp[1];
 	res.vp[2] = vec1->vp[2] - vec2->vp[2];
-	res.vp[3] = vec1->vp[3] - vec2->vp[3];
 	return (res);
 }
 
@@ -76,7 +75,7 @@ t_vcpnt	vec_scale(t_vcpnt *vec, double scale)
 	res.vp[0] = vec->vp[0] * scale;
 	res.vp[1] = vec->vp[1] * scale;
 	res.vp[2] = vec->vp[2] * scale;
-	res.vp[3] = vec->vp[3] * scale;
+	//res.vp[3] = vec->vp[3] * scale;
 	return (res);
 }
 
@@ -85,7 +84,7 @@ void	vec_div(t_vcpnt *vec, double divisor)
 	vec->vp[0] = vec->vp[0] / divisor;
 	vec->vp[1] = vec->vp[1] / divisor;
 	vec->vp[2] = vec->vp[2] / divisor;
-	vec->vp[3] = vec->vp[3] / divisor;
+	//vec->vp[3] = vec->vp[3] / divisor;
 }
 
 double	vec_dot(t_vcpnt *vec1, t_vcpnt *vec2)

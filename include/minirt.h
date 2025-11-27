@@ -15,18 +15,18 @@ int		is_rt(char *str);
 # define SIZE_MTX4 4
 # define SIZE_MTX3 3
 # define SIZE_MTX2 2
-
-typedef struct s_sphere
-{
-	double	radi;
-	t_vcpnt	orig;
-}	t_spere;
-
+# define PI 3.14159265358979323846
 
 typedef struct	s_vcpnt
 {
 	double	vp[4];
 }	t_vcpnt;
+
+typedef struct	s_ray
+{
+	t_vcpnt	pnt;
+	t_vcpnt	vec;
+}	t_ray;
 
 typedef struct	s_mtx4
 {
@@ -50,10 +50,46 @@ typedef struct s_test //delete
 	t_vcpnt	vec1;
 }	t_test;
 
+typedef enum e_type
+{
+	SPHERE,
+	PLANE,
+	CYLINDER,
+}	t_type;
+
+typedef struct	s_intersec
+{
+	int		count;
+	double	t;
+	double	inter[2];
+	t_type	obj;
+}	t_intersec;
+
+typedef struct	s_sphere
+{
+	double	radi;
+	t_vcpnt	orig;
+	t_mtx4	transform;
+}	t_sphere;
+
+typedef union u_obj_data
+{
+	t_sphere	sp;
+}	t_obj_data;
+
+typedef struct s_obj
+{
+	t_type		type;
+	t_obj_data	data;
+}	t_obj;
+
+
 t_test	*get_value(char *file);
 
-// op math_tuples
-t_vcpnt	tuple_mul(t_mtx4 *mtx1, t_vcpnt *tpl);
+// rays
+t_intersec	inter_obj(t_obj *obj, t_ray *ray_orig);
+t_intersec	inter_sp(t_sphere *sphere, t_ray *ray_orig);
+t_ray		ray_transform(t_ray *ray, t_mtx4 *mtx);
 
 // op vector && pointers
 t_vcpnt	vec_add(t_vcpnt *vec1, t_vcpnt *vec2);
@@ -67,16 +103,23 @@ double	vec_dot(t_vcpnt *vec1, t_vcpnt *vec2);
 t_vcpnt	vec_cross(t_vcpnt *vec1, t_vcpnt *vec2);
 
 // op matrixes/pointers/vectors
+t_mtx4	vcpnt4_2_mtx4(t_vcpnt *pnt);
 t_vcpnt	mult_mtx4_vcpnt4(t_mtx4 *mtx, t_vcpnt *pnt);
 
-// op: rotation, scaling, transition
-t_vcpnt	rotate_x(double rad_2_rotate, t_vcpnt *p_2_rotate);
-t_vcpnt	rotate_y(double rad_2_rotate, t_vcpnt *p_2_rotate);
-t_vcpnt	rotate_z(double rad_2_rotate, t_vcpnt *p_2_rotate);
-t_vcpnt	scale4(t_vcpnt *scale_vec, t_vcpnt *p_2_scale);
-t_vcpnt	trnas4(t_vcpnt *trans_vec, t_vcpnt *p_to_move);
+// op: rotation, scaling, transition, inv of those
+t_mtx4	rotate_x(double rad_2_rotate);
+t_mtx4	inv_rotate_x(double rad_2_rotate);
+t_mtx4	rotate_y(double rad_2_rotate);
+t_mtx4	inv_rotate_y(double rad_2_rotate);
+t_mtx4	rotate_z(double rad_2_rotate);
+t_mtx4	inv_rotate_z(double rad_2_rotate);
+t_mtx4	scale4(t_vcpnt *vcpnt);
+t_mtx4	inv_scale4(t_vcpnt *scale_vec);
+t_mtx4	trnas4(t_vcpnt *trans_vec);
+t_mtx4	inv_trnas4(t_vcpnt *trans_vec);
 
 // op matrixes
+void	create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx);
 void	get_empty_mtx4(t_mtx4 *mtx);
 t_mtx4	mtxs_mult4(t_mtx4 *mtx1, t_mtx4 *mtx2);
 double	mtx2_determ(t_mtx2 *mtx1);
@@ -102,5 +145,9 @@ void	create_mtx3_stb(t_mtx3 *mtx);
 void	create_mtx4_rnd(t_mtx4 *mtx);
 void	create_mtx4_stb2(t_mtx4 *mtx);
 void	create_mtx4_stb(t_mtx4 *mtx);
+
+// object functions
+t_type	get_obj(t_obj *obj);
+t_obj	sphere(void);
 
 #endif

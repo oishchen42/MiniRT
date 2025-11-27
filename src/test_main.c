@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:21:32 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/24 16:07:44 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/11/27 18:58:54 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,25 +107,19 @@ int	main()
 	print_mtx4(&res);
 	printf("---------------------------\n");
 
-	printf("OP TEST: TRANSLATION INV\n");
-	t_vcpnt vp = {5, -3, 2, 0};
-	get_empty_mtx4(&A);
-	translation4(&vp, &A);
-	print_mtx4(&A);
-	double dtrm = mtx4_determ(&A);
-	printf("determ: %f\n", dtrm);
-	inv = mtx4_inverse(&A);
-	print_inv4(&inv);
-	printf("---------------------------\n");
+	printf("OP TEST: intersec\n");
+	t_ray	ray = {{0,0,-5, 1}, {0,0,1,0}};
+	t_obj	sp = sphere();
+	t_vcpnt pnt = {2,2,2, 1};
+	t_mtx4	scl_mtx = scale4(&pnt);
+	create_transform_mtx4(&sp.data.sp.transform, &scl_mtx);
 
-	printf("OP TEST: TRANSFORM\n");
-	t_vcpnt pnt = {-3, 4, 5, 0};
-	t_vcpnt	new_ptr = {2, 1, 0, 1};
-	t_mtx4 trans_pnt;
-	get_empty_mtx4(&trans_pnt);
-	translation4(&pnt, &trans_pnt);
-	new_ptr = transform4(&new_ptr, &trans_pnt);
-	print_vpnt4(&new_ptr);
+	t_intersec inter = inter_obj(&sp, &ray);
+	if (inter.count > 0)
+	{
+		printf("root1: %f\n", inter.inter[0]);
+		printf("root2: %f\n", inter.inter[1]);
+	}
 	printf("---------------------------\n");
 
 	return (0);
