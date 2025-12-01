@@ -6,28 +6,29 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:43:20 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/27 19:00:20 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/01 21:10:21 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-t_mtx4	vcpnt4_2_mtx4(t_vcpnt *pnt)
+t_mtx4	transpose(t_mtx4 *mtx)
 {
-	t_mtx4	mtx;
+	t_mtx4	trans;
+	int		i;
+	int		j;
 
-	get_empty_mtx4(&mtx);
-	mtx.mtx[0][3] = pnt->vp[0];
-	mtx.mtx[1][3] = pnt->vp[1];
-	mtx.mtx[2][3] = pnt->vp[2];
-	mtx.mtx[3][3] = 1.0;
-	mtx.mtx[2][2] = 1.0;
-	mtx.mtx[1][1] = 1.0;
-	mtx.mtx[0][0] = 1.0;
-	return (mtx);
+	i = -1;
+	while (++i < SIZE_MTX4)
+	{
+		j = -1;
+		while (++j < SIZE_MTX4)
+			trans.mtx[i][j] = mtx->mtx[j][i];
+	}
+	return (trans);
 }
 
-t_mtx4	trnas4(t_vcpnt *trans_vec)
+t_mtx4	trnas4(t_vcpnt *trans_vec) // translation
 {
 	t_mtx4	mtx;
 

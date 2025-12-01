@@ -4,11 +4,12 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-// #include <MLX42.h>
+#include <MLX42.h>
 #include <math.h>
 #include <libft.h>
 #include <fcntl.h>
 #include <get_next_line.h>
+#include <stdbool.h>
 
 int		is_rt(char *str);
 
@@ -57,14 +58,6 @@ typedef enum e_type
 	CYLINDER,
 }	t_type;
 
-typedef struct	s_intersec
-{
-	int		count;
-	double	t;
-	double	inter[2];
-	t_type	obj;
-}	t_intersec;
-
 typedef struct	s_sphere
 {
 	double	radi;
@@ -84,11 +77,20 @@ typedef struct s_obj
 }	t_obj;
 
 
+typedef struct	s_intersec
+{
+	int		count;
+	double	t;
+	double	inter[2];
+	t_obj	*obj;
+	struct	s_intersec	*next;
+}	t_intersec;
+
 t_test	*get_value(char *file);
 
 // rays
-t_intersec	inter_obj(t_obj *obj, t_ray *ray_orig);
-t_intersec	inter_sp(t_sphere *sphere, t_ray *ray_orig);
+t_intersec	*inter_obj(t_obj *obj, t_ray *ray_orig);
+t_intersec	*inter_sp(t_obj *obj, t_ray *ray_orig, t_intersec *inter);
 t_ray		ray_transform(t_ray *ray, t_mtx4 *mtx);
 
 // op vector && pointers
@@ -103,10 +105,10 @@ double	vec_dot(t_vcpnt *vec1, t_vcpnt *vec2);
 t_vcpnt	vec_cross(t_vcpnt *vec1, t_vcpnt *vec2);
 
 // op matrixes/pointers/vectors
-t_mtx4	vcpnt4_2_mtx4(t_vcpnt *pnt);
 t_vcpnt	mult_mtx4_vcpnt4(t_mtx4 *mtx, t_vcpnt *pnt);
 
 // op: rotation, scaling, transition, inv of those
+t_mtx4	transpose(t_mtx4 *mtx);
 t_mtx4	rotate_x(double rad_2_rotate);
 t_mtx4	inv_rotate_x(double rad_2_rotate);
 t_mtx4	rotate_y(double rad_2_rotate);
@@ -131,6 +133,7 @@ t_mtx2	sub_mtx3(t_mtx3 *mtx, int row, int col);
 //t_mtx4	id_mtx(t_mtx4 *mtx);
 
 //delete
+void	free_inter(t_intersec *inter);
 void	print_vpnt4(t_vcpnt *ent);
 void 	free_double(char **split);
 void	print_inv4(t_mtx4 *mtx);
@@ -138,13 +141,16 @@ void	pirnt_split_content(char **split);
 void	print_mtx4(t_mtx4 *mtx);
 void	print_mtx3(t_mtx3 *mtx);
 void	print_mtx2(t_mtx2 *mtx);
+int		get_rgba(int r, int g, int b, int a);
 
 // create && print matrixes
-void	create_mtx2_stb(t_mtx2 *mtx);
-void	create_mtx3_stb(t_mtx3 *mtx);
-void	create_mtx4_rnd(t_mtx4 *mtx);
-void	create_mtx4_stb2(t_mtx4 *mtx);
-void	create_mtx4_stb(t_mtx4 *mtx);
+void		create_mtx2_stb(t_mtx2 *mtx);
+void		create_mtx3_stb(t_mtx3 *mtx);
+void		create_mtx4_rnd(t_mtx4 *mtx);
+void		create_mtx4_stb2(t_mtx4 *mtx);
+void		create_mtx4_stb(t_mtx4 *mtx);
+void		clean_lst(void *content);
+t_intersec	*hit(t_intersec *inter);
 
 // object functions
 t_type	get_obj(t_obj *obj);

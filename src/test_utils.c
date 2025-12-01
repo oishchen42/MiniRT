@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:26:11 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/24 13:19:03 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/11/29 17:43:33 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,4 +160,14 @@ void	print_mtx2(t_mtx2 *mtx)
 void	print_vpnt4(t_vcpnt *ent)
 {
 	printf("{%f, %f, %f, %f}\n", ent->vp[0], ent->vp[1], ent->vp[2], ent->vp[3]);
+}
+
+void	clean_lst(void *content)
+{
+	free(content);
+}
+
+int get_rgba(int r, int g, int b, int a)
+{
+	return (r << 24 | g << 16 | b << 8 | a);
 }

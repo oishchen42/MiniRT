@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 11:48:36 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/27 19:13:00 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/01 21:10:05 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,24 +192,10 @@ void	get_empty_mtx4(t_mtx4 *mtx)
 	}
 }
 
-void	create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx)
-{
-	if (new_mtx == NULL)
-	{
-		get_empty_mtx4(priv_mtx);
-		priv_mtx->mtx[0][0] = 1.0;
-		priv_mtx->mtx[1][1] = 1.0;
-		priv_mtx->mtx[2][2] = 1.0;
-		priv_mtx->mtx[3][3] = 1.0;
-	}
-	else
-		*priv_mtx = *new_mtx;
-}
-
 void	set_transform(t_sphere *sp, t_vcpnt *pnt_2_trans)
 {
 	t_mtx4	res;
 
-	res = vcpnt4_2_mtx4(pnt_2_trans);
+	res = trnas4(pnt_2_trans);
 	sp->transform = res;
 }
