@@ -1,9 +1,0 @@
-{
-	"files.associations": {
-		"fcntl.h": "c",
-		"libft.h": "c",
-		"get_next_line.h": "c",
-		"minirt.h": "c",
-		"random": "c"
-	}
-}
