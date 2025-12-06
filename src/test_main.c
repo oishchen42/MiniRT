@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:21:32 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/01 21:04:53 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/06 16:53:08 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,69 +121,117 @@ int	main()
 	//}
 	//printf("---------------------------\n");
 
-	//t_vcpnt orig = {0,0,-5,1};
-	//int		canvas = 500;
-	//double	wall  = 7.0;
-	//double	half = wall / 2;
-	//int		i;
-	//int		j;
-	//double	wall_per_pix = wall / canvas;
-	//double	world_x;
-	//double	world_y;
-	//double	world_z = 10.0;
-	//t_obj	sp = sphere();
-
-	//mlx_t	*mlx;
-	//mlx_image_t	*img;
-
-	//i = -1;
-	//printf("bla\n");
-	//if (!(mlx = mlx_init(canvas, canvas, "MLX42", true)))
-	//	return (1);
-	//printf("bla\n");
+	t_vcpnt orig = {0,0,-20,1};
+	int		canvas = 1000;
+	double	wall  = 15.0;
+	double	half = wall / 2;
+	int		i;
+	int		j;
+	double	wall_per_pix = wall / canvas;
+	double	world_x;
+	double	world_y;
+	double	world_z = 40.0;
+	t_obj	*sp = sphere(NULL);
 	
-	//if (!(img = mlx_new_image(mlx, canvas, canvas)))
-	//	return (1);
-	//if (mlx_image_to_window(mlx, img, 0, 0) == -1)
-	//	return (printf("bla\n"), 1);
+	t_light	light;
 
-	//while (++i < canvas)
-	//{
-	//	j = -1;
-	//	world_y = half - (wall_per_pix * i);
-	//	while (++j < canvas)
-	//	{
-	//		world_x = -half + (wall_per_pix * j);
-	//		t_vcpnt	target = {world_x, world_y, world_z, 1};
-	//		t_vcpnt dir = vec_subs(&target, &orig);
-	//		dir = vec_norm(&dir);
-	//		t_ray r = {orig, dir};
-	//		t_intersec	*inter = inter_obj(&sp, &r);
-	//		if (!inter)
-	//			return (printf("no inter\n"), 1);
-	//		if ((hit(inter)))
-	//		{
-	//			mlx_put_pixel(img, i, j, get_rgba(255, 0, 0, 255));
-	//		}
-	//		else
-	//			mlx_put_pixel(img, i, j, get_rgba(0,0,0,255));
-	//		free_inter(inter->next);
-	//		free_inter(inter);
-	//	}
-	//}
-	//mlx_loop(mlx);
-	//mlx_terminate(mlx);
+	mlx_t	*mlx;
+	mlx_image_t	*img;
 
-	//return (0);
+	t_intersec	*winner_inter;
 
-	t_mtx4 mtx = {
+	i = -1;
+	light.intens = (t_vcpnt){1,1,1,1};
+	light.pnt_light = (t_vcpnt){-10,10,-10,1};
+	printf("bla\n");
+	if (!(mlx = mlx_init(canvas, canvas, "MLX42", true)))
+		return (1);
+	printf("bla\n");
+	
+	if (!(img = mlx_new_image(mlx, canvas, canvas)))
+		return (1);
+	if (mlx_image_to_window(mlx, img, 0, 0) == -1)
+		return (printf("bla\n"), 1);
+
+	while (++i < canvas)
+	{
+		j = -1;
+		world_y = half - (wall_per_pix * i);
+		while (++j < canvas)
+		{
+			world_x = -half + (wall_per_pix * j);
+			t_vcpnt	target = {world_x, world_y, world_z, 1};
+			t_vcpnt dir = vec_subs(&target, &orig);
+			//if (i == 490 && j == 490) 
+			//	print_vpnt4(&dir);
+			dir = vec_norm(&dir);
+			t_ray r = {orig, dir};
+			t_vcpnt	scalev = {1, 0.5, 1, 0};
+			sp->data.sp.transform = scale4(&scalev);
+			t_intersec	*inter = inter_obj(sp, &r);
+			if (!inter)
+				return (printf("no inter\n"), 1);
+			if ((winner_inter = hit(inter)))
 			{
-				{0,5,3,0},
-				{4,1,8,9},
-				{6,3,0,2},
-				{2,7,1,9}
+				t_vcpnt scaled_vec = vec_scale(&r.vec, winner_inter->t);
+				t_vcpnt hit_point = vec_add(&r.pnt, &scaled_vec);
+				t_vcpnt eye_vec = vec_scale(&r.vec, -1);
+				t_vcpnt normv = normal_at(&sp->data.sp, &hit_point);
+				t_vcpnt color = lighting(&sp->data.sp.mat, &light, &hit_point, &eye_vec, &normv);
+				mlx_put_pixel(img, j, i, vcpnt_2_rgba(&color));
 			}
-		};
-	t_mtx4 transp = transpose(&mtx);
-	print_mtx4(&transp);
+			else
+				mlx_put_pixel(img, j, i, get_rgba(0,0,0,255));
+			free_inter(inter->next);
+			free_inter(inter);
+		}
+	}
+	free(sp);
+	mlx_loop(mlx);
+	mlx_terminate(mlx);
+
+	return (0);
+
+	//t_mtx4 mtx = {
+	//		{
+	//			{0,5,3,0},
+	//			{4,1,8,9},
+	//			{6,3,0,2},
+	//			{2,7,1,9}
+	//		}
+	//	};
+	//t_mtx4 transp = transpose(&mtx);
+	//print_mtx4(&transp);
+	//t_obj sp;
+
+	//sp = sphere();
+	//t_vcpnt vec_to_scale = {1,0.5,1, 0};
+	//t_mtx4 mtx = scale4(&vec_to_scale);
+	//t_mtx4 rot = rotate_z(PI/5);
+	//t_mtx4 mult = mtxs_mult4(&mtx, &rot);
+	//create_transform_mtx4(&sp.data.sp.transform, &mult);
+	//print_mtx4(&sp.data.sp.transform);
+	//t_vcpnt	nrm = {0, sqrt(2) / 2, -1 * sqrt(2) / 2, 0};
+	//t_vcpnt n = normal_at(&sp.data.sp, &nrm);
+	//print_vpnt4(&n);
+
+	//printf("TEST OF LIGHTING\n");
+	//t_obj sp;
+
+	//sp = sphere();
+	//t_vcpnt	eye = {0,0,-1,1};
+	//t_vcpnt	position = {0,0,0,1};
+	//t_vcpnt	normalv = {0,0,-1,1};
+	//t_light	light;
+	//light.intens = (t_vcpnt){1,1,1,1};
+	//light.pnt_light = (t_vcpnt){0,0,10,1};
+	//t_vcpnt	result = lighting(&sp.data.sp.mat, &light, &position, &eye, &normalv);
+	//print_vpnt4(&result);
+
+	//t_matirial mat;
+
+	//t_vcpnt	mat_color = {0.8, 1.0, 0.6, 0};
+	//double	diffuse = 0.7;
+	//double	specular = 0.2;
+	//mat = create_mat(&mat_color, diffuse, specular);
 }

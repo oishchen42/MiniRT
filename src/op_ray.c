@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:24:24 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/29 20:57:10 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/06 13:22:29 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ t_intersec	*inter_sp(t_obj *obj, t_ray *ray_orig, t_intersec *inter)
 
 	inv_mtx = mtx4_inverse(&obj->data.sp.transform);
 	local_ray = ray_transform(ray_orig, &inv_mtx);
-	sp_2_ray = vec_subs(&local_ray.pnt, &obj->data.sp.orig);
-	a = vec_dot(&local_ray.vec, &local_ray.vec);
-	b = vec_dot(&local_ray.vec, &sp_2_ray) * 2.0;
+	sp_2_ray = vec_subs(&ray_orig->pnt, &obj->data.sp.orig);
+	a = vec_dot(&ray_orig->vec, &ray_orig->vec);
+	b = vec_dot(&ray_orig->vec, &sp_2_ray) * 2.0;
 	c = vec_dot(&sp_2_ray, &sp_2_ray) - pow(obj->data.sp.radi, 2.0);
 	D = pow(b, 2) - 4.0 * a * c;
 	if (D < 0)
@@ -81,6 +81,7 @@ t_intersec	*inter_sp(t_obj *obj, t_ray *ray_orig, t_intersec *inter)
 	inter->next = get_inter(obj, 1, (-b + sqrt(D)) / (2.0 * a));
 	if (!inter->next)
 		return (free_inter(inter), NULL);
+	//printf("my t: %.1f, %.1f\n", inter->t, inter->next->t);
 	return (inter);
 }
 
@@ -110,14 +111,14 @@ t_ray	ray_transform(t_ray *ray, t_mtx4 *mtx)
 	return (res);
 }
 
-t_intersec	*hit(t_intersec *list)
+t_intersec	*hit(t_intersec *list) // TODO
 {
 	t_intersec *winner = NULL;
 	t_intersec *curr = list;
 
 	while (curr)
 	{
-		if (curr->count > 0 && curr->t > 0) // Valid, positive hit
+		if (curr->count > 0 && curr->t > 0)
 		{
 			if (winner == NULL || curr->t < winner->t)
 				winner = curr;

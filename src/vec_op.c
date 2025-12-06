@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 22:11:13 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/25 22:26:18 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/02 20:39:24 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,17 @@ t_vcpnt	vec_cross(t_vcpnt *vec1, t_vcpnt *vec2)
 	res.vp[1] = vec1->vp[2] * vec2->vp[0] - vec1->vp[0] * vec2->vp[2];
 	res.vp[2] = vec1->vp[0] * vec2->vp[1] - vec1->vp[1] * vec2->vp[0];
 	res.vp[3] = 0;
+	return (res);
+}
+
+t_vcpnt	vec_reflect(t_vcpnt *in, t_vcpnt *norm)
+{
+	double	vecs_dt;
+	t_vcpnt	vecs_dt2;
+	t_vcpnt	res;
+
+	vecs_dt = vec_dot(in, norm);
+	vecs_dt2 = vec_scale(norm, vecs_dt * 2.0);
+	res = vec_subs(in, &vecs_dt2);
 	return (res);
 }

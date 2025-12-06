@@ -58,11 +58,27 @@ typedef enum e_type
 	CYLINDER,
 }	t_type;
 
+typedef struct	s_matirial
+{
+	t_vcpnt	color;
+	double	ambient;
+	double	specular;
+	double	diffuse;
+	double	shiness;
+}	t_matirial;
+
+typedef struct	s_light
+{
+	t_vcpnt	pnt_light;
+	t_vcpnt	intens;
+}	t_light;
+
 typedef struct	s_sphere
 {
-	double	radi;
-	t_vcpnt	orig;
-	t_mtx4	transform;
+	double		radi;
+	t_matirial	mat;
+	t_vcpnt		orig;
+	t_mtx4		transform;
 }	t_sphere;
 
 typedef union u_obj_data
@@ -76,7 +92,6 @@ typedef struct s_obj
 	t_obj_data	data;
 }	t_obj;
 
-
 typedef struct	s_intersec
 {
 	int		count;
@@ -86,6 +101,12 @@ typedef struct	s_intersec
 	struct	s_intersec	*next;
 }	t_intersec;
 
+typedef struct	s_world
+{
+	t_list	*objs;
+	t_list	*lights;
+}	t_world;
+
 t_test	*get_value(char *file);
 
 // rays
@@ -94,6 +115,7 @@ t_intersec	*inter_sp(t_obj *obj, t_ray *ray_orig, t_intersec *inter);
 t_ray		ray_transform(t_ray *ray, t_mtx4 *mtx);
 
 // op vector && pointers
+t_vcpnt	vec_reflect(t_vcpnt *in, t_vcpnt *norm);
 t_vcpnt	vec_add(t_vcpnt *vec1, t_vcpnt *vec2);
 t_vcpnt	vec_subs(t_vcpnt *vec1, t_vcpnt *vec2);
 t_vcpnt	vec_muls(t_vcpnt *vec1, t_vcpnt *vec2);
@@ -119,6 +141,7 @@ t_mtx4	scale4(t_vcpnt *vcpnt);
 t_mtx4	inv_scale4(t_vcpnt *scale_vec);
 t_mtx4	trnas4(t_vcpnt *trans_vec);
 t_mtx4	inv_trnas4(t_vcpnt *trans_vec);
+t_mtx4	shearing(t_vcpnt *sh1, t_vcpnt *sh2);
 
 // op matrixes
 void	create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx);
@@ -135,13 +158,14 @@ t_mtx2	sub_mtx3(t_mtx3 *mtx, int row, int col);
 //delete
 void	free_inter(t_intersec *inter);
 void	print_vpnt4(t_vcpnt *ent);
-void 	free_double(char **split);
+void	free_double(char **split);
 void	print_inv4(t_mtx4 *mtx);
 void	pirnt_split_content(char **split);
 void	print_mtx4(t_mtx4 *mtx);
 void	print_mtx3(t_mtx3 *mtx);
 void	print_mtx2(t_mtx2 *mtx);
 int		get_rgba(int r, int g, int b, int a);
+int		vcpnt_2_rgba(t_vcpnt *color);
 
 // create && print matrixes
 void		create_mtx2_stb(t_mtx2 *mtx);
@@ -153,7 +177,16 @@ void		clean_lst(void *content);
 t_intersec	*hit(t_intersec *inter);
 
 // object functions
-t_type	get_obj(t_obj *obj);
-t_obj	sphere(void);
+t_vcpnt		normal_at(t_sphere *sp, t_vcpnt *pnt);
+t_type		get_obj(t_obj *obj);
+t_obj		*sphere(t_matirial *mat);
+t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular);
+
+//idk some taff calculation
+t_vcpnt	lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);
+
+// world_functions
+t_world		init_world(void);
+void		add_obj(t_world *world, t_light *light, t_obj *obj);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:43:20 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/01 21:10:21 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/03 19:48:56 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,4 +174,18 @@ t_mtx4	inv_rotate_z(double rad_2_rotate)
 	mtx.mtx[3][3] = 1.0;
 	inv_mtx = mtx4_inverse(&mtx);
 	return (inv_mtx);
+}
+
+t_mtx4	shearing(t_vcpnt *sh1, t_vcpnt *sh2)
+{
+	t_mtx4	res;
+
+	get_empty_mtx4(&res);
+	res.mtx[0][1] = sh1->vp[0];
+	res.mtx[0][2] = sh1->vp[1];
+	res.mtx[1][0] = sh1->vp[2];
+	res.mtx[1][2] = sh2->vp[0];
+	res.mtx[2][0] = sh2->vp[1];
+	res.mtx[2][1] = sh2->vp[2];
+	return (res);
 }
