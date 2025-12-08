@@ -6,18 +6,20 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 19:06:54 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/06 19:23:15 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/07 21:34:00 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-void	add_obj(t_world *world, t_light *light, t_obj *obj)
+void	wadd_obj(t_world *world, t_light *light, t_obj *obj)
 {
 	if (obj)
 	{
 		t_list	*new = ft_lstnew((void *)obj);
+		printf("all good\n");
 		ft_lstadd_back(&world->objs, new);
+		printf("added_back\n");
 	}
 	if (light)
 	{
@@ -35,7 +37,8 @@ t_world	init_world(void)
 	return (w);
 }
 
-void	clear_obj(t_world *world)
+void	wclear_world(t_world *world)
 {
 	ft_lstclear(&world->objs, free);
+	ft_lstclear(&world->lights, free);
 }
