@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 07:50:53 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/08 22:50:41 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/09 12:46:19 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_vcpnt	shade_hit(t_world *w, t_prlgt *l)
 	l->ambient = vec_scale(&l->eff_clr, obj->data.sp.mat.ambient);
 	l->light_dot_nrm = vec_dot(&l->lightv_nrm, &l->normv);
 	return (lighting(&obj->data.sp.mat, light, l));
+	//return (alt_lighting(&obj->data.sp.mat, light, &l->hit_pnt, &l->eyev, &l->normv));
 }
 
 void	record_hit(t_hit *hit, t_inter *inter, int *pos)
@@ -38,12 +39,13 @@ void	record_hit(t_hit *hit, t_inter *inter, int *pos)
 	i = -1;
 	while (++i < *pos)
 	{
-		if (inter[i].t < hit->min)
+		if (inter[i].t > 0.0 && inter[i].t < hit->min)
 		{
 			hit->min = inter[i].t;
 			printf("CURRENT min is: %.1f\n", hit->min);
 			hit->pos = i;
-			hit->obj = inter->obj;
+			hit->obj = inter[i].obj;
+			printf("RECORDED OBJ: %d\n", hit->obj->n);
 		}
 	}
 }
@@ -52,6 +54,7 @@ t_prlgt	pre_calc(t_hit *hit, t_ray *r)
 {
 	t_prlgt	pre_light;
 
+	printf("HIT OBJECT: %d\n", hit->obj->n);
 	pre_light.t = hit->min;
 	pre_light.obj = hit->obj;
 
@@ -75,9 +78,14 @@ t_prlgt	pre_calc(t_hit *hit, t_ray *r)
 	print_vpnt4(&pre_light.hit_pnt);
 
 	pre_light.normv = normal_at(&hit->obj->data.sp, &pre_light.hit_pnt);
+	printf("norm vec: ");
+	print_vpnt4(&pre_light.normv);
 	pre_light.is_inside = vec_dot(&pre_light.normv, &pre_light.eyev) < 0;
 	if (pre_light.is_inside)
+	{
+		printf("WE ARE INSIDE THE OBJ\n");
 		pre_light.normv = vec_scale(&pre_light.normv, -1);
+	}
 	return (pre_light);
 }
 
@@ -96,6 +104,7 @@ t_vcpnt	world_inter(t_world *wrld, t_ray *r)
 	while (cp_obj && inter_count < MAX_INTER / 2) // TODO do smth with MAX_INTER
 	{
 		obj = (t_obj *)cp_obj->content;
+		printf("THE OBJECT WE ARE WORKING WITH: %d\n", obj->n);
 		inter_obj(obj, r, inter, &inter_count);
 		cp_obj = cp_obj->next;
 		record_hit(&hit, inter, &inter_count);

@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:24:24 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/08 22:42:57 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/09 12:44:24 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	get_inter(t_obj *obj, int count, double t, t_inter *inter)
 	}
 	else
 	{
-		printf("tis %.1f\n", t);
-		printf("\n");
 		inter->obj = obj;
 		inter->count = count;
 		inter->t = t;
@@ -57,6 +55,7 @@ void	inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
 	(*count)++;
 	get_inter(obj, 1, (-b + sqrt(D)) / (2.0 * a), &inter[*count]);
 	(*count)++;
+	printf("OBJ: %d, t1 = %.1f, t2 = %.1f\n", obj->n, inter[*count - 2].t, inter[*count - 1].t);
 }
 
 void	inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)

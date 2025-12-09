@@ -92,6 +92,7 @@ typedef struct s_obj
 {
 	t_type		type;
 	t_obj_data	data;
+	int			n;
 }	t_obj;
 
 typedef struct	s_inter
@@ -106,6 +107,7 @@ typedef struct	s_world
 {
 	t_list	*objs;
 	t_list	*lights;
+	int		obj_n;
 }	t_world;
 
 typedef struct	s_hit
@@ -208,12 +210,13 @@ void		clean_lst(void *content);
 // object functions
 t_vcpnt		normal_at(t_sphere *sp, t_vcpnt *pnt);
 t_type		get_obj(t_obj *obj);
-t_obj		*sphere(t_matirial *mat);
+t_obj		*sphere(t_matirial *mat, int obj_n);
 t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular);
 void		create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx);
 t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color);
 
 //idk some taff calculation
+t_vcpnt	alt_lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);
 t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l);
 // world_functions
 t_world		init_world(void);

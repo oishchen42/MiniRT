@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 19:06:54 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/07 21:34:00 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/09 12:31:09 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@ void	wadd_obj(t_world *world, t_light *light, t_obj *obj)
 {
 	if (obj)
 	{
+		world->obj_n++;
 		t_list	*new = ft_lstnew((void *)obj);
-		printf("all good\n");
 		ft_lstadd_back(&world->objs, new);
-		printf("added_back\n");
 	}
 	if (light)
 	{
@@ -34,6 +33,7 @@ t_world	init_world(void)
 
 	w.objs = NULL;
 	w.lights = NULL;
+	w.obj_n = 0;
 	return (w);
 }
 
