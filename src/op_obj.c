@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/09 12:31:44 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/09 15:11:34 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,52 +127,52 @@ t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l)
 {
 	double	factor;
 
-	if (l->light_dot_nrm < 0)
+	//printf("l->light_dot_rnm: %.1f | mat->diffuse: %.1f\n", l->light_dot_nrm, mat->diffuse);
+	if (l->light_dot_nrm < 0.0)
 	{
 		l->diffuse = (t_vcpnt){0,0,0,0};
 		l->specular = (t_vcpnt){0,0,0,0};
 	}
 	else
 	{
-		printf("we are here\n\n");
-		printf("l->light_dot_rnm: %.1f | mat->diffuse: %.1f\n", l->light_dot_nrm, mat->diffuse);
-		printf("l->eff_clr ");
-		print_vpnt4(&l->eff_clr);
-		printf("l->diffuse: ");
+		//printf("we are here\n\n");
+		//printf("l->eff_clr ");
+		//print_vpnt4(&l->eff_clr);
+		//printf("l->diffuse: ");
 
 		l->diffuse = vec_scale(&l->eff_clr, l->light_dot_nrm * mat->diffuse);
 
-		print_vpnt4(&l->diffuse);
+		//print_vpnt4(&l->diffuse);
 
 		l->neg_lightv = vec_scale(&l->lightv_nrm, -1);
-		printf("lightv: ");
-		print_vpnt4(&l->lightv);
-		printf("\n");
+		//printf("lightv: ");
+		//print_vpnt4(&l->lightv);
+		//printf("\n");
 		l->reflectiv = vec_reflect(&l->neg_lightv, &l->normv);
-		printf("reflectiv: ");
-		print_vpnt4(&l->reflectiv);
-		printf("\n");
+		//printf("reflectiv: ");
+		//print_vpnt4(&l->reflectiv);
+		//printf("\n");
 		l->reflect_dot_eye = vec_dot(&l->reflectiv, &l->eyev);
 		if (l->reflect_dot_eye <= 0)
 			l->specular = (t_vcpnt){0,0,0,0};
 		else
 		{
-			printf("my reflecti_do_eye : %.1f\n", l->reflect_dot_eye);
-			printf("mat->shiness: %.1f\n", mat->shiness);
+			//printf("my reflecti_do_eye : %.1f\n", l->reflect_dot_eye);
+			//printf("mat->shiness: %.1f\n", mat->shiness);
 			factor = pow(l->reflect_dot_eye, mat->shiness);
-			printf("my factor : %f\n", factor);
-			printf("my material specular: %.1f\n", mat->specular);
-			printf("mat->specular * factor: %f\n", mat->specular * factor);
+			//printf("my factor : %f\n", factor);
+			//printf("my material specular: %.1f\n", mat->specular);
+			//printf("mat->specular * factor: %f\n", mat->specular * factor);
 			l->specular = vec_scale(&light->intens, mat->specular * factor);
-			printf("l->specular: ");
-			print_vpnt4(&l->specular);
+			//printf("l->specular: ");
+			//print_vpnt4(&l->specular);
 		}
 	}
-	printf("l->ambient, l->diffuse: ");
-	print_vpnt4(&l->ambient);
-	print_vpnt4(&l->diffuse);
-	printf("l->specular ");
-	print_vpnt4(&l->specular);
+	//printf("l->ambient, l->diffuse: ");
+	//print_vpnt4(&l->ambient);
+	//print_vpnt4(&l->diffuse);
+	//printf("l->specular ");
+	//print_vpnt4(&l->specular);
 	l->res = vec_add(&l->ambient, &l->diffuse);
 	l->res = vec_add(&l->res, &l->specular);
 	return (l->res);

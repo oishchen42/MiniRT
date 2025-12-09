@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:21:32 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/09 12:32:28 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/09 15:17:04 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,46 +269,86 @@ int	main()
 	//printf("finish\n");
 
 	printf("test for the new shorter light function\n");
-	t_vcpnt orig = {0,0,0,1};
-	t_vcpnt	dir = {0,0,1,1};
+	//t_vcpnt orig = {0,0,-5,1};
+	//t_vcpnt	dir = {0,0,1,1};
 
-	t_matirial mat;
-	mat.ambient = 0.1;
-	mat.color = (t_vcpnt){0.8, 1.0, 0.6, 1};
-	mat.diffuse = 0.7;
-	mat.specular = 0.2;
-	mat.shiness = 200;
-	t_obj	*sp = sphere(&mat, 1);
+	int		canvas = 1000;
+	t_vcpnt orig = {0,0,-35,1};
+	double	wall  = 35.0;
+	double	half = wall / 2;
+	double	wall_per_pix = wall / canvas;
+	double	world_x;
+	double	world_y;
+	double	world_z = 40.0;
+
+	//t_matirial mat;
+	//mat.ambient = 0.1;
+	//mat.color = (t_vcpnt){0.8, 1.0, 0.6, 1};
+	//mat.diffuse = 0.7;
+	//mat.specular = 0.2;
+	//mat.shiness = 200;
+	//t_obj	*sp = sphere(&mat, 1);
 	t_obj	*sp1 = sphere(NULL, 2);
 	t_vcpnt	scalev = {0.5, 0.5, 0.5, 0};
 	sp1->data.sp.transform = scale4(&scalev);
 
 	t_world	world;
+	mlx_t	*mlx;
+	mlx_image_t	*img;
 
 	world = init_world();
-	wadd_obj(&world, NULL, sp);
+	//wadd_obj(&world, NULL, sp);
 	printf("pixel_start\n");
 	wadd_obj(&world, NULL, sp1);
 
-	t_vcpnt	intens = (t_vcpnt){1, 1, 1 ,1};
-	t_vcpnt	pnt_light = (t_vcpnt){0.0, 0.25, 0.0, 1};
-	t_light	*light = create_light(&pnt_light, &intens);
+	//t_vcpnt	intens = (t_vcpnt){1, 1, 1 ,1};
+	//t_vcpnt	pnt_light = (t_vcpnt){0.0, 0.25, 0.0, 1};
+
+	t_vcpnt	pnt_light1 = (t_vcpnt){-10, 10, -10, 1};
+	t_vcpnt	intens1 = (t_vcpnt){1,1,1,1};
+	
+	t_light	*light = create_light(&pnt_light1, &intens1);
 	print_vpnt4(&light->intens);
 	print_vpnt4(&light->pnt_light);
 
-	wadd_obj(&world, light, NULL);
-	t_light	*world_light = (t_light *)world.lights->content;
-	printf("world_lights intesns and pnt_light;\n");
-	print_vpnt4(&world_light->intens);
-	print_vpnt4(&world_light->pnt_light);
+	if (!(mlx = mlx_init(canvas, canvas, "MLX42", true)))
+		return (1);
+	printf("bla\n");
+	
+	if (!(img = mlx_new_image(mlx, canvas, canvas)))
+		return (1);
+	if (mlx_image_to_window(mlx, img, 0, 0) == -1)
+		return (printf("bla\n"), 1);
 
-	dir = vec_norm(&dir);
-	t_ray r = {orig, dir};
-	t_vcpnt res = world_inter(&world, &r);
-	print_vpnt4(&res);
+	wadd_obj(&world, light, NULL);
+	
+	//t_light	*world_light = (t_light *)world.lights->content;
+
+	//printf("world_lights intesns and pnt_light;\n");
+	//print_vpnt4(&world_light->intens);
+	//print_vpnt4(&world_light->pnt_light);
+
+	int	i = -1;
+	while(++i < canvas)
+	{
+		int	j = -1;
+		world_y = half - (wall_per_pix * i);
+		while (++j < canvas)
+		{
+			world_x = -half + (wall_per_pix * j);
+			t_vcpnt	target = {world_x, world_y, world_z, 0};
+			t_vcpnt dir = vec_subs(&target, &orig);
+			dir = vec_norm(&dir);
+			t_ray r = {orig, dir};
+			t_vcpnt res = color_at(&world, &r);
+			mlx_put_pixel(img, j, i, vcpnt_2_rgba(&res));
+		}
+	}
+	mlx_loop(mlx);
+	mlx_terminate(mlx);
 
 	wclear_world(&world);
-	printf("finish\n");
+	//printf("finish\n");
 
 	return (0);
 }

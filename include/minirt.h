@@ -222,6 +222,6 @@ t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l);
 t_world		init_world(void);
 void		wadd_obj(t_world *world, t_light *light, t_obj *obj);
 void		wclear_world(t_world *world);
-t_vcpnt		world_inter(t_world *wrld, t_ray *r);
+t_vcpnt		color_at(t_world *wrld, t_ray *r);
 
 #endif
