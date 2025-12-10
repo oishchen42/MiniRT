@@ -139,6 +139,29 @@ typedef struct 	s_prlgt
 	t_vcpnt	res;
 }	t_prlgt;
 
+typedef struct	s_camera
+{
+	double	half_view;
+	double	aspect;
+	double	hsize;
+	double	vsize;
+	double	half_width;
+	double	half_height;
+	double	pixel_size;
+	double	field_of_view;
+	t_mtx4	transform;
+	t_mtx4	inv_trans;
+}	t_camera;
+
+typedef struct s_master
+{
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	t_world		world;
+	t_camera	camera;
+}	t_master;
+
+
 t_test	*get_value(char *file);
 
 // rays
@@ -162,6 +185,7 @@ t_vcpnt	vec_cross(t_vcpnt *vec1, t_vcpnt *vec2);
 t_vcpnt	mult_mtx4_vcpnt4(t_mtx4 *mtx, t_vcpnt *pnt);
 
 // op: rotation, scaling, transition, inv of those
+t_mtx4	mtx4_ornt(t_vcpnt *left, t_vcpnt *true_up, t_vcpnt *forward);
 t_mtx4	transpose(t_mtx4 *mtx);
 t_mtx4	rotate_x(double rad_2_rotate);
 t_mtx4	inv_rotate_x(double rad_2_rotate);
@@ -210,7 +234,7 @@ void		clean_lst(void *content);
 // object functions
 t_vcpnt		normal_at(t_sphere *sp, t_vcpnt *pnt);
 t_type		get_obj(t_obj *obj);
-t_obj		*sphere(t_matirial *mat, int obj_n);
+t_obj		*sphere(t_matirial *mat, t_vcpnt orig);
 t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular);
 void		create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx);
 t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color);
@@ -218,10 +242,22 @@ t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color);
 //idk some taff calculation
 t_vcpnt	alt_lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);
 t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l);
+
 // world_functions
 t_world		init_world(void);
 void		wadd_obj(t_world *world, t_light *light, t_obj *obj);
 void		wclear_world(t_world *world);
 t_vcpnt		world_inter(t_world *wrld, t_ray *r);
+
+// camera functions
+void		setup_camera(t_camera *c, int hsize, int vsize, double fov);
+t_ray		ray_for_pixel(t_camera *camera, int	px, int py);
+void		camera(t_camera *camera);
+t_mtx4		view_transform(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up);
+t_mtx4		mtx4_ornt(t_vcpnt *left, t_vcpnt *true_up, t_vcpnt *forward);
+
+// hooks
+void	controls_hook(void *param);
+void	render_hook(void *param);
 
 #endif

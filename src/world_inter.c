@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 07:50:53 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/09 12:46:19 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/10 19:59:09 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_vcpnt	shade_hit(t_world *w, t_prlgt *l)
 	l->lightv = vec_subs(&light->pnt_light, &l->hit_pnt);
 	l->lightv_nrm = vec_norm(&l->lightv);
 	l->ambient = vec_scale(&l->eff_clr, obj->data.sp.mat.ambient);
+	printf("l->ambinet\n\n");
+	print_vpnt4(&l->ambient);
 	l->light_dot_nrm = vec_dot(&l->lightv_nrm, &l->normv);
 	return (lighting(&obj->data.sp.mat, light, l));
 	//return (alt_lighting(&obj->data.sp.mat, light, &l->hit_pnt, &l->eyev, &l->normv));

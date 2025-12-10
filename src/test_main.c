@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:21:32 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/09 12:32:28 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:14:09 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,9 +268,68 @@ int	main()
 	//wclear_world(&world);
 	//printf("finish\n");
 
-	printf("test for the new shorter light function\n");
-	t_vcpnt orig = {0,0,0,1};
-	t_vcpnt	dir = {0,0,1,1};
+	//printf("test for the new shorter light function\n");
+	//t_vcpnt orig = {0,0,0,1};
+	//t_vcpnt	dir = {0,0,1,1};
+
+	//t_matirial mat;
+	//mat.ambient = 0.1;
+	//mat.color = (t_vcpnt){0.8, 1.0, 0.6, 1};
+	//mat.diffuse = 0.7;
+	//mat.specular = 0.2;
+	//mat.shiness = 200;
+	//t_obj	*sp = sphere(&mat, 1);
+	//t_obj	*sp1 = sphere(NULL, 2);
+	//t_vcpnt	scalev = {0.5, 0.5, 0.5, 0};
+	//sp1->data.sp.transform = scale4(&scalev);
+
+	//t_world	world;
+
+	//world = init_world();
+	//wadd_obj(&world, NULL, sp);
+	//printf("pixel_start\n");
+	//wadd_obj(&world, NULL, sp1);
+
+	//t_vcpnt	intens = (t_vcpnt){1, 1, 1 ,1};
+	//t_vcpnt	pnt_light = (t_vcpnt){0.0, 0.25, 0.0, 1};
+	//t_light	*light = create_light(&pnt_light, &intens);
+	//print_vpnt4(&light->intens);
+	//print_vpnt4(&light->pnt_light);
+
+	//wadd_obj(&world, light, NULL);
+	//t_light	*world_light = (t_light *)world.lights->content;
+	//printf("world_lights intesns and pnt_light;\n");
+	//print_vpnt4(&world_light->intens);
+	//print_vpnt4(&world_light->pnt_light);
+
+	//dir = vec_norm(&dir);
+	//t_ray r = {orig, dir};
+	//t_vcpnt res = world_inter(&world, &r);
+	//print_vpnt4(&res);
+
+	//wclear_world(&world);
+	//printf("finish\n");
+
+	//return (0);
+
+	//printf("test transform mtx\n");
+	//t_vcpnt	from = {1,3,2,0};
+	//t_vcpnt	to = {4, -2, 8,0};
+	//t_vcpnt	up = {1, 1, 0,0};
+
+	//t_mtx4	mtx = view_transform(&from, &to, &up);
+	//print_inv4(&mtx);
+
+	t_master	app;
+	int			hsize;
+	int			vsize;
+
+	app.world = init_world();
+
+	t_vcpnt	intens = (t_vcpnt){1, 1, 1 ,1};
+	t_vcpnt	pnt_light = (t_vcpnt){-10,10,-10,1};
+	t_light	*light = create_light(&pnt_light, &intens);
+	wadd_obj(&app.world, light, NULL);
 
 	t_matirial mat;
 	mat.ambient = 0.1;
@@ -278,37 +337,25 @@ int	main()
 	mat.diffuse = 0.7;
 	mat.specular = 0.2;
 	mat.shiness = 200;
-	t_obj	*sp = sphere(&mat, 1);
-	t_obj	*sp1 = sphere(NULL, 2);
+	t_obj	*sp = sphere(&mat, (t_vcpnt){0,0,0,1});
+	t_obj	*sp1 = sphere(NULL, (t_vcpnt){0,5,-2,1});
 	t_vcpnt	scalev = {0.5, 0.5, 0.5, 0};
 	sp1->data.sp.transform = scale4(&scalev);
+	wadd_obj(&app.world, NULL, sp);
+	wadd_obj(&app.world, NULL, sp1);
 
-	t_world	world;
+	hsize = 200;
+	vsize = 100;
+	setup_camera(&app.camera, hsize, vsize, PI / 3);
+	app.mlx = mlx_init(hsize, vsize, "Ray traicer", true);
+	app.img = mlx_new_image(app.mlx, hsize, vsize);
+	mlx_image_to_window(app.mlx, app.img, 0, 0);
+	mlx_loop_hook(app.mlx, render_hook, &app);
+	mlx_loop_hook(app.mlx, controls_hook, &app);
 
-	world = init_world();
-	wadd_obj(&world, NULL, sp);
-	printf("pixel_start\n");
-	wadd_obj(&world, NULL, sp1);
+	mlx_loop(app.mlx);
 
-	t_vcpnt	intens = (t_vcpnt){1, 1, 1 ,1};
-	t_vcpnt	pnt_light = (t_vcpnt){0.0, 0.25, 0.0, 1};
-	t_light	*light = create_light(&pnt_light, &intens);
-	print_vpnt4(&light->intens);
-	print_vpnt4(&light->pnt_light);
-
-	wadd_obj(&world, light, NULL);
-	t_light	*world_light = (t_light *)world.lights->content;
-	printf("world_lights intesns and pnt_light;\n");
-	print_vpnt4(&world_light->intens);
-	print_vpnt4(&world_light->pnt_light);
-
-	dir = vec_norm(&dir);
-	t_ray r = {orig, dir};
-	t_vcpnt res = world_inter(&world, &r);
-	print_vpnt4(&res);
-
-	wclear_world(&world);
-	printf("finish\n");
-
+	mlx_terminate(app.mlx);
+	wclear_world(&app.world);
 	return (0);
 }

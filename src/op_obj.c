@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/09 12:31:44 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:00:37 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,15 @@ void	material(t_matirial	*mat)
 	mat->color = (t_vcpnt){1, 1, 1, 0};
 }
 
-t_obj	*sphere(t_matirial *mat, int obj_n)
+t_obj	*sphere(t_matirial *mat, t_vcpnt orig)
 {
 	t_obj	*obj;
 
 	obj = malloc(sizeof(t_obj));
 	if (!obj)
 		return (NULL);
-	obj->n = obj_n;
 	obj->type = SPHERE;
-	obj->data.sp.orig = (t_vcpnt){0, 0, 0, 1};
+	obj->data.sp.orig = orig;
 	if (!mat)
 		material(&obj->data.sp.mat);
 	else
@@ -164,6 +163,7 @@ t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l)
 			printf("my material specular: %.1f\n", mat->specular);
 			printf("mat->specular * factor: %f\n", mat->specular * factor);
 			l->specular = vec_scale(&light->intens, mat->specular * factor);
+			
 			printf("l->specular: ");
 			print_vpnt4(&l->specular);
 		}
