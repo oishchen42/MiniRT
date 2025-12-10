@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 07:50:53 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/09 15:08:50 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:55:50 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,31 +21,18 @@ t_vcpnt	shade_hit(t_world *w, t_prlgt *l)
 	t_vcpnt	cur_color;
 
 	obj = l->obj;
-	wrld_lgts = w->lights;
-	res = (t_vcpnt){0,0,0,0};
-	while (wrld_lgts)
-	{
-		light = (t_light *)wrld_lgts->content;
-		//printf("light->intens ");
-		//print_vpnt4(&light->intens);
-		l->eff_clr = vec_muls(&obj->data.sp.mat.color, &light->intens);
-		l->lightv = vec_subs(&light->pnt_light, &l->hit_pnt);
-		l->lightv_nrm = vec_norm(&l->lightv);
-		l->ambient = vec_scale(&l->eff_clr, obj->data.sp.mat.ambient);
-		//printf("l->lightv_nrm ");
-		//print_vpnt4(&l->lightv_nrm);
-		//printf("\n");
-		//printf("l->normv ");
-		//print_vpnt4(&l->normv);
-		//printf("\n");
-		l->light_dot_nrm = vec_dot(&l->lightv_nrm, &l->normv);
-		//printf("ABOUT TO ENTER LIGHING\n\n");
-		cur_color = lighting(&obj->data.sp.mat, light, l);
-		//cur_color = alt_lighting(&obj->data.sp.mat, light, &l->hit_pnt, &l->eyev, &l->normv);
-		res = vec_add(&res, &cur_color);
-		wrld_lgts = wrld_lgts->next;
-	}
-	return (res);
+	light = (t_light *)w->lights->content;
+	printf("light->intens ");
+	print_vpnt4(&light->intens);
+	l->eff_clr = vec_muls(&obj->data.sp.mat.color, &light->intens);
+	l->lightv = vec_subs(&light->pnt_light, &l->hit_pnt);
+	l->lightv_nrm = vec_norm(&l->lightv);
+	l->ambient = vec_scale(&l->eff_clr, obj->data.sp.mat.ambient);
+	printf("l->ambinet\n\n");
+	print_vpnt4(&l->ambient);
+	l->light_dot_nrm = vec_dot(&l->lightv_nrm, &l->normv);
+	return (lighting(&obj->data.sp.mat, light, l));
+	//return (alt_lighting(&obj->data.sp.mat, light, &l->hit_pnt, &l->eyev, &l->normv));
 }
 
 void	record_hit(t_hit *hit, t_inter *inter, int *pos)
@@ -106,7 +93,7 @@ t_prlgt	pre_calc(t_hit *hit, t_ray *r)
 	return (pre_light);
 }
 
-t_vcpnt	color_at(t_world *wrld, t_ray *r)
+t_vcpnt	world_inter(t_world *wrld, t_ray *r)
 {
 	t_inter	inter[MAX_INTER];
 	t_list	*cp_obj = wrld->objs;

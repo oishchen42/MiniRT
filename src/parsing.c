@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 14:05:08 by oishchen          #+#    #+#             */
-/*   Updated: 2025/11/21 13:42:31 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/10 11:52:23 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	check_split_value(char **value)
 {
 	int	val_counter;
+
 	if (!value)
 		return(perror("NO VALUE check_split_value"), 0);
 	val_counter = -1;

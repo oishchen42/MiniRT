@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 19:06:54 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/09 13:47:40 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:53:07 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_world	init_world(void)
 
 	w.objs = NULL;
 	w.lights = NULL;
-	w.obj_n = 0;
 	return (w);
 }
 

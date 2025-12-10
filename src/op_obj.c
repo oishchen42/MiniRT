@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/09 15:11:34 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:54:06 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,15 @@ void	material(t_matirial	*mat)
 	mat->color = (t_vcpnt){1, 1, 1, 0};
 }
 
-t_obj	*sphere(t_matirial *mat, int obj_n)
+t_obj	*sphere(t_matirial *mat, t_vcpnt orig)
 {
 	t_obj	*obj;
 
 	obj = malloc(sizeof(t_obj));
 	if (!obj)
 		return (NULL);
-	obj->n = obj_n;
 	obj->type = SPHERE;
-	obj->data.sp.orig = (t_vcpnt){0, 0, 0, 1};
+	obj->data.sp.orig = orig;
 	if (!mat)
 		material(&obj->data.sp.mat);
 	else
