@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_op.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 11:48:36 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/01 21:10:05 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/12 21:08:50 by tdietz-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,6 @@ void	set_transform(t_sphere *sp, t_vcpnt *pnt_2_trans)
 {
 	t_mtx4	res;
 
-	res = trnas4(pnt_2_trans);
+	res = trans4(pnt_2_trans);
 	sp->transform = res;
 }

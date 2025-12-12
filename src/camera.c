@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:05:38 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/10 16:21:23 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/12 21:08:50 by tdietz-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_mtx4	view_transform(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up)
 	t_vcpnt	true_up = vec_cross(&left, &forward);
 	t_mtx4	ornt_mtx4 = mtx4_ornt(&left, &true_up, &forward);
 	t_vcpnt	neg_from = vec_scale(from, -1);
-	t_mtx4	mtx4_trans = trnas4(&neg_from);
+	t_mtx4	mtx4_trans = trans4(&neg_from);
 	t_mtx4	res = mtxs_mult4(&ornt_mtx4, &mtx4_trans);
 	return (res);
 }

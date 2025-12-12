@@ -6,13 +6,13 @@
 /*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 14:21:47 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/12 21:05:17 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/12 21:09:08 by tdietz-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l)
+t_vcpnt	lighting(t_material *mat, t_light *light, t_prlgt *l)
 {
 	double	factor;
 
@@ -68,7 +68,7 @@ t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l)
 }
 
 
-t_vcpnt	alt_lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc)
+t_vcpnt	alt_lighting(t_material *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc)
 {
 	t_vcpnt	effective_color;
 	t_vcpnt	lightv;

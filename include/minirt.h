@@ -60,14 +60,14 @@ typedef enum e_type
 	CYLINDER,
 }	t_type;
 
-typedef struct	s_matirial
+typedef struct	s_material
 {
 	t_vcpnt	color;
 	double	ambient;
 	double	specular;
 	double	diffuse;
 	double	shiness;
-}	t_matirial;
+}	t_material;
 
 typedef struct	s_light
 {
@@ -78,7 +78,7 @@ typedef struct	s_light
 typedef struct	s_sphere
 {
 	double		radi;
-	t_matirial	mat;
+	t_material	mat;
 	t_vcpnt		orig;
 	t_mtx4		transform;
 }	t_sphere;
@@ -195,8 +195,8 @@ t_mtx4	rotate_z(double rad_2_rotate);
 t_mtx4	inv_rotate_z(double rad_2_rotate);
 t_mtx4	scale4(t_vcpnt *vcpnt);
 t_mtx4	inv_scale4(t_vcpnt *scale_vec);
-t_mtx4	trnas4(t_vcpnt *trans_vec);
-t_mtx4	inv_trnas4(t_vcpnt *trans_vec);
+t_mtx4	trans4(t_vcpnt *trans_vec);
+t_mtx4	inv_trans4(t_vcpnt *trans_vec);
 t_mtx4	shearing(t_vcpnt *sh1, t_vcpnt *sh2);
 
 // op matrixes
@@ -234,14 +234,14 @@ void		clean_lst(void *content);
 // object functions
 t_vcpnt		normal_at(t_sphere *sp, t_vcpnt *pnt);
 t_type		get_obj(t_obj *obj);
-t_obj		*sphere(t_matirial *mat, t_vcpnt orig);
-t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular);
+t_obj		*sphere(t_material *mat, t_vcpnt orig);
+t_material	create_material(t_vcpnt	*color, double diffuse, double specular);
 void		create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx);
 t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color);
 
 //idk some taff calculation
-t_vcpnt	alt_lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);
-t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l);
+t_vcpnt	alt_lighting(t_material *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);
+t_vcpnt	lighting(t_material *mat, t_light *light, t_prlgt *l);
 
 // world_functions
 t_world		init_world(void);

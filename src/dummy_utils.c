@@ -6,7 +6,7 @@
 /*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 20:51:43 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/12 20:52:12 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/12 21:09:08 by tdietz-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	pirnt_split_content(char **split)
 void	default_world(t_world *wrld)
 {
 	t_obj *sp1;
-	t_matirial mat1;
+	t_material mat1;
 	t_light	*light;
 	t_vcpnt l_pnt;
 	t_vcpnt	l_intens;

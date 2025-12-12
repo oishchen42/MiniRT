@@ -6,7 +6,7 @@
 /*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:21:32 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/12 21:00:03 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/12 21:09:08 by tdietz-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ int	main()
 	//t_vcpnt	result = lighting(&sp.data.sp.mat, &light, &position, &eye, &normalv);
 	//print_vpnt4(&result);
 
-	//t_matirial mat;
+	//t_material mat;
 
 	//t_vcpnt	mat_color = {0.8, 1.0, 0.6, 0};
 	//double	diffuse = 0.7;
@@ -239,7 +239,7 @@ int	main()
 	//printf("RENDARING THE WORLD (SOUNDS FROM THE STAR WARS:\n PA-PA-PA-PAAAAA-PAAAA\n");
 	//t_vcpnt orig = {0,0,-5,1};
 
-	//t_matirial mat;
+	//t_material mat;
 	//mat.ambient = 0.1;
 	//mat.color = (t_vcpnt){0.8, 1.0, 0.6, 1};
 	//mat.diffuse = 0.7;
@@ -272,7 +272,7 @@ int	main()
 	//t_vcpnt orig = {0,0,0,1};
 	//t_vcpnt	dir = {0,0,1,1};
 
-	//t_matirial mat;
+	//t_material mat;
 	//mat.ambient = 0.1;
 	//mat.color = (t_vcpnt){0.8, 1.0, 0.6, 1};
 	//mat.diffuse = 0.7;
@@ -331,7 +331,7 @@ int	main()
 	//t_light	*light = create_light(&pnt_light, &intens);
 	//wadd_obj(&app.world, light, NULL);
 
-	//t_matirial mat;
+	//t_material mat;
 	//mat.ambient = 0.1;
 	//mat.color = (t_vcpnt){0.8, 1.0, 0.6, 1};
 	//mat.diffuse = 0.7;
@@ -360,7 +360,7 @@ int	main()
 	//return (0);
 
 	//printf("tes light\n");
-	//t_matirial mat;
+	//t_material mat;
 	//mat.ambient = 0.1;
 	//mat.diffuse = 0.9;
 	//mat.specular = 0.9;
@@ -418,7 +418,7 @@ int	main()
 
 	t_vcpnt	scl_inst = {10, 0.01, 10, 1};
 	t_mtx4 scaled_mtx = scale4(&scl_inst);
-	t_matirial	floor_mat;
+	t_material	floor_mat;
 	floor_mat.color = (t_vcpnt){ 1,0.9,0.9, 1};
 	floor_mat.specular = 0.1;
 	floor_mat.ambient = 0.5;
@@ -433,7 +433,7 @@ int	main()
 	t_mtx4	rot_y = rotate_y(-PI/4);
 	t_mtx4	rot_x = rotate_x(PI/2);
 	t_vcpnt trans_vec = {0,0,5,1};
-	t_mtx4	trans_mtx = trnas4(&trans_vec);
+	t_mtx4	trans_mtx = trans4(&trans_vec);
 	t_mtx4	res_mtx = mtxs_mult4(&trans_mtx, &rot_y);
 	res_mtx = mtxs_mult4(&res_mtx, &rot_x);
 	res_mtx = mtxs_mult4(&res_mtx, &scl_mtx);
@@ -449,7 +449,7 @@ int	main()
 	create_transform_mtx4(&right_wall->data.sp.transform, &res_1mtx);
 	wadd_obj(&wrld, NULL, right_wall);
 
-	t_matirial	mat_middle;
+	t_material	mat_middle;
 	mat_middle.color = (t_vcpnt){0.1, 1, 0.5, 1};
 	mat_middle.diffuse = 0.7;
 	mat_middle.specular = 0.3;
@@ -459,12 +459,12 @@ int	main()
 	t_vcpnt	trans_vec_mid = {0, 1.5, 0, 1};
 	t_vcpnt	scale_vec_mid = {0.5, 0.5, 0.5, 1};
 	t_mtx4	scl_mtxx = scale4(&scale_vec_mid);
-	t_mtx4	transs = trnas4(&trans_vec_mid);
+	t_mtx4	transs = trans4(&trans_vec_mid);
 	t_mtx4	rres = mtxs_mult4(&transs, &scl_mtxx);
 	create_transform_mtx4(&middle->data.sp.transform, &rres);
 	wadd_obj(&wrld, NULL, middle);
 
-	t_matirial mat_center;
+	t_material mat_center;
 
 	mat_center.color = (t_vcpnt){0.1, 1, 0.5, 1}; 
 	mat_center.diffuse = 0.7;
@@ -477,7 +477,7 @@ int	main()
 	t_vcpnt trans_center_vec = {-0.5, 1, 0.5, 1};
 	t_vcpnt scale_center_vec = {1, 1, 1, 1};
 
-	t_mtx4 trans_center_mtx = trnas4(&trans_center_vec);
+	t_mtx4 trans_center_mtx = trans4(&trans_center_vec);
 	t_mtx4 scale_center_mtx = scale4(&scale_center_vec);
 
 	t_mtx4 res_center = mtxs_mult4(&trans_center_mtx, &scale_center_mtx);
@@ -485,7 +485,7 @@ int	main()
 	create_transform_mtx4(&center_sp->data.sp.transform, &res_center);
 	wadd_obj(&wrld, NULL, center_sp);
 
-	t_matirial mat_left;
+	t_material mat_left;
 
 	mat_left.color = (t_vcpnt){1, 0.8, 0.1, 1}; 
 	mat_left.diffuse = 0.7;
@@ -498,7 +498,7 @@ int	main()
 	t_vcpnt trans_left_vec = {-1.5, 0.33, -0.75, 1};
 	t_vcpnt scale_left_vec = {0.33, 0.33, 0.33, 1}; 
 
-	t_mtx4 trans_left_mtx = trnas4(&trans_left_vec);
+	t_mtx4 trans_left_mtx = trans4(&trans_left_vec);
 	t_mtx4 scale_left_mtx = scale4(&scale_left_vec);
 
 	t_mtx4 res_left = mtxs_mult4(&trans_left_mtx, &scale_left_mtx);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_obj.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/10 20:00:37 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/12 21:09:08 by tdietz-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_light	*create_light(t_vcpnt *pnt, t_vcpnt *color)
 	return (light);
 }
 
-void	material(t_matirial	*mat)
+void	material(t_material	*mat)
 {
 	mat->ambient = 0.1;
 	mat->diffuse = 0.9;
@@ -50,7 +50,7 @@ void	material(t_matirial	*mat)
 	mat->color = (t_vcpnt){1, 1, 1, 0};
 }
 
-t_obj	*sphere(t_matirial *mat, t_vcpnt orig)
+t_obj	*sphere(t_material *mat, t_vcpnt orig)
 {
 	t_obj	*obj;
 
@@ -92,9 +92,9 @@ void	create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx)
 		*priv_mtx = *new_mtx;
 }
 
-t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular)
+t_material	create_material(t_vcpnt	*color, double diffuse, double specular)
 {
-	t_matirial	mat;
+	t_material	mat;
 
 	mat.color = *color;
 	mat.diffuse = diffuse;
@@ -122,7 +122,7 @@ t_vcpnt	normal_at(t_sphere *sp, t_vcpnt *pnt)
 	return (world_norm);
 }
 
-t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l)
+t_vcpnt	lighting(t_material *mat, t_light *light, t_prlgt *l)
 {
 	double	factor;
 
@@ -179,7 +179,7 @@ t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l)
 }
 
 
-t_vcpnt	alt_lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc)
+t_vcpnt	alt_lighting(t_material *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc)
 {
 	t_vcpnt	effective_color;
 	t_vcpnt	lightv;
