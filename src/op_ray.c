@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:24:24 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/09 15:05:30 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/11 14:20:25 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	get_inter(t_obj *obj, int count, double t, t_inter *inter)
 	}
 }
 
-void	inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
+int	inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
 {
 	t_vcpnt		sp_2_ray;
 	double		a;
@@ -46,19 +46,16 @@ void	inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
 	c = vec_dot(&sp_2_ray, &sp_2_ray) - pow(obj->data.sp.radi, 2.0);
 	D = pow(b, 2) - 4.0 * a * c;
 	if (D < 0)
-	{
-		(get_inter(obj, 0, 0, &inter[*count]));
-		(*count)++;
-		return ;
-	}
+		return 0;
 	get_inter(obj, 1, (-b - sqrt(D)) / (2.0 * a), &inter[*count]);
 	(*count)++;
 	get_inter(obj, 1, (-b + sqrt(D)) / (2.0 * a), &inter[*count]);
 	(*count)++;
+	return (1);
 	//printf("OBJ: %d, t1 = %.1f, t2 = %.1f\n", obj->n, inter[*count - 2].t, inter[*count - 1].t);
 }
 
-void	inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
+int	inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
 {
 	//t_list		*new;
 
@@ -69,7 +66,7 @@ void	inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
 	//else
 	//	ft_lstadd_back(&inter_list, new);
 	// TODO: Improve logic
-	inter_sp(obj, ray_orig, inter, count);
+	return (inter_sp(obj, ray_orig, inter, count));
 }
 
 t_ray	ray_transform(t_ray *ray, t_mtx4 *mtx)

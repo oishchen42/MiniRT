@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 19:06:54 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/10 20:53:07 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/12 02:03:37 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_world	init_world(void)
 {
 	t_world w;
 
+	ft_bzero(&w, sizeof(t_world));
 	w.objs = NULL;
 	w.lights = NULL;
 	return (w);
@@ -37,6 +38,7 @@ t_world	init_world(void)
 
 void	wclear_world(t_world *world)
 {
+	
 	ft_lstclear(&world->objs, free);
 	ft_lstclear(&world->lights, free);
 }

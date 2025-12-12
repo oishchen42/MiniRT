@@ -13,6 +13,7 @@ SRC_FILES := main.c vec_op.c parsing.c  math_utils.c \
 			test_utils.c test_main.c dummy_utils.c matrix_op.c \
 			vec_mtx_op.c op_ray.c op_obj.c op_mtx_mov.c \
 			world_utils.c world_inter.c camera.c control.c \
+			render.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

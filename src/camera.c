@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:05:38 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/10 16:21:23 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/11 22:22:10 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_mtx4	mtx4_ornt(t_vcpnt *left, t_vcpnt *true_up, t_vcpnt *forward)
 	mtx.mtx[2][1] = -forward->vp[1];
 	mtx.mtx[2][2] = -forward->vp[2];
 	mtx.mtx[3][3] = 1.0;
-	print_inv4(&mtx);
+	//print_inv4(&mtx);
 	return (mtx);
 }
 
@@ -37,6 +37,7 @@ t_mtx4	view_transform(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up)
 	forward = vec_norm(&forward);
 	t_vcpnt	up_norm = vec_norm(up);
 	t_vcpnt	left = vec_cross(&forward, &up_norm);
+	left = vec_norm(&left);
 	t_vcpnt	true_up = vec_cross(&left, &forward);
 	t_mtx4	ornt_mtx4 = mtx4_ornt(&left, &true_up, &forward);
 	t_vcpnt	neg_from = vec_scale(from, -1);
@@ -89,18 +90,15 @@ t_ray	ray_for_pixel(t_camera *camera, int	px, int py)
 	return (res);
 }
 
-void	setup_camera(t_camera *c, int hsize, int vsize, double fov)
+void	setup_camera(t_camera *c, double hsize, double vsize, double fov)
 {
-	t_vcpnt	from;
-	t_vcpnt	to;
-	t_vcpnt	up;
-
-	c->hsize = hsize;
-	c->vsize = vsize;
+	c->hsize = hsize; // horiz size
+	c->vsize = vsize; // vertec size
 	c->field_of_view = fov;
-	from = (t_vcpnt){0, 0, -5, 1};
-	to = (t_vcpnt){0, 0, 0, 1};
-	up = (t_vcpnt){0, 1, 0, 0};
-	c->transform = view_transform(&from, &to, &up);
+	camera(c);
+	//from = (t_vcpnt){0, 0, -5, 1};
+	//to = (t_vcpnt){0, 0, 0, 1};
+	//up = (t_vcpnt){0, 1, 0, 1};
+	c->transform = view_transform(&c->from, &c->to, &c->up);
 	c->inv_trans = mtx4_inverse(&c->transform);
 }

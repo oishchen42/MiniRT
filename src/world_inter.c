@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 07:50:53 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/10 20:55:50 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/11 21:25:06 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,18 @@ t_vcpnt	shade_hit(t_world *w, t_prlgt *l)
 {
 	t_obj	*obj;
 	t_light	*light;
-	t_list	*wrld_lgts;
-	t_vcpnt	res;
-	t_vcpnt	cur_color;
 
+	//obj = get_obj(w);
 	obj = l->obj;
 	light = (t_light *)w->lights->content;
-	printf("light->intens ");
-	print_vpnt4(&light->intens);
+	//printf("light->intens ");
+	//print_vpnt4(&light->intens);
 	l->eff_clr = vec_muls(&obj->data.sp.mat.color, &light->intens);
 	l->lightv = vec_subs(&light->pnt_light, &l->hit_pnt);
 	l->lightv_nrm = vec_norm(&l->lightv);
 	l->ambient = vec_scale(&l->eff_clr, obj->data.sp.mat.ambient);
-	printf("l->ambinet\n\n");
-	print_vpnt4(&l->ambient);
+	//printf("l->ambinet\n\n");
+	//print_vpnt4(&l->ambient);
 	l->light_dot_nrm = vec_dot(&l->lightv_nrm, &l->normv);
 	return (lighting(&obj->data.sp.mat, light, l));
 	//return (alt_lighting(&obj->data.sp.mat, light, &l->hit_pnt, &l->eyev, &l->normv));
@@ -48,24 +46,34 @@ void	record_hit(t_hit *hit, t_inter *inter, int *pos)
 			hit->min = inter[i].t;
 			//printf("CURRENT min is: %.1f\n", hit->min);
 			hit->pos = i;
+			//printf("hit->pos is: %d\n", hit->pos);
 			hit->obj = inter[i].obj;
 			//printf("RECORDED OBJ: %d\n", hit->obj->n);
 		}
 	}
 }
 
-t_prlgt	pre_calc(t_hit *hit, t_ray *r)
+t_prlgt	pre_calc(t_world *wrld, t_hit *hit, t_ray *r)
 {
 	t_prlgt	pre_light;
+	t_light	*light;
+
+
+	light = (t_light *)wrld->lights->content;
+
+	//print_vpnt4(&light->intens);
 
 	//printf("HIT OBJECT: %d\n", hit->obj->n);
+
 	pre_light.t = hit->min;
 	pre_light.obj = hit->obj;
+
 
 	//printf("r_vec norm: ");
 	//print_vpnt4(&r->vec);
 
 	pre_light.eyev = vec_scale(&r->vec, -1);
+	//pre_light.eyev = (t_vcpnt){0, sqrt(2) / 2, -1 * sqrt(2) / 2, -1};
 
 	//printf("eyev : ");
 	//print_vpnt4(&pre_light.eyev);
@@ -90,6 +98,11 @@ t_prlgt	pre_calc(t_hit *hit, t_ray *r)
 		//printf("WE ARE INSIDE THE OBJ\n");
 		pre_light.normv = vec_scale(&pre_light.normv, -1);
 	}
+	pre_light.eff_clr = vec_muls(&pre_light.obj->data.sp.mat.color, &light->intens);
+	pre_light.lightv = vec_subs(&light->pnt_light, &pre_light.hit_pnt);
+	pre_light.lightv_nrm = vec_norm(&pre_light.lightv);
+	pre_light.ambient = vec_scale(&pre_light.eff_clr, pre_light.obj->data.sp.mat.ambient);
+	pre_light.light_dot_nrm = vec_dot(&pre_light.lightv_nrm, &pre_light.normv);
 	return (pre_light);
 }
 
@@ -109,13 +122,13 @@ t_vcpnt	world_inter(t_world *wrld, t_ray *r)
 	{
 		obj = (t_obj *)cp_obj->content;
 		//printf("THE OBJECT WE ARE WORKING WITH: %d\n", obj->n);
-		inter_obj(obj, r, inter, &inter_count);
+		if (inter_obj(obj, r, inter, &inter_count))
+			record_hit(&hit, inter, &inter_count);
 		cp_obj = cp_obj->next;
-		record_hit(&hit, inter, &inter_count);
 	}
 	if (hit.pos != -1)
 	{
-		pre_light = pre_calc(&hit, r);
+		pre_light = pre_calc(wrld, &hit, r);
 		//printf("we are hree\n");
 		t_vcpnt res = shade_hit(wrld, &pre_light);
 		return (res);

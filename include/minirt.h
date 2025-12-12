@@ -151,6 +151,9 @@ typedef struct	s_camera
 	double	field_of_view;
 	t_mtx4	transform;
 	t_mtx4	inv_trans;
+	t_vcpnt	from;
+	t_vcpnt	to;
+	t_vcpnt	up;
 }	t_camera;
 
 typedef struct s_master
@@ -165,8 +168,8 @@ typedef struct s_master
 t_test	*get_value(char *file);
 
 // rays
-void	inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
-void	inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
+int	inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
+int	inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
 t_ray		ray_transform(t_ray *ray, t_mtx4 *mtx);
 
 // op vector && pointers
@@ -214,13 +217,14 @@ t_mtx2	sub_mtx3(t_mtx3 *mtx, int row, int col);
 //delete
 void	print_vpnt4(t_vcpnt *ent);
 void	free_double(char **split);
-void	print_inv4(t_mtx4 *mtx);
+//void	print_inv4(t_mtx4 *mtx);
 void	pirnt_split_content(char **split);
 void	print_mtx4(t_mtx4 *mtx);
 void	print_mtx3(t_mtx3 *mtx);
 void	print_mtx2(t_mtx2 *mtx);
 int		get_rgba(int r, int g, int b, int a);
 int		vcpnt_2_rgba(t_vcpnt *color);
+void	default_world(t_world *wrld);
 
 // create && print matrixes
 void		create_mtx2_stb(t_mtx2 *mtx);
@@ -234,7 +238,7 @@ void		clean_lst(void *content);
 // object functions
 t_vcpnt		normal_at(t_sphere *sp, t_vcpnt *pnt);
 t_type		get_obj(t_obj *obj);
-t_obj		*sphere(t_matirial *mat, t_vcpnt orig);
+t_obj		*sphere(t_matirial *mat, t_vcpnt *orig);
 t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular);
 void		create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx);
 t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color);
@@ -247,10 +251,10 @@ t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l);
 t_world		init_world(void);
 void		wadd_obj(t_world *world, t_light *light, t_obj *obj);
 void		wclear_world(t_world *world);
-t_vcpnt		color_at(t_world *wrld, t_ray *r);
+t_vcpnt		world_inter(t_world *wrld, t_ray *r);
 
 // camera functions
-void		setup_camera(t_camera *c, int hsize, int vsize, double fov);
+void		setup_camera(t_camera *c, double hsize, double vsize, double fov);
 t_ray		ray_for_pixel(t_camera *camera, int	px, int py);
 void		camera(t_camera *camera);
 t_mtx4		view_transform(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up);
@@ -259,5 +263,10 @@ t_mtx4		mtx4_ornt(t_vcpnt *left, t_vcpnt *true_up, t_vcpnt *forward);
 // hooks
 void	controls_hook(void *param);
 void	render_hook(void *param);
+void	render(t_world *w, t_camera *cm, mlx_image_t *img);
+
+//light
+t_prlgt	pre_calc(t_world *wrld, t_hit *hit, t_ray *r);
+void	record_hit(t_hit *hit, t_inter *inter, int *pos);
 
 #endif

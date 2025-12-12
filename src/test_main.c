@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:21:32 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/10 20:58:25 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/12 02:09:35 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int	main()
 	
 	//if (!(img = mlx_new_image(mlx, canvas, canvas)))
 	//	return (1);
-	//if (mlx_image_to_window(mlx, img, 0, 0) == -1)
+	//if ((mlx, img, 0, 0) == -1)
 	//	return (printf("bla\n"), 1);
 
 	//while (++i < canvas)
@@ -320,42 +320,224 @@ int	main()
 	//t_mtx4	mtx = view_transform(&from, &to, &up);
 	//print_inv4(&mtx);
 
-	t_master	app;
-	int			hsize;
-	int			vsize;
+	//t_master	app;
+	//double			hsize;
+	//double			vsize;
 
-	app.world = init_world();
+	//app.world = init_world();
 
-	t_vcpnt	intens = (t_vcpnt){1, 1, 1 ,1};
-	t_vcpnt	pnt_light = (t_vcpnt){-10,10,-10,1};
-	t_light	*light = create_light(&pnt_light, &intens);
-	wadd_obj(&app.world, light, NULL);
+	//t_vcpnt	intens = (t_vcpnt){1, 1, 1 ,1};
+	//t_vcpnt	pnt_light = (t_vcpnt){-5, -3,-3,1};
+	//t_light	*light = create_light(&pnt_light, &intens);
+	//wadd_obj(&app.world, light, NULL);
 
-	t_matirial mat;
-	mat.ambient = 0.1;
-	mat.color = (t_vcpnt){0.8, 1.0, 0.6, 1};
-	mat.diffuse = 0.7;
-	mat.specular = 0.2;
-	mat.shiness = 200;
-	t_obj	*sp = sphere(&mat, (t_vcpnt){0,0,0,1});
-	t_obj	*sp1 = sphere(NULL, (t_vcpnt){0,5,-2,1});
-	t_vcpnt	scalev = {0.5, 0.5, 0.5, 0};
-	sp1->data.sp.transform = scale4(&scalev);
-	wadd_obj(&app.world, NULL, sp);
-	wadd_obj(&app.world, NULL, sp1);
+	//t_matirial mat;
+	//mat.ambient = 0.1;
+	//mat.color = (t_vcpnt){0.8, 1.0, 0.6, 1};
+	//mat.diffuse = 0.7;
+	//mat.specular = 0.2;
+	//mat.shiness = 200;
+	//t_obj	*sp = sphere(&mat, (t_vcpnt){0,0,0,1});
+	////t_obj	*sp1 = sphere(NULL, (t_vcpnt){0,5,5,1});
+	////t_vcpnt	scalev = {0.5, 0.5, 0.5, 0};
+	////sp1->data.sp.transform = scale4(&scalev);
+	//wadd_obj(&app.world, NULL, sp);
+	////wadd_obj(&app.world, NULL, sp1);
 
-	hsize = 200;
-	vsize = 100;
-	setup_camera(&app.camera, hsize, vsize, PI / 3);
-	app.mlx = mlx_init(hsize, vsize, "Ray traicer", true);
-	app.img = mlx_new_image(app.mlx, hsize, vsize);
-	mlx_image_to_window(app.mlx, app.img, 0, 0);
-	mlx_loop_hook(app.mlx, render_hook, &app);
-	mlx_loop_hook(app.mlx, controls_hook, &app);
+	//hsize = 700.0;
+	//vsize = 400.0;
+	//setup_camera(&app.camera, hsize, vsize, PI / 3);
+	//app.mlx = mlx_init(hsize, vsize, "Ray traicer", true);
+	//app.img = mlx_new_image(app.mlx, hsize, vsize);
+	//mlx_image_to_window(app.mlx, app.img, 0, 0);
+	//mlx_loop_hook(app.mlx, render_hook, &app);
+	//mlx_loop_hook(app.mlx, controls_hook, &app);
 
-	mlx_loop(app.mlx);
+	//mlx_loop(app.mlx);
 
-	mlx_terminate(app.mlx);
-	wclear_world(&app.world);
-	return (0);
+	//mlx_terminate(app.mlx);
+	//wclear_world(&app.world);
+	//return (0);
+
+	//printf("tes light\n");
+	//t_matirial mat;
+	//mat.ambient = 0.1;
+	//mat.diffuse = 0.9;
+	//mat.specular = 0.9;
+	//mat.shiness = 200.0;
+	//mat.color = (t_vcpnt){1,1,1,1};
+
+	//t_vcpnt light_pos = {0,0,10,1};
+	//t_vcpnt intens = {1,1,1,1};
+	//t_light *lgt = create_light(&light_pos, &intens);
+	
+
+	//t_obj *sp = sphere(&mat, NULL);
+	
+	//t_world wrld = init_world();
+	
+	//wadd_obj(&wrld, NULL, sp);
+	//wadd_obj(&wrld, lgt, NULL);
+
+	//t_vcpnt	vec = {0,0,1,0};
+	//t_vcpnt	orig = {0,0,-5,1};
+	//t_ray r = {orig, vec};
+
+	//t_inter inter[MAX_INTER];
+	//int count = 0;
+
+	//t_obj *wobj = (t_obj *)wrld.objs->content;
+	//inter_obj(wobj, &r, inter, &count);
+	
+
+	//t_hit hit;
+
+	//hit.min = MAX_INTER;
+	//hit.pos = -1;
+	//record_hit(&hit, inter, &count);
+
+
+	//printf("hit.min = %f, hit.pos = %d\n", hit.min, hit.pos);
+
+
+	//t_prlgt pr_light;
+
+	//pr_light = pre_calc(&wrld, &hit, &r);
+	//t_vcpnt clr = lighting(&wobj->data.sp.mat, lgt, &pr_light);
+
+	//printf("result: ");
+	//print_vpnt4(&clr);
+	//wclear_world(&wrld);
+
+	// FUCKING HELL
+	//mlx_t	*mlx;
+	//mlx_image_t	*img;
+
+	//t_world wrld;
+	//wrld = init_world();
+
+	//t_vcpnt	scl_inst = {10, 0.01, 10, 1};
+	//t_mtx4 scaled_mtx = scale4(&scl_inst);
+	//t_matirial	floor_mat;
+	//floor_mat.color = (t_vcpnt){ 1,0.9,0.9, 1};
+	//floor_mat.specular = 0.1;
+	//floor_mat.ambient = 0.5;
+	//floor_mat.shiness = 200;
+	//floor_mat.diffuse = 0.5;
+	//t_obj *sp_floor = sphere(&floor_mat, NULL);
+	//create_transform_mtx4(&sp_floor->data.sp.transform, &scaled_mtx);
+	//wadd_obj(&wrld, NULL, sp_floor);
+
+	//t_vcpnt	scl_inst2 = {10, 0.01, 10, 1};
+	//t_mtx4	scl_mtx = scale4(&scl_inst2);
+	//t_mtx4	rot_y = rotate_y(-PI/4);
+	//t_mtx4	rot_x = rotate_x(PI/2);
+	//t_vcpnt trans_vec = {0,0,5,1};
+	//t_mtx4	trans_mtx = trnas4(&trans_vec);
+	//t_mtx4	res_mtx = mtxs_mult4(&trans_mtx, &rot_y);
+	//res_mtx = mtxs_mult4(&res_mtx, &rot_x);
+	//res_mtx = mtxs_mult4(&res_mtx, &scl_mtx);
+	//t_obj *left_wall = sphere(&floor_mat, NULL);
+	//create_transform_mtx4(&left_wall->data.sp.transform, &res_mtx);
+	//wadd_obj(&wrld, NULL, left_wall);
+
+	//rot_y = rotate_y(PI/4);
+	//t_mtx4	res_1mtx = mtxs_mult4(&trans_mtx, &rot_y);
+	//res_1mtx = mtxs_mult4(&res_1mtx, &rot_x);
+	//res_1mtx = mtxs_mult4(&res_1mtx, &scl_mtx);
+	//t_obj *right_wall = sphere(&floor_mat, NULL);
+	//create_transform_mtx4(&right_wall->data.sp.transform, &res_1mtx);
+	//wadd_obj(&wrld, NULL, right_wall);
+
+	//t_matirial	mat_middle;
+	//mat_middle.color = (t_vcpnt){0.1, 1, 0.5, 1};
+	//mat_middle.diffuse = 0.7;
+	//mat_middle.specular = 0.3;
+	//mat_middle.ambient = 0.1;
+	//mat_middle.shiness = 200;
+	//t_obj	*middle = sphere(&mat_middle, NULL);
+	//t_vcpnt	trans_vec_mid = {0, 1.5, 0, 1};
+	//t_vcpnt	scale_vec_mid = {0.5, 0.5, 0.5, 1};
+	//t_mtx4	scl_mtxx = scale4(&scale_vec_mid);
+	//t_mtx4	transs = trnas4(&trans_vec_mid);
+	//t_mtx4	rres = mtxs_mult4(&transs, &scl_mtxx);
+	//create_transform_mtx4(&middle->data.sp.transform, &rres);
+	//wadd_obj(&wrld, NULL, middle);
+
+	//t_matirial mat_center;
+
+	//mat_center.color = (t_vcpnt){0.1, 1, 0.5, 1}; 
+	//mat_center.diffuse = 0.7;
+	//mat_center.specular = 0.3;
+	//mat_center.ambient = 0.1;
+	//mat_center.shiness = 200;
+
+	//t_obj *center_sp = sphere(&mat_center, NULL);
+
+	//t_vcpnt trans_center_vec = {-0.5, 1, 0.5, 1};
+	//t_vcpnt scale_center_vec = {1, 1, 1, 1};
+
+	//t_mtx4 trans_center_mtx = trnas4(&trans_center_vec);
+	//t_mtx4 scale_center_mtx = scale4(&scale_center_vec);
+
+	//t_mtx4 res_center = mtxs_mult4(&trans_center_mtx, &scale_center_mtx);
+
+	//create_transform_mtx4(&center_sp->data.sp.transform, &res_center);
+	//wadd_obj(&wrld, NULL, center_sp);
+
+	//t_matirial mat_left;
+
+	//mat_left.color = (t_vcpnt){1, 0.8, 0.1, 1}; 
+	//mat_left.diffuse = 0.7;
+	//mat_left.specular = 0.3;
+	//mat_left.ambient = 0.1;
+	//mat_left.shiness = 200;
+
+	//t_obj *left_sp = sphere(&mat_left, NULL);
+	
+	//t_vcpnt trans_left_vec = {-1.5, 0.33, -0.75, 1};
+	//t_vcpnt scale_left_vec = {0.33, 0.33, 0.33, 1}; 
+
+	//t_mtx4 trans_left_mtx = trnas4(&trans_left_vec);
+	//t_mtx4 scale_left_mtx = scale4(&scale_left_vec);
+
+	//t_mtx4 res_left = mtxs_mult4(&trans_left_mtx, &scale_left_mtx);
+
+	//create_transform_mtx4(&left_sp->data.sp.transform, &res_left);
+	//wadd_obj(&wrld, NULL, left_sp);
+
+	//t_light	*light;
+	//t_vcpnt l_pnt;
+	//t_vcpnt	l_intens;
+
+	//l_pnt = (t_vcpnt){10, 0, -10, 1};
+	//l_intens = (t_vcpnt){1, 1, 1, 1};
+	//light = create_light(&l_pnt, &l_intens);
+	//wadd_obj(&wrld, light, NULL);
+
+	//t_master app;
+
+	//double	hsize = 500;
+	//double	vsize = 250;
+	
+	//app.camera.from = (t_vcpnt){0, 1.5, -5, 1};
+	//app.camera.to = (t_vcpnt){0, 1, 0, 1};
+	//app.camera.up = (t_vcpnt){0, 1, 0, 1};
+	//setup_camera(&app.camera, hsize, vsize, PI/3);
+
+	//if (!(mlx = mlx_init((int)hsize, (int)vsize, "MLX42", true)))
+	//	return (1);
+	//printf("bla\n");
+	
+	//if (!(img = mlx_new_image(mlx, (int)hsize, (int)vsize)))
+	//	return (1);
+	//if (mlx_image_to_window(mlx, img, 0, 0) == -1)
+	//	return (printf("Bla\n"), 1);
+	//app.world = wrld;
+	//render(&app.world, &app.camera, img);	
+	//mlx_loop(mlx);
+	//mlx_close_window(mlx);
+	//mlx_terminate(mlx);
+
+	//wclear_world(&app.world);
 }
