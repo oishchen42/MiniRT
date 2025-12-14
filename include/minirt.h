@@ -290,7 +290,7 @@ t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color);
 t_obj		*plane(void);
 t_obj		*cylinder(t_matirial *mat, t_vcpnt *orig, double min, double max);
 void		resize_cm(t_camera *cm, t_vcpnt	*new_from);
-int			check_cup(t_ray *ray, double t);
+int			check_cap(t_ray *ray, double t);
 
 //idk some taff calculation
 t_vcpnt	alt_lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);

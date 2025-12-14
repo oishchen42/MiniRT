@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/14 13:25:16 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/14 16:19:52 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,50 +147,4 @@ t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular)
 	return (mat);
 }
 
-t_vcpnt	normal_sphere(t_sphere *obj, t_vcpnt *pnt)
-{
-	t_vcpnt	local;
-	t_vcpnt	local_nrm;
-	t_vcpnt	wrld_nrm;
-
-	local = mult_mtx4_vcpnt4(&obj->inv_mtx, pnt);
-	local_nrm = vec_subs(&local, &((t_vcpnt){0,0,0,1}));
-	wrld_nrm = mult_mtx4_vcpnt4(&obj->tr_inv_mtx, &local_nrm);
-	return (vec_norm(&wrld_nrm));
-}
-
-t_vcpnt	normal_pl(t_plane *pl)
-{
-	t_vcpnt	std;
-	t_vcpnt	wrld_nrm;
-
-	std = (t_vcpnt){0, 1, 0, 0};
-	wrld_nrm = mult_mtx4_vcpnt4(&pl->tr_inv_mtx, &std);
-	return (vec_norm(&wrld_nrm));
-}
-
-t_vcpnt normal_cl(t_cl *cl, t_vcpnt *world_pnt)
-{
-	t_vcpnt local_pnt;
-	t_vcpnt local_nrm;
-	t_vcpnt wrld_nrm;
-
-	local_pnt = mult_mtx4_vcpnt4(&cl->inv_mtx, world_pnt);
-	local_nrm = (t_vcpnt){local_pnt.vp[0], 0, local_pnt.vp[2], 0};
-	wrld_nrm = mult_mtx4_vcpnt4(&cl->tr_inv_mtx, &local_nrm);
-	return (vec_norm(&wrld_nrm));
-}
-
-t_vcpnt	normal_at(t_obj *obj, t_vcpnt *pnt)
-{
-	t_vcpnt	wrld_normal;
-
-	if (obj->type == SPHERE)
-		wrld_normal = normal_sphere(&obj->data.sp, pnt);
-	else if (obj->type == PLANE)
-		wrld_normal = normal_pl(&obj->data.pl);
-	else
-		wrld_normal = normal_cl(&obj->data.cl, pnt);
-	return (wrld_normal);
-}
 

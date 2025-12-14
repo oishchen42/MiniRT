@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 13:28:35 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/14 13:41:23 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/14 16:19:55 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ void	pr_cm_orient(t_camera *cam, t_vcpnt pos, t_vcpnt dir, double par_fov_d)
 	}
 
 	// 4. Set FOV (Convert Degrees to Radians)
-	cam->field_of_view = parsed_fov_deg * (M_PI / 180.0);
+	cam->field_of_view = parsed_fov_deg * (PI / 180.0);
 
 	// 5. Apply
-	setup_camera(cam, hsize, vsize, cam->fov);
+	setup_camera(cam, cam->hsize, cam->vsize, cam->field_of_view); // should be set
 }
