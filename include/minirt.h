@@ -91,7 +91,7 @@ typedef struct	s_plane
 	t_mtx4		transform;
 	t_mtx4		inv_mtx;
 	t_mtx4		tr_inv_mtx;
-	t_matirial	mat;
+	t_material	mat;
 }	t_plane;
 
 typedef struct	s_sl
@@ -101,7 +101,7 @@ typedef struct	s_sl
 	t_mtx4		inv_mtx;
 	t_mtx4		tr_inv_mtx;
 	t_vcpnt		orig;
-	t_matirial	mat;
+	t_material	mat;
 	int			is_closed;
 	double		min;
 	double		max;
@@ -260,6 +260,7 @@ t_mtx2	sub_mtx3(t_mtx3 *mtx, int row, int col);
 //delete
 void	print_vpnt4(t_vcpnt *ent);
 void	free_double(char **split);
+void	default_world(t_world *wrld);
 
 //void	print_inv4(t_mtx4 *mtx);
 void	pirnt_split_content(char **split);
@@ -268,7 +269,6 @@ void	print_mtx3(t_mtx3 *mtx);
 void	print_mtx2(t_mtx2 *mtx);
 int		get_rgba(int r, int g, int b, int a);
 int		vcpnt_2_rgba(t_vcpnt *color);
-void	default_world(t_world *wrld);
 
 // create && print matrixes
 void		create_mtx2_stb(t_mtx2 *mtx);
@@ -284,16 +284,16 @@ t_vcpnt		normal_at(t_obj *obj, t_vcpnt *pnt);
 t_vcpnt		normal_pl(t_plane *pl);
 t_vcpnt		normal_sphere(t_sphere *obj, t_vcpnt *pnt);
 t_type		get_obj(t_obj *obj);
-t_obj		*sphere(t_matirial *mat, t_vcpnt *orig);
-t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular);
+t_obj		*sphere(t_material *mat, t_vcpnt *orig);
+t_material	create_material(t_vcpnt	*color, double diffuse, double specular);
 t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color);
 t_obj		*plane(void);
-t_obj		*cylinder(t_matirial *mat, t_vcpnt *orig, double min, double max);
+t_obj		*cylinder(t_material *mat, t_vcpnt *orig, double min, double max);
 void		resize_cm(t_camera *cm, t_vcpnt	*new_from);
 int			check_cup(t_ray *ray, double t);
 
 //idk some taff calculation
-t_vcpnt	alt_lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);
+t_vcpnt	alt_lighting(t_material *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);
 
 // world_functions
 t_world		init_world(void);
@@ -317,7 +317,7 @@ void	render(t_world *w, t_camera *cm, mlx_image_t *img);
 t_prlgt	pre_calc(t_world *wrld, t_hit *hit, t_ray *r);
 void	record_hit(t_hit *hit, t_inter *inter, int *pos);
 int		is_inter_shd(t_world *wrld, t_ray *r, double dis);
-t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l);
+t_vcpnt	lighting(t_material *mat, t_light *light, t_prlgt *l);
 int		is_shadowed(t_world *wrld, t_vcpnt *pnt);
 
 // undefinable stuff

@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/14 14:39:19 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:47:42 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	material(t_material	*mat)
 	mat->color = (t_vcpnt){0.3, 0.4, 0.9, 0};
 }
 
-t_obj	*sphere(t_material *mat, t_vcpnt orig)
+t_obj	*sphere(t_material *mat, t_vcpnt *orig)
 {
 	t_obj	*obj;
 
