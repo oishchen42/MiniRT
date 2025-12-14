@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dummy_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 20:51:43 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/12 21:09:08 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:37:36 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,6 @@ void	default_world(t_world *wrld)
 	t_vcpnt trans_ints = {0.5, 0.5, 0.5, 1};
 	t_mtx4	scl = scale4(&trans_ints);
 	t_obj	*sp2 = sphere(NULL, NULL);
-	create_transform_mtx4(&sp2->data.sp.transform, &scl);
+	create_transform_mtx4(sp2, &scl);
 	wadd_obj(wrld, NULL, sp2);
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   light_shd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/12 14:21:47 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/12 21:09:08 by tdietz-r         ###   ########.fr       */
+/*   Created: 2025/12/12 14:21:47 by oishchen          #+#    #+#             */
+/*   Updated: 2025/12/14 14:38:00 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-t_vcpnt	lighting(t_material *mat, t_light *light, t_prlgt *l)
+t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l)
 {
 	double	factor;
 
@@ -68,7 +68,7 @@ t_vcpnt	lighting(t_material *mat, t_light *light, t_prlgt *l)
 }
 
 
-t_vcpnt	alt_lighting(t_material *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc)
+t_vcpnt	alt_lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc)
 {
 	t_vcpnt	effective_color;
 	t_vcpnt	lightv;
@@ -127,58 +127,63 @@ t_light	*create_light(t_vcpnt *pnt, t_vcpnt *color)
 	return (light);
 }
 
+void	sp_pre_light(t_prlgt *pr, t_light *l)
+{
+	pr->eff_clr = vec_muls(&pr->obj->data.sp.mat.color, &l->intens);
+	pr->lightv = vec_subs(&l->pnt_light, &pr->hit_pnt);
+	pr->lightv_nrm = vec_norm(&pr->lightv);
+	pr->over_pnt = vec_scale(&pr->normv, EPSILON);
+	pr->over_pnt = vec_add(&pr->hit_pnt, &pr->over_pnt);
+	pr->ambient = vec_scale(&pr->eff_clr, pr->obj->data.sp.mat.ambient);
+	pr->light_dot_nrm = vec_dot(&pr->lightv_nrm, &pr->normv);
+}
+
+void	sp_pre_plane(t_prlgt *pr, t_light *l)
+{
+	pr->eff_clr = vec_muls(&pr->obj->data.pl.mat.color, &l->intens);
+	pr->lightv = vec_subs(&l->pnt_light, &pr->hit_pnt);
+	pr->lightv_nrm = vec_norm(&pr->lightv);
+	pr->over_pnt = vec_scale(&pr->normv, EPSILON);
+	pr->over_pnt = vec_add(&pr->hit_pnt, &pr->over_pnt);
+	pr->ambient = vec_scale(&pr->eff_clr, pr->obj->data.pl.mat.ambient);
+	pr->light_dot_nrm = vec_dot(&pr->lightv_nrm, &pr->normv);
+}
+
+void	sp_pre_cylinder(t_prlgt *pr, t_light *l)
+{
+	pr->eff_clr = vec_muls(&pr->obj->data.cl.mat.color, &l->intens);
+	pr->lightv = vec_subs(&l->pnt_light, &pr->hit_pnt);
+	pr->lightv_nrm = vec_norm(&pr->lightv);
+	pr->over_pnt = vec_scale(&pr->normv, EPSILON);
+	pr->over_pnt = vec_add(&pr->hit_pnt, &pr->over_pnt);
+	pr->ambient = vec_scale(&pr->eff_clr, pr->obj->data.cl.mat.ambient);
+	pr->light_dot_nrm = vec_dot(&pr->lightv_nrm, &pr->normv);
+}
+
 t_prlgt	pre_calc(t_world *wrld, t_hit *hit, t_ray *r)
 {
 	t_prlgt	pre_light;
 	t_light	*light;
 
-
 	light = (t_light *)wrld->lights->content;
-
-	//print_vpnt4(&light->intens);
-
-	//printf("HIT OBJECT: %d\n", hit->obj->n);
-
 	pre_light.t = hit->min;
 	pre_light.obj = hit->obj;
 
-
-	//printf("r_vec norm: ");
-	//print_vpnt4(&r->vec);
-
 	pre_light.eyev = vec_scale(&r->vec, -1);
-	//pre_light.eyev = (t_vcpnt){0, sqrt(2) / 2, -1 * sqrt(2) / 2, -1};
-
-	//printf("eyev : ");
-	//print_vpnt4(&pre_light.eyev);
-
 	pre_light.scaledv = vec_scale(&r->vec, hit->min);
-	//printf("hit->min: %.1f\n", hit->min);
-	//printf("pre_light.scaledv: ");
-	//print_vpnt4(&pre_light.scaledv);
-
 	pre_light.hit_pnt = vec_add(&pre_light.scaledv, &r->pnt);
-	//printf("r->pnt: ");
-	//print_vpnt4(&r->pnt);
-	//printf("pre_light.hit_pnt ");
-	//print_vpnt4(&pre_light.hit_pnt);
-
-	pre_light.normv = normal_at(&hit->obj->data.sp, &pre_light.hit_pnt);
-	//printf("norm vec: ");
-	//print_vpnt4(&pre_light.normv);
+	pre_light.normv = normal_at(hit->obj, &pre_light.hit_pnt);
 	pre_light.is_inside = vec_dot(&pre_light.normv, &pre_light.eyev) < 0;
 	if (pre_light.is_inside)
 	{
-		//printf("WE ARE INSIDE THE OBJ\n");
 		pre_light.normv = vec_scale(&pre_light.normv, -1);
 	}
-	pre_light.eff_clr = vec_muls(&pre_light.obj->data.sp.mat.color, &light->intens);
-	pre_light.lightv = vec_subs(&light->pnt_light, &pre_light.hit_pnt);
-	pre_light.lightv_nrm = vec_norm(&pre_light.lightv);
-	pre_light.over_pnt = vec_scale(&pre_light.normv, EPSILON);
-	pre_light.over_pnt = vec_add(&pre_light.hit_pnt, &pre_light.over_pnt);
-	pre_light.ambient = vec_scale(&pre_light.eff_clr, pre_light.obj->data.sp.mat.ambient);
-	pre_light.light_dot_nrm = vec_dot(&pre_light.lightv_nrm, &pre_light.normv);
+	if (pre_light.obj->type == SPHERE)
+		sp_pre_light(&pre_light, light);
+	else if (pre_light.obj->type == PLANE)
+		sp_pre_plane(&pre_light, light);
+	else
+		sp_pre_cylinder(&pre_light, light);
 	return (pre_light);
 }
 

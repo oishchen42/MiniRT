@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:21:32 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/12 21:09:08 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:36:18 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,7 +360,7 @@ int	main()
 	//return (0);
 
 	//printf("tes light\n");
-	//t_material mat;
+	//t_matirial mat;
 	//mat.ambient = 0.1;
 	//mat.diffuse = 0.9;
 	//mat.specular = 0.9;
@@ -410,46 +410,204 @@ int	main()
 	//wclear_world(&wrld);
 
 	// FUCKING HELL
+	//mlx_t	*mlx;
+	//mlx_image_t	*img;
+
+	//t_world wrld;
+	//wrld = init_world();
+
+	//t_vcpnt	scl_inst = {10, 0.01, 10, 1};
+	//t_mtx4 scaled_mtx = scale4(&scl_inst);
+	//t_matirial	floor_mat;
+	//floor_mat.color = (t_vcpnt){ 1,0.9,0.9, 1};
+	//floor_mat.specular = 0.1;
+	//floor_mat.ambient = 0.5;
+	//floor_mat.shiness = 200;
+	//floor_mat.diffuse = 0.5;
+	//t_obj *sp_floor = sphere(&floor_mat, NULL);
+	//create_transform_mtx4(sp_floor, &scaled_mtx);
+	//wadd_obj(&wrld, NULL, sp_floor);
+
+	//t_vcpnt	scl_inst2 = {10, 0.01, 10, 1};
+	//t_mtx4	scl_mtx = scale4(&scl_inst2);
+	//t_mtx4	rot_y = rotate_y(-PI/4);
+	//t_mtx4	rot_x = rotate_x(PI/2);
+	//t_vcpnt trans_vec = {0,0,5,1};
+	//t_mtx4	trans_mtx = trnas4(&trans_vec);
+	//t_mtx4	res_mtx = mtxs_mult4(&trans_mtx, &rot_y);
+	//res_mtx = mtxs_mult4(&res_mtx, &rot_x);
+	//res_mtx = mtxs_mult4(&res_mtx, &scl_mtx);
+	//t_obj *left_wall = sphere(&floor_mat, NULL);
+	//create_transform_mtx4(left_wall, &res_mtx);
+	//wadd_obj(&wrld, NULL, left_wall);
+
+	//rot_y = rotate_y(PI/4);
+	//t_mtx4	res_1mtx = mtxs_mult4(&trans_mtx, &rot_y);
+	//res_1mtx = mtxs_mult4(&res_1mtx, &rot_x);
+	//res_1mtx = mtxs_mult4(&res_1mtx, &scl_mtx);
+	//t_obj *right_wall = sphere(&floor_mat, NULL);
+	//create_transform_mtx4(right_wall, &res_1mtx);
+	//wadd_obj(&wrld, NULL, right_wall);
+
+	//t_matirial	mat_middle;
+	//mat_middle.color = (t_vcpnt){0.1, 1, 0.5, 1};
+	//mat_middle.diffuse = 0.7;
+	//mat_middle.specular = 0.3;
+	//mat_middle.ambient = 0.1;
+	//mat_middle.shiness = 200;
+	//t_obj	*middle = sphere(&mat_middle, NULL);
+	//t_vcpnt	trans_vec_mid = {0, 1.5, 0, 1};
+	//t_vcpnt	scale_vec_mid = {0.5, 0.5, 0.5, 1};
+	//t_mtx4	scl_mtxx = scale4(&scale_vec_mid);
+	//t_mtx4	transs = trnas4(&trans_vec_mid);
+	//t_mtx4	rres = mtxs_mult4(&transs, &scl_mtxx);
+	//create_transform_mtx4(middle, &rres);
+	//wadd_obj(&wrld, NULL, middle);
+
+	//t_matirial mat_center;
+
+	//mat_center.color = (t_vcpnt){0.1, 1, 0.5, 1}; 
+	//mat_center.diffuse = 0.7;
+	//mat_center.specular = 0.3;
+	//mat_center.ambient = 0.1;
+	//mat_center.shiness = 200;
+
+	//t_obj *center_sp = sphere(&mat_center, NULL);
+
+	//t_vcpnt trans_center_vec = {-0.5, 1, 0.5, 1};
+	//t_vcpnt scale_center_vec = {1, 1, 1, 1};
+
+	//t_mtx4 trans_center_mtx = trnas4(&trans_center_vec);
+	//t_mtx4 scale_center_mtx = scale4(&scale_center_vec);
+
+	//t_mtx4 res_center = mtxs_mult4(&trans_center_mtx, &scale_center_mtx);
+
+	//create_transform_mtx4(center_sp, &res_center);
+	//wadd_obj(&wrld, NULL, center_sp);
+
+	//t_matirial mat_left;
+
+	//mat_left.color = (t_vcpnt){1, 0.8, 0.1, 1}; 
+	//mat_left.diffuse = 0.7;
+	//mat_left.specular = 0.3;
+	//mat_left.ambient = 0.1;
+	//mat_left.shiness = 200;
+
+	//t_obj *left_sp = sphere(&mat_left, NULL);
+	
+	//t_vcpnt trans_left_vec = {-1.5, 0.33, -0.75, 1};
+	//t_vcpnt scale_left_vec = {0.33, 0.33, 0.33, 1}; 
+
+	//t_mtx4 trans_left_mtx = trnas4(&trans_left_vec);
+	//t_mtx4 scale_left_mtx = scale4(&scale_left_vec);
+
+	//t_mtx4 res_left = mtxs_mult4(&trans_left_mtx, &scale_left_mtx);
+
+	//create_transform_mtx4(left_sp, &res_left);
+	//wadd_obj(&wrld, NULL, left_sp);
+
+	//t_light	*light;
+	//t_vcpnt l_pnt;
+	//t_vcpnt	l_intens;
+
+	//l_pnt = (t_vcpnt){10, 10, -10, 1};
+	//l_intens = (t_vcpnt){1, 1, 1, 1};
+	//light = create_light(&l_pnt, &l_intens);
+	//wadd_obj(&wrld, light, NULL);
+
+	//t_master app;
+
+	//double	hsize = 500;
+	//double	vsize = 250;
+	
+	//app.camera.from = (t_vcpnt){0, 1.5, -5, 1};
+	//app.camera.to = (t_vcpnt){0, 1, 0, 1};
+	//app.camera.up = (t_vcpnt){0, 1, 0, 1};
+	//setup_camera(&app.camera, hsize, vsize, PI/3);
+
+	//if (!(mlx = mlx_init((int)hsize, (int)vsize, "MLX42", true)))
+	//	return (1);
+	//printf("bla\n");
+	
+	//if (!(img = mlx_new_image(mlx, (int)hsize, (int)vsize)))
+	//	return (1);
+	//if (mlx_image_to_window(mlx, img, 0, 0) == -1)
+	//	return (printf("Bla\n"), 1);
+	//app.world = wrld;
+	//render(&app.world, &app.camera, img);	
+	//mlx_loop(mlx);
+	//mlx_close_window(mlx);
+	//mlx_terminate(mlx);
+
+	//wclear_world(&app.world);
+	//printf("SHADOW TEST\n");
+	//t_world wrld;
+	//printf("seg falut\n");
+	//default_world(&wrld);
+	//printf("seg falut\n");
+	//t_vcpnt	p = {0, 10, 0, 1};
+	//printf("test 1(f), is shadowed: %d\n", is_shadowed(&wrld, &p));
+
+	//p = (t_vcpnt){10, -10, 10, 1};
+	//printf("test 2(t), is shadowed: %d\n", is_shadowed(&wrld, &p));
+
+	//p = (t_vcpnt){-20, 20, -20, 1};
+	//printf("test 1(f), is shadowed: %d\n", is_shadowed(&wrld, &p));
+
+	//p = (t_vcpnt){-2, 2, -2, 1};
+	//printf("test 1(f), is shadowed: %d\n", is_shadowed(&wrld, &p));
+
+	//wclear_world(&wrld);
+
+	printf("PLANE TESTS\n");
 	mlx_t	*mlx;
 	mlx_image_t	*img;
 
 	t_world wrld;
 	wrld = init_world();
 
-	t_vcpnt	scl_inst = {10, 0.01, 10, 1};
-	t_mtx4 scaled_mtx = scale4(&scl_inst);
-	t_material	floor_mat;
-	floor_mat.color = (t_vcpnt){ 1,0.9,0.9, 1};
-	floor_mat.specular = 0.1;
-	floor_mat.ambient = 0.5;
-	floor_mat.shiness = 200;
-	floor_mat.diffuse = 0.5;
-	t_obj *sp_floor = sphere(&floor_mat, NULL);
-	create_transform_mtx4(&sp_floor->data.sp.transform, &scaled_mtx);
-	wadd_obj(&wrld, NULL, sp_floor);
+	//t_vcpnt	scl_inst = {10, 0.01, 10, 1};
+	//t_mtx4 scaled_mtx = scale4(&scl_inst);
+	//t_matirial	floor_mat;
+	//floor_mat.color = (t_vcpnt){ 1,0.9,0.9, 1};
+	//floor_mat.specular = 0.1;
+	//floor_mat.ambient = 0.5;
+	//floor_mat.shiness = 200;
+	//floor_mat.diffuse = 0.5;
+	//t_obj *sp_floor = sphere(&floor_mat, NULL);
+	//create_transform_mtx4(sp_floor, &scaled_mtx);
+	//wadd_obj(&wrld, NULL, sp_floor);
 
-	t_vcpnt	scl_inst2 = {10, 0.01, 10, 1};
-	t_mtx4	scl_mtx = scale4(&scl_inst2);
-	t_mtx4	rot_y = rotate_y(-PI/4);
-	t_mtx4	rot_x = rotate_x(PI/2);
-	t_vcpnt trans_vec = {0,0,5,1};
-	t_mtx4	trans_mtx = trans4(&trans_vec);
-	t_mtx4	res_mtx = mtxs_mult4(&trans_mtx, &rot_y);
-	res_mtx = mtxs_mult4(&res_mtx, &rot_x);
-	res_mtx = mtxs_mult4(&res_mtx, &scl_mtx);
-	t_obj *left_wall = sphere(&floor_mat, NULL);
-	create_transform_mtx4(&left_wall->data.sp.transform, &res_mtx);
-	wadd_obj(&wrld, NULL, left_wall);
+	//t_vcpnt	scl_inst2 = {10, 0.01, 10, 1};
+	//t_mtx4	scl_mtx = scale4(&scl_inst2);
+	//t_mtx4	rot_y = rotate_y(-PI/4);
+	//t_mtx4	rot_x = rotate_x(PI/2);
+	//t_vcpnt trans_vec = {0,0,5,1};
+	//t_mtx4	trans_mtx = trnas4(&trans_vec);
+	//t_mtx4	res_mtx = mtxs_mult4(&trans_mtx, &rot_y);
+	//res_mtx = mtxs_mult4(&res_mtx, &rot_x);
+	//res_mtx = mtxs_mult4(&res_mtx, &scl_mtx);
+	//t_obj *left_wall = sphere(&floor_mat, NULL);
+	//create_transform_mtx4(left_wall, &res_mtx);
+	//wadd_obj(&wrld, NULL, left_wall);
 
-	rot_y = rotate_y(PI/4);
-	t_mtx4	res_1mtx = mtxs_mult4(&trans_mtx, &rot_y);
-	res_1mtx = mtxs_mult4(&res_1mtx, &rot_x);
-	res_1mtx = mtxs_mult4(&res_1mtx, &scl_mtx);
-	t_obj *right_wall = sphere(&floor_mat, NULL);
-	create_transform_mtx4(&right_wall->data.sp.transform, &res_1mtx);
-	wadd_obj(&wrld, NULL, right_wall);
+	//rot_y = rotate_y(PI/4);
+	//t_mtx4	res_1mtx = mtxs_mult4(&trans_mtx, &rot_y);
+	//res_1mtx = mtxs_mult4(&res_1mtx, &rot_x);
+	//res_1mtx = mtxs_mult4(&res_1mtx, &scl_mtx);
+	//t_obj *right_wall = sphere(&floor_mat, NULL);
+	//create_transform_mtx4(right_wall, &res_1mtx);
+	//wadd_obj(&wrld, NULL, right_wall);
+	t_obj	*cl = cylinder(NULL, NULL, 0.0, 2.0);
+	t_vcpnt	mv = {3, 0, 1, 1};
+	t_mtx4	mov_cl = trnas4(&mv);
+	create_transform_mtx4(cl, &mov_cl);
+	wadd_obj(&wrld, NULL, cl);
 
-	t_material	mat_middle;
+	t_obj	*pl = plane();
+	wadd_obj(&wrld, NULL, pl);
+
+	t_matirial	mat_middle;
 	mat_middle.color = (t_vcpnt){0.1, 1, 0.5, 1};
 	mat_middle.diffuse = 0.7;
 	mat_middle.specular = 0.3;
@@ -459,12 +617,12 @@ int	main()
 	t_vcpnt	trans_vec_mid = {0, 1.5, 0, 1};
 	t_vcpnt	scale_vec_mid = {0.5, 0.5, 0.5, 1};
 	t_mtx4	scl_mtxx = scale4(&scale_vec_mid);
-	t_mtx4	transs = trans4(&trans_vec_mid);
+	t_mtx4	transs = trnas4(&trans_vec_mid);
 	t_mtx4	rres = mtxs_mult4(&transs, &scl_mtxx);
-	create_transform_mtx4(&middle->data.sp.transform, &rres);
+	create_transform_mtx4(middle, &rres);
 	wadd_obj(&wrld, NULL, middle);
 
-	t_material mat_center;
+	t_matirial mat_center;
 
 	mat_center.color = (t_vcpnt){0.1, 1, 0.5, 1}; 
 	mat_center.diffuse = 0.7;
@@ -477,15 +635,15 @@ int	main()
 	t_vcpnt trans_center_vec = {-0.5, 1, 0.5, 1};
 	t_vcpnt scale_center_vec = {1, 1, 1, 1};
 
-	t_mtx4 trans_center_mtx = trans4(&trans_center_vec);
+	t_mtx4 trans_center_mtx = trnas4(&trans_center_vec);
 	t_mtx4 scale_center_mtx = scale4(&scale_center_vec);
 
 	t_mtx4 res_center = mtxs_mult4(&trans_center_mtx, &scale_center_mtx);
 
-	create_transform_mtx4(&center_sp->data.sp.transform, &res_center);
+	create_transform_mtx4(center_sp, &res_center);
 	wadd_obj(&wrld, NULL, center_sp);
 
-	t_material mat_left;
+	t_matirial mat_left;
 
 	mat_left.color = (t_vcpnt){1, 0.8, 0.1, 1}; 
 	mat_left.diffuse = 0.7;
@@ -498,12 +656,12 @@ int	main()
 	t_vcpnt trans_left_vec = {-1.5, 0.33, -0.75, 1};
 	t_vcpnt scale_left_vec = {0.33, 0.33, 0.33, 1}; 
 
-	t_mtx4 trans_left_mtx = trans4(&trans_left_vec);
+	t_mtx4 trans_left_mtx = trnas4(&trans_left_vec);
 	t_mtx4 scale_left_mtx = scale4(&scale_left_vec);
 
 	t_mtx4 res_left = mtxs_mult4(&trans_left_mtx, &scale_left_mtx);
 
-	create_transform_mtx4(&left_sp->data.sp.transform, &res_left);
+	create_transform_mtx4(left_sp, &res_left);
 	wadd_obj(&wrld, NULL, left_sp);
 
 	t_light	*light;
@@ -524,6 +682,10 @@ int	main()
 	app.camera.to = (t_vcpnt){0, 1, 0, 1};
 	app.camera.up = (t_vcpnt){0, 1, 0, 1};
 	setup_camera(&app.camera, hsize, vsize, PI/3);
+	t_vcpnt	mv_cm = {0, 1.5, -10, 1};
+	//t_mtx4	n_cm_tr = trnas4(&mv_cm);
+	resize_cm(&app.camera, &mv_cm);
+
 
 	if (!(mlx = mlx_init((int)hsize, (int)vsize, "MLX42", true)))
 		return (1);
@@ -540,22 +702,4 @@ int	main()
 	mlx_terminate(mlx);
 
 	wclear_world(&app.world);
-	//printf("SHADOW TEST\n")
-	//t_world wrld;
-	//printf("seg falut\n");
-	//default_world(&wrld);
-	//printf("seg falut\n");
-	//t_vcpnt	p = {0, 10, 0, 1};
-	//printf("test 1(f), is shadowed: %d\n", is_shadowed(&wrld, &p));
-
-	//p = (t_vcpnt){10, -10, 10, 1};
-	//printf("test 2(t), is shadowed: %d\n", is_shadowed(&wrld, &p));
-
-	//p = (t_vcpnt){-20, 20, -20, 1};
-	//printf("test 1(f), is shadowed: %d\n", is_shadowed(&wrld, &p));
-
-	//p = (t_vcpnt){-2, 2, -2, 1};
-	//printf("test 1(f), is shadowed: %d\n", is_shadowed(&wrld, &p));
-
-	//wclear_world(&wrld);
 }

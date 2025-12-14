@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world_inter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 07:50:53 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/12 20:56:35 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:39:27 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ t_vcpnt	shade_hit(t_world *w, t_prlgt *l)
 	light = (t_light *)w->lights->content;
 	if (is_shadowed(w, &l->over_pnt))
 		return (l->ambient);
-	return (lighting(&obj->data.sp.mat, light, l));
+	if (obj->type == SPHERE)
+		return (lighting(&obj->data.sp.mat, light, l));
+	else
+		return (lighting(&obj->data.pl.mat, light, l));
 }
 
 void	record_hit(t_hit *hit, t_inter *inter, int *pos)
@@ -74,3 +77,28 @@ t_vcpnt	world_inter(t_world *wrld, t_ray *r)
 	}
 	return ((t_vcpnt){0,0,0,1});
 }
+
+//int	main()
+//{
+//	t_obj	*cl;
+//	t_world	wrld;
+//	t_light	*light;
+//	t_vcpnt l_pnt;
+//	t_vcpnt	l_intens;
+
+//	wrld = init_world();
+//	l_pnt = (t_vcpnt){10, 10, -10, 1};
+//	l_intens = (t_vcpnt){1, 1, 1, 1};
+//	light = create_light(&l_pnt, &l_intens);
+//	wadd_obj(&wrld, light, NULL);
+
+//	cl = cylinder(NULL, NULL);
+//	wadd_obj(&wrld, NULL, cl);
+//	t_ray r;
+//	t_vcpnt	orig = {0.5, 0, -5, 1};
+//	t_vcpnt	vec = {0.1, 1, 1, 1};
+
+//	vec = vec_norm(&vec);
+//	r = (t_ray){orig, vec};
+//	world_inter(&wrld, &r);
+//}

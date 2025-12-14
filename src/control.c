@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 17:52:20 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/10 20:02:52 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/11 16:13:51 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	render_hook(void *param)
 	t_vcpnt		color;
 
 	app = (t_master *)param;
-
 	j = -1;
 	while (++j < app->camera.vsize) 
 	{
@@ -30,11 +29,11 @@ void	render_hook(void *param)
 		{
 			ray = ray_for_pixel(&app->camera, i, j);
 			color = world_inter(&app->world, &ray);
-			printf("we are in the render hook\n");
+			//printf("we are in the render hook\n");
 			mlx_put_pixel(app->img, i, j, vcpnt_2_rgba(&color));
 		}
 	}
-	printf("we are out of the render hook\n");
+	//printf("we are out of the render hook\n");
 }
 void	controls_hook(void *param)
 {

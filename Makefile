@@ -7,12 +7,13 @@ LIBS := -ldl -lglfw -pthread -lm
 
 SRC_DIR := src
 OBJ_DIR := obj
-MINIRT_INC := -Iinclude
+MINIRT_INC = include
 
 SRC_FILES := main.c vec_op.c parsing.c  math_utils.c \
 			test_utils.c test_main.c dummy_utils.c matrix_op.c \
 			vec_mtx_op.c op_ray.c op_obj.c op_mtx_mov.c \
 			world_utils.c world_inter.c camera.c control.c \
+			render.c light_shd.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
@@ -29,8 +30,8 @@ MIX_INCLUDE := -I$(LIBNAME)/libft/includes/ \
 		-I$(LIBNAME)/printf/includes/ \
 		-I$(LIBNAME)/get_next_line/includes/
 
-$(NAME) : $(OBJ) $(MLX_LIB) | $(LIBNAME_A)
-	$(CC) $(CFLAGS) $(MLX_INC) $(MINIRT_INC) $(MIX_INCLUDE) $(OBJ) $(MLX_LIB) $(LIBNAME_A) $(LIBS) -o $(NAME)
+$(NAME) : $(OBJ) $(MLX_LIB) $ | $(LIBNAME_A)
+	$(CC) $(CFLAGS) $(MLX_INC) -I$(MINIRT_INC) $(MIX_INCLUDE) $(OBJ) $(MLX_LIB) $(LIBNAME_A) $(LIBS) -o $(NAME)
 
 all: $(NAME) | $(LIBNAME) $(MLX_PATH)
 
@@ -59,7 +60,7 @@ $(LIBNAME_A): $(LIBNAME)
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(MLX_LIB) $(LIBNAME)
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(MLX_INC) $(MIX_INCLUDE) $(MINIRT_INC) -c $< -o $@
+	$(CC) $(CFLAGS) $(MLX_INC) $(MIX_INCLUDE) -I$(MINIRT_INC) -c $< -o $@
 
 clean:
 	@make clean -C $(LIBNAME)

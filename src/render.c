@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   math_utils.c                                       :+:      :+:    :+:   */
+/*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/17 17:37:51 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/14 00:15:01 by oishchen         ###   ########.fr       */
+/*   Created: 2025/12/11 20:54:54 by oishchen          #+#    #+#             */
+/*   Updated: 2025/12/12 15:32:58 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <../include/minirt.h>
+#include <minirt.h>
 
-void	ft_swap(double *t1, double *t2)
+void	render(t_world *w, t_camera *cm, mlx_image_t *img)
 {
-	double	temp;
+	int	y;
+	int	x;
 
-	temp = *t1;
-	*t1 = *t2;
-	*t2 = temp;
+	y = -1;
+	while (++y < cm->vsize)
+	{
+		x = -1;
+		while (++x < cm->hsize)
+		{
+			t_ray ray = ray_for_pixel(cm, x, y);
+			t_vcpnt color = world_inter(w, &ray);
+			mlx_put_pixel(img, x, y, vcpnt_2_rgba(&color));
+		}
+	}
 }

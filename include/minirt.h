@@ -19,6 +19,7 @@ int		is_rt(char *str);
 # define SIZE_MTX2 2
 # define PI 3.14159265358979323846
 # define MAX_INTER 50
+# define EPSILON 0.00001
 
 typedef struct	s_vcpnt
 {
@@ -81,11 +82,53 @@ typedef struct	s_sphere
 	t_material	mat;
 	t_vcpnt		orig;
 	t_mtx4		transform;
+	t_mtx4		inv_mtx;
+	t_mtx4		tr_inv_mtx;
 }	t_sphere;
+
+typedef struct	s_plane
+{
+	t_mtx4		transform;
+	t_mtx4		inv_mtx;
+	t_mtx4		tr_inv_mtx;
+	t_matirial	mat;
+}	t_plane;
+
+typedef struct	s_sl
+{
+	double		radi;
+	t_mtx4		transform;
+	t_mtx4		inv_mtx;
+	t_mtx4		tr_inv_mtx;
+	t_vcpnt		orig;
+	t_matirial	mat;
+	int			is_closed;
+	double		min;
+	double		max;
+}	t_cl;
+
+typedef struct	s_camera
+{
+	double	half_view;
+	double	aspect;
+	double	hsize;
+	double	vsize;
+	double	half_width;
+	double	half_height;
+	double	pixel_size;
+	double	field_of_view;
+	t_mtx4	transform;
+	t_mtx4	inv_trans;
+	t_vcpnt	from;
+	t_vcpnt	to;
+	t_vcpnt	up;
+}	t_camera;
 
 typedef union u_obj_data
 {
 	t_sphere	sp;
+	t_plane		pl;
+	t_cl		cl;
 }	t_obj_data;
 
 typedef struct s_obj
@@ -94,6 +137,21 @@ typedef struct s_obj
 	t_obj_data	data;
 	int			n;
 }	t_obj;
+
+typedef struct s_supitr
+{
+	double	a;
+	double	b;
+	double	c;
+	double	disc;
+	t_ray	lcl;
+	double	t1;
+	double	t2;
+	double	temp;
+	double	y0;
+	double	y1;
+	int		bl;
+}	t_supitr;
 
 typedef struct	s_inter
 {
@@ -122,6 +180,7 @@ typedef struct 	s_prlgt
 	t_obj	*obj;
 	t_vcpnt	scaledv;
 	t_vcpnt	hit_pnt;
+	t_vcpnt	over_pnt;
 	t_vcpnt	eyev;
 	t_vcpnt	normv;
 	bool	is_inside;
@@ -139,20 +198,6 @@ typedef struct 	s_prlgt
 	t_vcpnt	res;
 }	t_prlgt;
 
-typedef struct	s_camera
-{
-	double	half_view;
-	double	aspect;
-	double	hsize;
-	double	vsize;
-	double	half_width;
-	double	half_height;
-	double	pixel_size;
-	double	field_of_view;
-	t_mtx4	transform;
-	t_mtx4	inv_trans;
-}	t_camera;
-
 typedef struct s_master
 {
 	mlx_t		*mlx;
@@ -165,8 +210,8 @@ typedef struct s_master
 t_test	*get_value(char *file);
 
 // rays
-void	inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
-void	inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
+int	inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
+int	inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
 t_ray		ray_transform(t_ray *ray, t_mtx4 *mtx);
 
 // op vector && pointers
@@ -200,8 +245,9 @@ t_mtx4	inv_trans4(t_vcpnt *trans_vec);
 t_mtx4	shearing(t_vcpnt *sh1, t_vcpnt *sh2);
 
 // op matrixes
-void	create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx);
+void	create_transform_mtx4(t_obj *obj, t_mtx4 *new_mtx);
 void	get_empty_mtx4(t_mtx4 *mtx);
+void	get_id_mtx4(t_mtx4 *mtx);
 t_mtx4	mtxs_mult4(t_mtx4 *mtx1, t_mtx4 *mtx2);
 double	mtx2_determ(t_mtx2 *mtx1);
 double	mtx3_determ(t_mtx3 *mtx3);
@@ -214,13 +260,15 @@ t_mtx2	sub_mtx3(t_mtx3 *mtx, int row, int col);
 //delete
 void	print_vpnt4(t_vcpnt *ent);
 void	free_double(char **split);
-void	print_inv4(t_mtx4 *mtx);
+
+//void	print_inv4(t_mtx4 *mtx);
 void	pirnt_split_content(char **split);
 void	print_mtx4(t_mtx4 *mtx);
 void	print_mtx3(t_mtx3 *mtx);
 void	print_mtx2(t_mtx2 *mtx);
 int		get_rgba(int r, int g, int b, int a);
 int		vcpnt_2_rgba(t_vcpnt *color);
+void	default_world(t_world *wrld);
 
 // create && print matrixes
 void		create_mtx2_stb(t_mtx2 *mtx);
@@ -232,16 +280,20 @@ void		clean_lst(void *content);
 //t_intersec	*hit(t_intersec *inter);
 
 // object functions
-t_vcpnt		normal_at(t_sphere *sp, t_vcpnt *pnt);
+t_vcpnt		normal_at(t_obj *obj, t_vcpnt *pnt);
+t_vcpnt		normal_pl(t_plane *pl);
+t_vcpnt		normal_sphere(t_sphere *obj, t_vcpnt *pnt);
 t_type		get_obj(t_obj *obj);
-t_obj		*sphere(t_material *mat, t_vcpnt orig);
-t_material	create_material(t_vcpnt	*color, double diffuse, double specular);
-void		create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx);
+t_obj		*sphere(t_matirial *mat, t_vcpnt *orig);
+t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular);
 t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color);
+t_obj		*plane(void);
+t_obj		*cylinder(t_matirial *mat, t_vcpnt *orig, double min, double max);
+void		resize_cm(t_camera *cm, t_vcpnt	*new_from);
+int			check_cup(t_ray *ray, double t);
 
 //idk some taff calculation
-t_vcpnt	alt_lighting(t_material *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);
-t_vcpnt	lighting(t_material *mat, t_light *light, t_prlgt *l);
+t_vcpnt	alt_lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);
 
 // world_functions
 t_world		init_world(void);
@@ -250,7 +302,7 @@ void		wclear_world(t_world *world);
 t_vcpnt		world_inter(t_world *wrld, t_ray *r);
 
 // camera functions
-void		setup_camera(t_camera *c, int hsize, int vsize, double fov);
+void		setup_camera(t_camera *c, double hsize, double vsize, double fov);
 t_ray		ray_for_pixel(t_camera *camera, int	px, int py);
 void		camera(t_camera *camera);
 t_mtx4		view_transform(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up);
@@ -259,5 +311,16 @@ t_mtx4		mtx4_ornt(t_vcpnt *left, t_vcpnt *true_up, t_vcpnt *forward);
 // hooks
 void	controls_hook(void *param);
 void	render_hook(void *param);
+void	render(t_world *w, t_camera *cm, mlx_image_t *img);
+
+//light
+t_prlgt	pre_calc(t_world *wrld, t_hit *hit, t_ray *r);
+void	record_hit(t_hit *hit, t_inter *inter, int *pos);
+int		is_inter_shd(t_world *wrld, t_ray *r, double dis);
+t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l);
+int		is_shadowed(t_world *wrld, t_vcpnt *pnt);
+
+// undefinable stuff
+void	ft_swap(double *t1, double *t2);
 
 #endif
