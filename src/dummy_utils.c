@@ -27,6 +27,7 @@ void	default_world(t_world *wrld)
 	t_vcpnt l_pnt;
 	t_vcpnt	l_intens;
 
+	*wrld = init_world();
 	l_pnt = (t_vcpnt){-10, 10, -10, 1};
 	l_intens = (t_vcpnt){1, 1, 1, 1};
 	light = create_light(&l_pnt, &l_intens);
@@ -43,6 +44,6 @@ void	default_world(t_world *wrld)
 	t_vcpnt trans_ints = {0.5, 0.5, 0.5, 1};
 	t_mtx4	scl = scale4(&trans_ints);
 	t_obj	*sp2 = sphere(NULL, NULL);
-	create_transform_mtx4(&sp2->data.sp.transform, &scl);
+	create_transform_mtx4(sp2, &scl);
 	wadd_obj(wrld, NULL, sp2);
 }

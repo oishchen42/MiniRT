@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 11:48:36 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/01 21:10:05 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/12 20:22:56 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,26 @@ void	get_empty_mtx4(t_mtx4 *mtx)
 	{
 		j = -1;
 		while (++j < SIZE_MTX4)
-			mtx->mtx[i][j] = 0;
+			mtx->mtx[i][j] = 0.0;
+	}
+}
+
+void	get_id_mtx4(t_mtx4 *mtx)
+{
+	int	j;
+	int	i;
+
+	i = -1;
+	while (++i < SIZE_MTX4)
+	{
+		j = -1;
+		while (++j < SIZE_MTX4)
+		{
+			if (i == j)
+				mtx->mtx[i][j] = 1.0;
+			else
+				mtx->mtx[i][j] = 0.0;
+		}
 	}
 }
 

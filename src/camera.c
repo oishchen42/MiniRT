@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:05:38 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/11 22:22:10 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/14 01:12:11 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,11 @@ void	setup_camera(t_camera *c, double hsize, double vsize, double fov)
 	//up = (t_vcpnt){0, 1, 0, 1};
 	c->transform = view_transform(&c->from, &c->to, &c->up);
 	c->inv_trans = mtx4_inverse(&c->transform);
+}
+
+void	resize_cm(t_camera *cm, t_vcpnt	*new_from)
+{
+	cm->from = *new_from;
+	cm->transform = view_transform(&cm->from, &cm->to, &cm->up);
+	cm->inv_trans = mtx4_inverse(&cm->transform);
 }

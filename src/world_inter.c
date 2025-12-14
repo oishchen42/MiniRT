@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 07:50:53 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/11 21:25:06 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/13 21:11:46 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,12 @@ t_vcpnt	shade_hit(t_world *w, t_prlgt *l)
 	//obj = get_obj(w);
 	obj = l->obj;
 	light = (t_light *)w->lights->content;
-	//printf("light->intens ");
-	//print_vpnt4(&light->intens);
-	l->eff_clr = vec_muls(&obj->data.sp.mat.color, &light->intens);
-	l->lightv = vec_subs(&light->pnt_light, &l->hit_pnt);
-	l->lightv_nrm = vec_norm(&l->lightv);
-	l->ambient = vec_scale(&l->eff_clr, obj->data.sp.mat.ambient);
-	//printf("l->ambinet\n\n");
-	//print_vpnt4(&l->ambient);
-	l->light_dot_nrm = vec_dot(&l->lightv_nrm, &l->normv);
-	return (lighting(&obj->data.sp.mat, light, l));
-	//return (alt_lighting(&obj->data.sp.mat, light, &l->hit_pnt, &l->eyev, &l->normv));
+	if (is_shadowed(w, &l->over_pnt))
+		return (l->ambient);
+	if (obj->type == SPHERE)
+		return (lighting(&obj->data.sp.mat, light, l));
+	else
+		return (lighting(&obj->data.pl.mat, light, l));
 }
 
 void	record_hit(t_hit *hit, t_inter *inter, int *pos)
@@ -41,7 +36,7 @@ void	record_hit(t_hit *hit, t_inter *inter, int *pos)
 	i = -1;
 	while (++i < *pos)
 	{
-		if (inter[i].t > 0.0 && inter[i].t < hit->min)
+		if (inter[i].t >= 0.0 && inter[i].t < hit->min) // do we need it to be >= 0.0 or > 0
 		{
 			hit->min = inter[i].t;
 			//printf("CURRENT min is: %.1f\n", hit->min);
@@ -51,59 +46,6 @@ void	record_hit(t_hit *hit, t_inter *inter, int *pos)
 			//printf("RECORDED OBJ: %d\n", hit->obj->n);
 		}
 	}
-}
-
-t_prlgt	pre_calc(t_world *wrld, t_hit *hit, t_ray *r)
-{
-	t_prlgt	pre_light;
-	t_light	*light;
-
-
-	light = (t_light *)wrld->lights->content;
-
-	//print_vpnt4(&light->intens);
-
-	//printf("HIT OBJECT: %d\n", hit->obj->n);
-
-	pre_light.t = hit->min;
-	pre_light.obj = hit->obj;
-
-
-	//printf("r_vec norm: ");
-	//print_vpnt4(&r->vec);
-
-	pre_light.eyev = vec_scale(&r->vec, -1);
-	//pre_light.eyev = (t_vcpnt){0, sqrt(2) / 2, -1 * sqrt(2) / 2, -1};
-
-	//printf("eyev : ");
-	//print_vpnt4(&pre_light.eyev);
-
-	pre_light.scaledv = vec_scale(&r->vec, hit->min);
-	//printf("hit->min: %.1f\n", hit->min);
-	//printf("pre_light.scaledv: ");
-	//print_vpnt4(&pre_light.scaledv);
-
-	pre_light.hit_pnt = vec_add(&pre_light.scaledv, &r->pnt);
-	//printf("r->pnt: ");
-	//print_vpnt4(&r->pnt);
-	//printf("pre_light.hit_pnt ");
-	//print_vpnt4(&pre_light.hit_pnt);
-
-	pre_light.normv = normal_at(&hit->obj->data.sp, &pre_light.hit_pnt);
-	//printf("norm vec: ");
-	//print_vpnt4(&pre_light.normv);
-	pre_light.is_inside = vec_dot(&pre_light.normv, &pre_light.eyev) < 0;
-	if (pre_light.is_inside)
-	{
-		//printf("WE ARE INSIDE THE OBJ\n");
-		pre_light.normv = vec_scale(&pre_light.normv, -1);
-	}
-	pre_light.eff_clr = vec_muls(&pre_light.obj->data.sp.mat.color, &light->intens);
-	pre_light.lightv = vec_subs(&light->pnt_light, &pre_light.hit_pnt);
-	pre_light.lightv_nrm = vec_norm(&pre_light.lightv);
-	pre_light.ambient = vec_scale(&pre_light.eff_clr, pre_light.obj->data.sp.mat.ambient);
-	pre_light.light_dot_nrm = vec_dot(&pre_light.lightv_nrm, &pre_light.normv);
-	return (pre_light);
 }
 
 t_vcpnt	world_inter(t_world *wrld, t_ray *r)
@@ -135,3 +77,28 @@ t_vcpnt	world_inter(t_world *wrld, t_ray *r)
 	}
 	return ((t_vcpnt){0,0,0,1});
 }
+
+//int	main()
+//{
+//	t_obj	*cl;
+//	t_world	wrld;
+//	t_light	*light;
+//	t_vcpnt l_pnt;
+//	t_vcpnt	l_intens;
+
+//	wrld = init_world();
+//	l_pnt = (t_vcpnt){10, 10, -10, 1};
+//	l_intens = (t_vcpnt){1, 1, 1, 1};
+//	light = create_light(&l_pnt, &l_intens);
+//	wadd_obj(&wrld, light, NULL);
+
+//	cl = cylinder(NULL, NULL);
+//	wadd_obj(&wrld, NULL, cl);
+//	t_ray r;
+//	t_vcpnt	orig = {0.5, 0, -5, 1};
+//	t_vcpnt	vec = {0.1, 1, 1, 1};
+
+//	vec = vec_norm(&vec);
+//	r = (t_ray){orig, vec};
+//	world_inter(&wrld, &r);
+//}

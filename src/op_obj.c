@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/11 21:25:53 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/14 13:25:16 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,27 +27,14 @@
 //		obj->data.sp.light.intens = *intens;
 
 //}
-t_light	*create_light(t_vcpnt *pnt, t_vcpnt *color)
-{
-	t_light	*light;
-
-	if (!pnt || !color)
-		return (NULL);
-	light = malloc(sizeof(t_light));
-	if (!light)
-		return (NULL);
-	light->intens = *color;
-	light->pnt_light = *pnt;
-	return (light);
-}
 
 void	material(t_matirial	*mat)
 {
-	mat->ambient = 0.1;
-	mat->diffuse = 0.9;
+	mat->ambient = 0.2;
+	mat->diffuse = 0.0;
 	mat->shiness = 200;
-	mat->specular = 0.9;
-	mat->color = (t_vcpnt){1, 1, 1, 0};
+	mat->specular = 0.7;
+	mat->color = (t_vcpnt){0.3, 0.4, 0.9, 0};
 }
 
 t_obj	*sphere(t_matirial *mat, t_vcpnt *orig)
@@ -66,8 +53,55 @@ t_obj	*sphere(t_matirial *mat, t_vcpnt *orig)
 		material(&obj->data.sp.mat);
 	else
 		obj->data.sp.mat = *mat;
-	create_transform_mtx4(&obj->data.sp.transform, NULL);
+	get_id_mtx4(&obj->data.sp.transform);
+	obj->data.sp.inv_mtx = mtx4_inverse(&obj->data.sp.transform);
+	obj->data.sp.tr_inv_mtx = transpose(&obj->data.sp.inv_mtx);
 	obj->data.sp.radi = 1.0;
+	obj->type = SPHERE;
+	return (obj);
+}
+
+t_obj	*plane(void)
+{
+	t_obj	*obj;
+
+	obj = malloc(sizeof(t_obj));
+	if (!obj)
+		return (NULL);
+	obj->type = PLANE;
+	get_id_mtx4(&obj->data.pl.transform);
+	obj->data.pl.inv_mtx = mtx4_inverse(&obj->data.pl.transform);
+	obj->data.pl.tr_inv_mtx = transpose(&obj->data.pl.inv_mtx);
+	obj->data.pl.mat.color = (t_vcpnt){1, 1, 1, 1}; 
+	obj->data.pl.mat.ambient = 0.1;
+	obj->data.pl.mat.diffuse = 0.9;
+	obj->data.pl.mat.specular = 0.1;
+	obj->data.pl.mat.shiness = 200;
+	return (obj);
+}
+
+t_obj	*cylinder(t_matirial *mat, t_vcpnt *orig, double min, double max)
+{
+	t_obj	*obj;
+
+	obj = malloc(sizeof(t_obj));
+	if (!obj)
+		return (NULL);
+	obj->type = CYLINDER;
+	get_id_mtx4(&obj->data.cl.transform);
+	obj->data.cl.inv_mtx = mtx4_inverse(&obj->data.cl.transform);
+	obj->data.cl.tr_inv_mtx = transpose(&obj->data.cl.inv_mtx);
+	if (orig)
+		obj->data.cl.orig = *orig;
+	else
+		obj->data.cl.orig = (t_vcpnt){0,0,0,1};
+	if (!mat)
+		material(&obj->data.cl.mat);
+	else
+		obj->data.cl.mat = *mat;
+	obj->data.cl.min = min;
+	obj->data.cl.max = max;
+	obj->data.cl.is_closed = true;
 	return (obj);
 }
 
@@ -81,18 +115,26 @@ t_type	get_obj(t_obj *obj)
 	return (obj_type);
 }
 
-void	create_transform_mtx4(t_mtx4 *priv_mtx, t_mtx4 *new_mtx)
+void	create_transform_mtx4(t_obj *obj, t_mtx4 *new_mtx)
 {
-	if (new_mtx == NULL)
+	if (obj->type == SPHERE)
 	{
-		get_empty_mtx4(priv_mtx);
-		priv_mtx->mtx[0][0] = 1.0;
-		priv_mtx->mtx[1][1] = 1.0;
-		priv_mtx->mtx[2][2] = 1.0;
-		priv_mtx->mtx[3][3] = 1.0;
+		obj->data.sp.transform = *new_mtx;
+		obj->data.sp.inv_mtx = mtx4_inverse(&obj->data.sp.transform);
+		obj->data.sp.tr_inv_mtx = transpose(&obj->data.sp.inv_mtx);
+	}
+	else if (obj->type == PLANE)
+	{
+		obj->data.pl.transform = *new_mtx;
+		obj->data.pl.inv_mtx = mtx4_inverse(&obj->data.pl.transform);
+		obj->data.pl.tr_inv_mtx = transpose(&obj->data.pl.inv_mtx);
 	}
 	else
-		*priv_mtx = *new_mtx;
+	{
+		obj->data.cl.transform = *new_mtx;
+		obj->data.cl.inv_mtx = mtx4_inverse(&obj->data.cl.transform);
+		obj->data.cl.tr_inv_mtx = transpose(&obj->data.cl.inv_mtx);
+	}
 }
 
 t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular)
@@ -105,123 +147,50 @@ t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular)
 	return (mat);
 }
 
-t_vcpnt	normal_at(t_sphere *sp, t_vcpnt *pnt)
+t_vcpnt	normal_sphere(t_sphere *obj, t_vcpnt *pnt)
+{
+	t_vcpnt	local;
+	t_vcpnt	local_nrm;
+	t_vcpnt	wrld_nrm;
+
+	local = mult_mtx4_vcpnt4(&obj->inv_mtx, pnt);
+	local_nrm = vec_subs(&local, &((t_vcpnt){0,0,0,1}));
+	wrld_nrm = mult_mtx4_vcpnt4(&obj->tr_inv_mtx, &local_nrm);
+	return (vec_norm(&wrld_nrm));
+}
+
+t_vcpnt	normal_pl(t_plane *pl)
 {
 	t_vcpnt	std;
-	t_vcpnt	obj_pnt;
-	t_mtx4	inv_mtx;
-	t_mtx4	tr_inv_mtx;
-	t_vcpnt	obj_norm;
-	t_vcpnt	world_norm;
+	t_vcpnt	wrld_nrm;
 
-	std = (t_vcpnt){0,0,0,1};
-	inv_mtx = mtx4_inverse(&sp->transform);
-	obj_pnt = mult_mtx4_vcpnt4(&inv_mtx, pnt);
-	obj_norm = vec_subs(&obj_pnt, &std);
-	tr_inv_mtx = transpose(&inv_mtx);
-	world_norm = mult_mtx4_vcpnt4(&tr_inv_mtx, &obj_norm);
-	world_norm.vp[3] = 0;
-	world_norm = vec_norm(&world_norm);
-	return (world_norm);
+	std = (t_vcpnt){0, 1, 0, 0};
+	wrld_nrm = mult_mtx4_vcpnt4(&pl->tr_inv_mtx, &std);
+	return (vec_norm(&wrld_nrm));
 }
 
-t_vcpnt	lighting(t_matirial *mat, t_light *light, t_prlgt *l)
+t_vcpnt normal_cl(t_cl *cl, t_vcpnt *world_pnt)
 {
-	double	factor;
+	t_vcpnt local_pnt;
+	t_vcpnt local_nrm;
+	t_vcpnt wrld_nrm;
 
-	//printf("l->light_dot_rnm: %.1f | mat->diffuse: %.1f\n", l->light_dot_nrm, mat->diffuse);
-	if (l->light_dot_nrm < 0.0)
-	{
-		l->diffuse = (t_vcpnt){0,0,0,0};
-		l->specular = (t_vcpnt){0,0,0,0};
-	}
-	else
-	{
-		//printf("we are here\n\n");
-		//printf("l->eff_clr ");
-		//print_vpnt4(&l->eff_clr);
-		//printf("l->diffuse: ");
-
-		l->diffuse = vec_scale(&l->eff_clr, l->light_dot_nrm * mat->diffuse);
-
-		//print_vpnt4(&l->diffuse);
-
-		l->neg_lightv = vec_scale(&l->lightv_nrm, -1);
-		//printf("lightv: ");
-		//print_vpnt4(&l->lightv);
-		//printf("\n");
-		l->reflectiv = vec_reflect(&l->neg_lightv, &l->normv);
-		//printf("reflectiv: ");
-		//print_vpnt4(&l->reflectiv);
-		//printf("\n");
-		l->reflect_dot_eye = vec_dot(&l->reflectiv, &l->eyev);
-		if (l->reflect_dot_eye <= 0)
-			l->specular = (t_vcpnt){0,0,0,0};
-		else
-		{
-			//printf("my reflecti_do_eye : %.1f\n", l->reflect_dot_eye);
-			//printf("mat->shiness: %.1f\n", mat->shiness);
-			factor = pow(l->reflect_dot_eye, mat->shiness);
-			//printf("my factor : %f\n", factor);
-			//printf("my material specular: %.1f\n", mat->specular);
-			//printf("mat->specular * factor: %f\n", mat->specular * factor);
-			l->specular = vec_scale(&light->intens, mat->specular * factor);
-			//printf("l->specular: ");
-			//print_vpnt4(&l->specular);
-		}
-	}
-	//printf("l->ambient, l->diffuse: ");
-	//print_vpnt4(&l->ambient);
-	//print_vpnt4(&l->diffuse);
-	//printf("l->specular ");
-	//print_vpnt4(&l->specular);
-	l->res = vec_add(&l->ambient, &l->diffuse);
-	l->res = vec_add(&l->res, &l->specular);
-	return (l->res);
+	local_pnt = mult_mtx4_vcpnt4(&cl->inv_mtx, world_pnt);
+	local_nrm = (t_vcpnt){local_pnt.vp[0], 0, local_pnt.vp[2], 0};
+	wrld_nrm = mult_mtx4_vcpnt4(&cl->tr_inv_mtx, &local_nrm);
+	return (vec_norm(&wrld_nrm));
 }
 
-
-t_vcpnt	alt_lighting(t_matirial *mat, t_light *light, t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc)
+t_vcpnt	normal_at(t_obj *obj, t_vcpnt *pnt)
 {
-	t_vcpnt	effective_color;
-	t_vcpnt	lightv;
-	t_vcpnt	ambient;
-	double	light_dot_normal;
-	double	reflect_dot_eye;
-	double	factor;
-	t_vcpnt	lightv_natur;
-	t_vcpnt	diffuse;
-	t_vcpnt	specular;
-	t_vcpnt	reflectiv;
-	t_vcpnt	neg_lightv;
-	t_vcpnt	res;
+	t_vcpnt	wrld_normal;
 
-	effective_color = vec_muls(&mat->color, &light->intens);
-	//sub_lgtp_pnt = vec_subs(&light->pnt_light, pnt);
-	lightv_natur = vec_subs(&light->pnt_light, pnt);
-	lightv = vec_norm(&lightv_natur);
-	ambient = vec_scale(&effective_color, mat->ambient);
-	light_dot_normal = vec_dot(&lightv, nrmvc);
-	if (light_dot_normal < 0)
-	{
-		diffuse = (t_vcpnt){0,0,0,0};
-		specular = (t_vcpnt){0,0,0,0};
-	}
+	if (obj->type == SPHERE)
+		wrld_normal = normal_sphere(&obj->data.sp, pnt);
+	else if (obj->type == PLANE)
+		wrld_normal = normal_pl(&obj->data.pl);
 	else
-	{
-		diffuse = vec_scale(&effective_color, light_dot_normal * mat->diffuse);
-		neg_lightv = vec_scale(&lightv, -1);
-		reflectiv = vec_reflect(&neg_lightv, nrmvc);
-		reflect_dot_eye = vec_dot(&reflectiv, eye);
-		if (reflect_dot_eye <= 0)
-			specular = (t_vcpnt){0,0,0,0};
-		else
-		{
-			factor = pow(reflect_dot_eye, mat->shiness);
-			specular = vec_scale(&light->intens, mat->specular * factor);
-		}
-	}
-	res = vec_add(&ambient, &diffuse);
-	res = vec_add(&res, &specular);
-	return (res);
+		wrld_normal = normal_cl(&obj->data.cl, pnt);
+	return (wrld_normal);
 }
+
