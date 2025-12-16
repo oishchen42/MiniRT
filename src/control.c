@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   control.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 17:52:20 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/11 16:13:51 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/16 20:03:06 by tdietz-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 void	render_hook(void *param)
 {
 	t_master	*app;
-	int			i; // X
-	int			j; // Y
 	t_ray		ray;
 	t_vcpnt		color;
+	int			i; // X
+	int			j; // Y
 
 	app = (t_master *)param;
 	j = -1;
-	while (++j < app->camera.vsize) 
+	while (++j < app->camera.vsize)
 	{
 		i = -1;
 		while (++i < app->camera.hsize)
@@ -35,10 +35,12 @@ void	render_hook(void *param)
 	}
 	//printf("we are out of the render hook\n");
 }
+
 void	controls_hook(void *param)
 {
-	t_master *app = (t_master *)param;
+	t_master	*app;
 
+	app = (t_master *)param;
 	if (mlx_is_key_down(app->mlx, MLX_KEY_W))
 	{
 		app->camera.transform.mtx[2][3] += 0.5;
