@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 14:05:08 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/10 11:52:23 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/16 21:09:35 by tdietz-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_split_value(char **value)
 	int	val_counter;
 
 	if (!value)
-		return(perror("NO VALUE check_split_value"), 0);
+		return (perror("NO VALUE check_split_value"), 0);
 	val_counter = -1;
 	while (value[++val_counter])
 		;
@@ -30,10 +30,10 @@ int	check_split_value(char **value)
 
 int	is_rt(char *str)
 {
-	//int		i;
 	char	*ext;
-
+	//int		i;
 	//i = -1;
+
 	ext = ft_strchr(str, '.');
 	printf("%s\n", ext);
 	if (ft_strncmp(ext, ".rt", ft_strlen(ext) + 1) != 0)
@@ -45,7 +45,7 @@ int	is_rt(char *str)
 	return (1);
 }
 
-t_test *get_value(char *file) // norm
+t_test	*get_value(char *file) // norm
 {
 	int		fd;
 	char	*content;
@@ -54,14 +54,12 @@ t_test *get_value(char *file) // norm
 	// printf("%s\n", file);
 	fd = open(file, O_RDONLY);
 	// printf("%d\n", fd);
-
 	if (fd < 0)
 	{
 		printf("%d\n", fd);
 		perror("file not found");
 		return (NULL);
 	}
-
 	content = get_next_line(fd);
 	if (!content)
 		perror("SMTH IS WRONG gnl"); //delete
