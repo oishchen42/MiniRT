@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structs.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/16 21:27:51 by tdietz-r          #+#    #+#             */
+/*   Updated: 2025/12/16 21:27:54 by tdietz-r         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
@@ -6,7 +18,7 @@
 # include <stdio.h>
 # include <math.h>
 # include <fcntl.h>
-# include <stdbool.h>
+# include <stdbool.h>abedeuet 
 # include <limits.h>
 # include "MLX42.h"
 # include "libft.h"

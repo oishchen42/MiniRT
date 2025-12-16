@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/16 21:27:43 by tdietz-r          #+#    #+#             */
+/*   Updated: 2025/12/16 21:27:45 by tdietz-r         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_H
 # define MINIRT_H
 
@@ -90,7 +102,7 @@ int			check_cup(t_ray *ray, double t);
 
 /* World Functions */
 t_world		init_world(void);
-void	add_obj(t_world *world, t_light *light, t_obj *obj);
+void		add_obj(t_world *world, t_light *light, t_obj *obj);
 void		wclear_world(t_world *world);
 t_vcpnt		world_inter(t_world *wrld, t_ray *r);
 
