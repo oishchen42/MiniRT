@@ -9,11 +9,14 @@ SRC_DIR := src
 OBJ_DIR := obj
 MINIRT_INC = include
 
-SRC_FILES := main.c vec_op.c parsing.c  math_utils.c \
-			test_utils.c test_main.c dummy_utils.c matrix_op.c \
-			vec_mtx_op.c op_ray.c op_obj.c op_mtx_mov.c \
-			world_utils.c world_inter.c camera.c control.c \
-			render.c light_shd.c
+SRC_FILES := camera_1.c camera_2.c control.c dummy_utils.c light_shd_1.c \
+			light_shd_2.c main.c math_utils.c matrix_op_1.c matrix_op_2.c \
+			op_mtx_mov_1.c op_mtx_mov_2.c op_mtx_mov_3.c op_obj_1.c \
+			op_obj_2.c op_obj_3.c op_ray_1.c op_ray_2.c parse_data.c \
+			parse_file.c parse_main.c parse_obj.c parse_orient.c \
+			parse_test.c parsing.c render.c test_main.c test_utils_1.c \
+			test_utils_2.c test_utils_3.c vec_mtx_op.c vec_op_1.c \
+			vec_op_2.c world_inter.c world_utils.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
