@@ -88,10 +88,6 @@ t_obj		*cylinder(t_material *mat, t_vcpnt *orig, double min, double max);
 void		resize_cm(t_camera *cm, t_vcpnt *new_from);
 int			check_cup(t_ray *ray, double t);
 
-/* Lighting / Calculation */
-t_vcpnt		alt_lighting(t_material *mat, t_light *light, \
-			t_vcpnt *pnt, t_vcpnt *eye, t_vcpnt *nrmvc);
-
 /* World Functions */
 t_world		init_world(void);
 void	add_obj(t_world *world, t_light *light, t_obj *obj);
