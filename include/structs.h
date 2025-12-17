@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 21:27:51 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/16 21:27:54 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/17 23:41:23 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include <math.h>
 # include <fcntl.h>
-# include <stdbool.h>abedeuet 
+# include <stdbool.h>
 # include <limits.h>
 # include "MLX42.h"
 # include "libft.h"
@@ -217,6 +217,22 @@ typedef struct s_master
 	mlx_image_t	*img;
 	t_world		world;
 	t_camera	camera;
+	double		last_mouse_x;
+	double		last_mouse_y;
+	bool		is_panning;
+	bool		is_rotating;
+	double		prev_mouse_x;
+	double		prev_mouse_y;
 }	t_master;
+
+typedef struct s_mov_supp
+{
+	double	mov_speed;
+	double	rot_speed;
+	t_vcpnt	forward;
+	t_vcpnt	right;
+	t_vcpnt	wrld_up;
+	t_vcpnt	mv_vec;
+}	t_mov_supp;
 
 #endif

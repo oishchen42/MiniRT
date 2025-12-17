@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera_1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:05:38 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/16 20:20:35 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/17 23:45:42 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,6 @@ t_mtx4	mtx4_ornt(t_vcpnt *left, t_vcpnt *true_up, t_vcpnt *forward)
 	mtx.mtx[3][3] = 1.0;
 	//print_inv4(&mtx);
 	return (mtx);
-}
-
-void	wadd_obj(t_world *world, t_light *light, t_obj *obj)
-{
-	t_list	*node;
-
-	if (obj)
-	{
-		node = ft_lstnew((void *)obj);
-		ft_lstadd_back(&world->objs, node);
-	}
-	if (light)
-	{
-		node = ft_lstnew((void *)light);
-		ft_lstadd_back(&world->lights, node);
-	}
 }
 
 static t_mtx4	get_orientation_matrix(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up)
