@@ -16,7 +16,8 @@ SRC_FILES := camera_1.c camera_2.c control.c dummy_utils.c light_shd_1.c \
 			parse_file.c parse_main.c parse_obj.c parse_orient.c \
 			parse_test.c parsing.c render.c test_main.c test_utils_1.c \
 			test_utils_2.c test_utils_3.c vec_mtx_op.c vec_op_1.c \
-			vec_op_2.c world_inter.c world_utils.c
+			vec_op_2.c world_inter.c world_utils.c resize_hook.c \
+			move_cm.c mouse_mv.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

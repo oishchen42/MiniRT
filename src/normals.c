@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 16:05:27 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/17 23:58:39 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/18 00:07:15 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_vcpnt	normal_pl(t_plane *pl)
 	return (vec_norm(&wrld_nrm));
 }
 
-t_vcpnt	normal_cl(t_cl *cl, t_vcpnt *world_pnt)
+t_vcpnt normal_cl(t_cl *cl, t_vcpnt *world_pnt)
 {
 	t_vcpnt	local_pnt;
 	t_vcpnt	local_nrm;

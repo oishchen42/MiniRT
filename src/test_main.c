@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 22:21:32 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/14 14:47:08 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/17 23:44:20 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -559,9 +559,9 @@ int	main()
 
 	//wclear_world(&wrld);
 
-	printf("PLANE TESTS\n");
-	mlx_t	*mlx;
-	mlx_image_t	*img;
+	//printf("PLANE TESTS\n");
+	//mlx_t	*mlx;
+	//mlx_image_t	*img;
 
 	t_world wrld;
 	wrld = init_world();
@@ -682,24 +682,50 @@ int	main()
 	app.camera.to = (t_vcpnt){0, 1, 0, 1};
 	app.camera.up = (t_vcpnt){0, 1, 0, 1};
 	setup_camera(&app.camera, hsize, vsize, PI/3);
-	t_vcpnt	mv_cm = {0, 1.5, -10, 1};
+	//t_vcpnt	mv_cm = {0, 1.5, -10, 1};
 	//t_mtx4	n_cm_tr = trnas4(&mv_cm);
-	resize_cm(&app.camera, &mv_cm);
+	//resize_cm(&app.camera, &mv_cm);
 
 
-	if (!(mlx = mlx_init((int)hsize, (int)vsize, "MLX42", true)))
+	app.world = wrld;
+	if (!(app.mlx = mlx_init((int)hsize, (int)vsize, "MLX42", true)))
 		return (1);
 	printf("bla\n");
 	
-	if (!(img = mlx_new_image(mlx, (int)hsize, (int)vsize)))
+	if (!(app.img = mlx_new_image(app.mlx, (int)hsize, (int)vsize)))
 		return (1);
-	if (mlx_image_to_window(mlx, img, 0, 0) == -1)
+	if (mlx_image_to_window(app.mlx, app.img, 0, 0) == -1)
 		return (printf("Bla\n"), 1);
-	app.world = wrld;
-	render(&app.world, &app.camera, img);	
-	mlx_loop(mlx);
-	mlx_close_window(mlx);
-	mlx_terminate(mlx);
+	app.is_panning = false;
+	app.is_rotating = false;
+	render(&app.world, &app.camera, app.img);
+
+	//mlx_mouse_hook(app.mlx, &mouse_click_hook, &app);
+	//mlx_cursor_hook(app.mlx, &mouse_move_hook, &app);
+	
+	mlx_key_hook(app.mlx, &mlx_hook_keys, &app);
+	mlx_resize_hook(app.mlx, &resize_hook, &app);
+	mlx_loop(app.mlx);
+	mlx_close_window(app.mlx);
+	mlx_terminate(app.mlx);
 
 	wclear_world(&app.world);
+
+
 }
+
+//int	main()
+//{
+//	t_master	app;
+
+//	app.world = init_world();
+//	setup_camera(&app.camera, 500.0, 350.0, PI/3);
+
+//	if (!(app.mlx = mlx_init((int)app.camera.hsize, (int)app.camera.vsize, "MLX42", true)))
+//		return (1);
+//	if (mlx_image_to_window(app.mlx, app.img, 0, 0) == -1)
+//		return (printf("Bla\n"), 1);
+//	render(&app.world, &app.camera, app.img);
+//	m
+//	printf("bla\n");
+//}

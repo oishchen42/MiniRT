@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 21:27:43 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/16 21:27:45 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/17 23:40:44 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ t_test		*get_value(char *file);
 /* Rays */
 int			inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
 int			inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
+int			inter_cl(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
+void		get_inter(t_obj *obj, int count, double t, t_inter *inter);
 t_ray		ray_transform(t_ray *ray, t_mtx4 *mtx);
 
 /* Vector Operations */
@@ -91,18 +93,19 @@ void		create_mtx4_stb(t_mtx4 *mtx);
 t_vcpnt		normal_at(t_obj *obj, t_vcpnt *pnt);
 t_vcpnt		normal_pl(t_plane *pl);
 t_vcpnt		normal_sphere(t_sphere *obj, t_vcpnt *pnt);
+t_vcpnt		normal_cl(t_cl *cl, t_vcpnt *world_pnt);
 t_type		get_obj(t_obj *obj);
 t_obj		*sphere(t_material *mat, t_vcpnt *orig);
 t_material	create_material(t_vcpnt *color, double diffuse, double specular);
 t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color);
 t_obj		*plane(void);
 t_obj		*cylinder(t_material *mat, t_vcpnt *orig, double min, double max);
-void		resize_cm(t_camera *cm, t_vcpnt *new_from);
+void		resize_cm(t_camera *cm, t_vcpnt	*new_from);
 int			check_cup(t_ray *ray, double t);
 
 /* World Functions */
 t_world		init_world(void);
-void		add_obj(t_world *world, t_light *light, t_obj *obj);
+void		wadd_obj(t_world *world, t_light *light, t_obj *obj);
 void		wclear_world(t_world *world);
 t_vcpnt		world_inter(t_world *wrld, t_ray *r);
 
@@ -117,11 +120,27 @@ void		controls_hook(void *param);
 void		render_hook(void *param);
 void		render(t_world *w, t_camera *cm, mlx_image_t *img);
 
-/* Light & Shadows */
-t_prlgt		pre_calc(t_world *wrld, t_hit *hit, t_ray *r);
-void		record_hit(t_hit *hit, t_inter *inter, int *pos);
-int			is_inter_shd(t_world *wrld, t_ray *r, double dis);
-t_vcpnt		lighting(t_material *mat, t_light *light, t_prlgt *l);
-int			is_shadowed(t_world *wrld, t_vcpnt *pnt);
+//light
+t_prlgt	pre_calc(t_world *wrld, t_hit *hit, t_ray *r);
+void	record_hit(t_hit *hit, t_inter *inter, int *pos);
+int		is_inter_shd(t_world *wrld, t_ray *r, double dis);
+t_vcpnt	lighting(t_material *mat, t_light *light, t_prlgt *l);
+int		is_shadowed(t_world *wrld, t_vcpnt *pnt);
+void	sp_pre_light(t_prlgt *pr, t_light *l);
+void	sp_pre_plane(t_prlgt *pr, t_light *l);
+
+// undefinable stuff
+void	ft_swap(double *t1, double *t2);
+
+/* MLX_control */
+// mlx control
+void	mlx_hook_keys(mlx_key_data_t keydata, void *master);
+void	key_rotate(t_camera *cam, double yaw_speed, double pitch_speed);
+t_mtx4	rotate_any_axis(t_vcpnt axis, double angle);
+t_mtx4	rotate_any_axis(t_vcpnt axis, double angle);
+void	mlx_hook_keys(mlx_key_data_t keydata, void *master);
+void	mlx_hook_keys_supp(t_master *param, int key);
+void	rotate_camera(t_master *param, int key);
+void	resize_hook(int32_t width, int32_t height, void *param);
 
 #endif
