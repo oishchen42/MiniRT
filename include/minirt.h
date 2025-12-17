@@ -204,7 +204,23 @@ typedef struct s_master
 	mlx_image_t	*img;
 	t_world		world;
 	t_camera	camera;
+	double		last_mouse_x;
+	double		last_mouse_y;
+	bool		is_panning;
+	bool		is_rotating;
+	double		prev_mouse_x;
+	double		prev_mouse_y;
 }	t_master;
+
+typedef struct s_mov_supp
+{
+	double	mov_speed;
+	double	rot_speed;
+	t_vcpnt	forward;
+	t_vcpnt	right;
+	t_vcpnt	wrld_up;
+	t_vcpnt	mv_vec;
+}	t_mov_supp;
 
 
 t_test	*get_value(char *file);
@@ -322,5 +338,15 @@ int		is_shadowed(t_world *wrld, t_vcpnt *pnt);
 
 // undefinable stuff
 void	ft_swap(double *t1, double *t2);
+
+// mlx control
+void	mlx_hook_keys(mlx_key_data_t keydata, void *master);
+void	key_rotate(t_camera *cam, double yaw_speed, double pitch_speed);
+t_mtx4	rotate_any_axis(t_vcpnt axis, double angle);
+t_mtx4	rotate_any_axis(t_vcpnt axis, double angle);
+void	mlx_hook_keys(mlx_key_data_t keydata, void *master);
+void	mlx_hook_keys_supp(t_master *param, int key);
+void	rotate_camera(t_master *param, int key);
+void	resize_hook(int32_t width, int32_t height, void *param);
 
 #endif
