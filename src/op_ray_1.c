@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   op_ray.c                                           :+:      :+:    :+:   */
+/*   op_ray_1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:24:24 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/14 16:27:03 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/17 23:27:14 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	inter_cl(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
 		ft_swap(&itr.t1, &itr.t2);
 	itr.y0 = itr.lcl.pnt.vp[1] + itr.t1 * itr.lcl.vec.vp[1];
 	if (itr.y0 > obj->data.cl.min && itr.y0 < obj->data.cl.max)
-		call_get_inter(obj, itr.t1,  &inter[(*count)++], &itr);
+		call_get_inter(obj, itr.t1, &inter[(*count)++], &itr);
 	itr.y1 = itr.lcl.pnt.vp[1] + itr.t2 * itr.lcl.vec.vp[1];
 	if (itr.y1 > obj->data.cl.min && itr.y1 < obj->data.cl.max)
 		call_get_inter(obj, itr.t2, &inter[(*count)++], &itr);
@@ -94,81 +94,27 @@ int	inter_cl(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
 	return (itr.bl);
 }
 
+//Timo updated function. More 5 var declared. Did put vars a,b,c,d in a array
 int	inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
 {
-	t_vcpnt		sp_2_ray;
-	double		a;
-	double		b;
-	double		c;
-	double		D;
-	//t_mtx4		inv_mtx;
-	t_ray		local_ray;
+	t_vcpnt	sp_2_ray;
+	double	k[4];
+	t_ray	local_ray;
+	//t_mtx4	inv_mtx;
 
 	//inv_mtx = mtx4_inverse(&obj->data.sp.transform);
 	local_ray = ray_transform(ray_orig, &obj->data.sp.inv_mtx);
 	sp_2_ray = vec_subs(&local_ray.pnt, &obj->data.sp.orig);
-	a = vec_dot(&local_ray.vec, &local_ray.vec);
-	b = vec_dot(&local_ray.vec, &sp_2_ray) * 2.0;
-	c = vec_dot(&sp_2_ray, &sp_2_ray) - pow(obj->data.sp.radi, 2.0);
-	D = pow(b, 2) - 4.0 * a * c;
-	if (D < 0)
+	k[0] = vec_dot(&local_ray.vec, &local_ray.vec);
+	k[1] = vec_dot(&local_ray.vec, &sp_2_ray) * 2.0;
+	k[2] = vec_dot(&sp_2_ray, &sp_2_ray) - pow(obj->data.sp.radi, 2.0);
+	k[3] = pow(k[1], 2) - 4.0 * k[0] * k[2];
+	if (k[3] < 0)
 		return (false);
-	get_inter(obj, 1, (-b - sqrt(D)) / (2.0 * a), &inter[*count]);
+	get_inter(obj, 1, (-k[1] - sqrt(k[3])) / (2.0 * k[0]), &inter[*count]);
 	(*count)++;
-	get_inter(obj, 1, (-b + sqrt(D)) / (2.0 * a), &inter[*count]);
+	get_inter(obj, 1, (-k[1] + sqrt(k[3])) / (2.0 * k[0]), &inter[*count]);
 	(*count)++;
 	return (true);
 	//printf("OBJ: %d, t1 = %.1f, t2 = %.1f\n", obj->n, inter[*count - 2].t, inter[*count - 1].t);
 }
-
-int	inter_pl(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
-{
-	double	t;
-	t_ray	local_ray;
-
-	local_ray = ray_transform(ray_orig, &obj->data.pl.inv_mtx);
-	if (fabs(local_ray.vec.vp[1]) < EPSILON)
-		return (0);
-	t = -local_ray.pnt.vp[1] / local_ray.vec.vp[1];
-	get_inter(obj, 1, t, &inter[*count]);
-	(*count)++;
-	return (true);
-}
-
-int	inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
-{
-	if (obj->type == SPHERE)
-		return (inter_sp(obj, ray_orig, inter, count));
-	else if (obj->type == PLANE)
-		return (inter_pl(obj, ray_orig, inter, count));
-	else
-		return (inter_cl(obj, ray_orig, inter, count));
-	return (0);
-}
-
-t_ray	ray_transform(t_ray *ray, t_mtx4 *mtx)
-{
-	t_ray	res;
-
-	res.pnt = mult_mtx4_vcpnt4(mtx, &ray->pnt);
-	res.vec = mult_mtx4_vcpnt4(mtx, &ray->vec);
-	return (res);
-}
-
-//t_inter	*hit(t_intersec *list) // TODO
-//{
-//	t_intersec *winner = NULL;
-//	t_intersec *curr = list;
-
-//	while (curr)
-//	{
-//		if (curr->count > 0 && curr->t > 0)
-//		{
-//			if (winner == NULL || curr->t < winner->t)
-//				winner = curr;
-//		}
-//		curr = curr->next;
-//	}
-//	return (winner);
-//}
-// TODO : HIT FUNCTION that sotres the hit object

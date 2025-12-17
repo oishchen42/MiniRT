@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   op_obj.c                                           :+:      :+:    :+:   */
+/*   op_obj_1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/14 16:19:52 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/17 23:25:10 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 //}
 
-void	material(t_matirial	*mat)
+void	material(t_material	*mat)
 {
 	mat->ambient = 0.2;
 	mat->diffuse = 0.0;
@@ -37,7 +37,7 @@ void	material(t_matirial	*mat)
 	mat->color = (t_vcpnt){0.3, 0.4, 0.9, 0};
 }
 
-t_obj	*sphere(t_matirial *mat, t_vcpnt *orig)
+t_obj	*sphere(t_material *mat, t_vcpnt *orig)
 {
 	t_obj	*obj;
 
@@ -48,7 +48,7 @@ t_obj	*sphere(t_matirial *mat, t_vcpnt *orig)
 	if (orig)
 		obj->data.sp.orig = *orig;
 	else
-		obj->data.sp.orig = (t_vcpnt){0,0,0,1};
+		obj->data.sp.orig = (t_vcpnt){0, 0, 0, 1};
 	if (!mat)
 		material(&obj->data.sp.mat);
 	else
@@ -72,7 +72,7 @@ t_obj	*plane(void)
 	get_id_mtx4(&obj->data.pl.transform);
 	obj->data.pl.inv_mtx = mtx4_inverse(&obj->data.pl.transform);
 	obj->data.pl.tr_inv_mtx = transpose(&obj->data.pl.inv_mtx);
-	obj->data.pl.mat.color = (t_vcpnt){1, 1, 1, 1}; 
+	obj->data.pl.mat.color = (t_vcpnt){1, 1, 1, 1};
 	obj->data.pl.mat.ambient = 0.1;
 	obj->data.pl.mat.diffuse = 0.9;
 	obj->data.pl.mat.specular = 0.1;
@@ -80,7 +80,7 @@ t_obj	*plane(void)
 	return (obj);
 }
 
-t_obj	*cylinder(t_matirial *mat, t_vcpnt *orig, double min, double max)
+t_obj	*cylinder(t_material *mat, t_vcpnt *orig, double min, double max)
 {
 	t_obj	*obj;
 
@@ -94,7 +94,7 @@ t_obj	*cylinder(t_matirial *mat, t_vcpnt *orig, double min, double max)
 	if (orig)
 		obj->data.cl.orig = *orig;
 	else
-		obj->data.cl.orig = (t_vcpnt){0,0,0,1};
+		obj->data.cl.orig = (t_vcpnt){0, 0, 0, 1};
 	if (!mat)
 		material(&obj->data.cl.mat);
 	else
@@ -107,44 +107,10 @@ t_obj	*cylinder(t_matirial *mat, t_vcpnt *orig, double min, double max)
 
 t_type	get_obj(t_obj *obj)
 {
-	(void)obj;
 	t_type	obj_type;
 
+	(void)obj;
 	//if (obj->type == SPHERE)
 	obj_type = SPHERE;
 	return (obj_type);
 }
-
-void	create_transform_mtx4(t_obj *obj, t_mtx4 *new_mtx)
-{
-	if (obj->type == SPHERE)
-	{
-		obj->data.sp.transform = *new_mtx;
-		obj->data.sp.inv_mtx = mtx4_inverse(&obj->data.sp.transform);
-		obj->data.sp.tr_inv_mtx = transpose(&obj->data.sp.inv_mtx);
-	}
-	else if (obj->type == PLANE)
-	{
-		obj->data.pl.transform = *new_mtx;
-		obj->data.pl.inv_mtx = mtx4_inverse(&obj->data.pl.transform);
-		obj->data.pl.tr_inv_mtx = transpose(&obj->data.pl.inv_mtx);
-	}
-	else
-	{
-		obj->data.cl.transform = *new_mtx;
-		obj->data.cl.inv_mtx = mtx4_inverse(&obj->data.cl.transform);
-		obj->data.cl.tr_inv_mtx = transpose(&obj->data.cl.inv_mtx);
-	}
-}
-
-t_matirial	create_material(t_vcpnt	*color, double diffuse, double specular)
-{
-	t_matirial	mat;
-
-	mat.color = *color;
-	mat.diffuse = diffuse;
-	mat.specular = specular;
-	return (mat);
-}
-
-

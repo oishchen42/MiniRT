@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   op_obj_3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/11 20:54:54 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/16 21:08:25 by tdietz-r         ###   ########.fr       */
+/*   Created: 2025/12/16 16:51:14 by tdietz-r          #+#    #+#             */
+/*   Updated: 2025/12/16 16:51:37 by tdietz-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-void	render(t_world *w, t_camera *cm, mlx_image_t *img)
+t_vcpnt	normal_at(t_obj *obj, t_vcpnt *pnt)
 {
-	int		y;
-	int		x;
-	t_ray	ray;
-	t_vcpnt	color;
+	t_vcpnt	wrld_normal;
 
-	y = -1;
-	while (++y < cm->vsize)
-	{
-		x = -1;
-		while (++x < cm->hsize)
-		{
-			ray = ray_for_pixel(cm, x, y);
-			color = world_inter(w, &ray);
-			mlx_put_pixel(img, x, y, vcpnt_2_rgba(&color));
-		}
-	}
+	if (obj->type == SPHERE)
+		wrld_normal = normal_sphere(&obj->data.sp, pnt);
+	else if (obj->type == PLANE)
+		wrld_normal = normal_pl(&obj->data.pl);
+	else
+		wrld_normal = normal_cl(&obj->data.cl, pnt);
+	return (wrld_normal);
 }

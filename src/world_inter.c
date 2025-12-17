@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world_inter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 07:50:53 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/13 21:11:46 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/16 21:04:37 by tdietz-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,25 @@ void	record_hit(t_hit *hit, t_inter *inter, int *pos)
 	}
 }
 
+// Timo updated function. reduced to 5 var. Deleted var res & obj.
+// Directly return value of shade_hit (insted of seperate var res) and 
+// obj operation "obj = (t_obj *)cp_obj->content" is done in if codition 
 t_vcpnt	world_inter(t_world *wrld, t_ray *r)
 {
 	t_inter	inter[MAX_INTER];
-	t_list	*cp_obj = wrld->objs;
+	t_list	*cp_obj;
 	int		inter_count;
-	t_obj	*obj;
 	t_hit	hit;
 	t_prlgt	pre_light;
 
 	inter_count = 0;
 	hit.min = INT_MAX;
 	hit.pos = -1;
+	cp_obj = wrld->objs;
 	while (cp_obj && inter_count < MAX_INTER / 2) // TODO do smth with MAX_INTER
 	{
-		obj = (t_obj *)cp_obj->content;
 		//printf("THE OBJECT WE ARE WORKING WITH: %d\n", obj->n);
-		if (inter_obj(obj, r, inter, &inter_count))
+		if (inter_obj((t_obj *)cp_obj->content, r, inter, &inter_count))
 			record_hit(&hit, inter, &inter_count);
 		cp_obj = cp_obj->next;
 	}
@@ -72,10 +74,9 @@ t_vcpnt	world_inter(t_world *wrld, t_ray *r)
 	{
 		pre_light = pre_calc(wrld, &hit, r);
 		//printf("we are hree\n");
-		t_vcpnt res = shade_hit(wrld, &pre_light);
-		return (res);
+		return (shade_hit(wrld, &pre_light));
 	}
-	return ((t_vcpnt){0,0,0,1});
+	return ((t_vcpnt){0, 0, 0, 1});
 }
 
 //int	main()
