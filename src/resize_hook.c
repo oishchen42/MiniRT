@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 22:55:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/17 22:59:36 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/19 01:24:27 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ void	resize_hook(int32_t width, int32_t height, void *param)
 	app->camera.hsize = (double)width;
 	app->camera.vsize = (double)height;
 	setup_camera(&app->camera, app->camera.hsize, app->camera.vsize, app->camera.field_of_view);
-	render(&app->world, &app->camera, app->img);
+	render(app, &app->camera, app->img);
 }

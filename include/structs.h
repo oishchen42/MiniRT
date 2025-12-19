@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 21:27:51 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/17 23:41:23 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/18 23:18:47 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,14 @@ typedef enum e_type
 	CYLINDER,
 }	t_type;
 
+typedef struct s_atod
+{
+	double	res;
+	double	factor;
+	int		sign;
+	int		i;
+}	t_atod;
+
 typedef struct s_material
 {
 	t_vcpnt	color;
@@ -86,6 +94,7 @@ typedef struct s_material
 typedef struct s_light
 {
 	t_vcpnt	pnt_light;
+	double	ratio;
 	t_vcpnt	intens;
 }	t_light;
 
@@ -104,6 +113,7 @@ typedef struct s_plane
 	t_mtx4		transform;
 	t_mtx4		inv_mtx;
 	t_mtx4		tr_inv_mtx;
+	t_vcpnt		orig;
 	t_material	mat;
 }	t_plane;
 
@@ -211,8 +221,76 @@ typedef struct s_prlgt
 	t_vcpnt	res;
 }	t_prlgt;
 
+typedef struct s_counters
+{
+	int amb_count;
+	int cam_count;
+	int light_count;
+} t_counters;
+
+typedef struct s_cm_pr
+{
+	t_vcpnt	dir_vec;
+	double	fov_deg;
+}	t_cm_pr;
+
+typedef struct s_lgt_pr
+{
+	t_vcpnt	pos;
+	t_vcpnt	color;
+	double	ratio;
+	t_light	*new_light;
+}	t_lgt_pr;
+
+typedef struct s_sp_pr
+{
+	t_sphere	sp;
+	t_obj		*obj;
+	double		dia;
+	double		radi;
+	t_mtx4		trans_mtx;
+	t_mtx4		scale_mtx;
+	t_mtx4		res;
+	t_vcpnt		scale_vec;
+	t_vcpnt		mat_clr;
+}	t_sp_pr;
+
+typedef struct s_pl_pr
+{
+	t_obj		*obj;
+	t_mtx4		res;
+	t_vcpnt		orig;
+	t_vcpnt		norm;
+	t_vcpnt		mat_clr;
+	t_mtx4		rot_mtx;
+	t_mtx4		trans_mtx;
+}	t_pl_pr;
+
+typedef struct s_cl_pr
+{
+	t_vcpnt	mat_clr;
+	t_obj	*obj;
+	t_vcpnt	norm;
+	double	dia;
+	double	height;
+	t_mtx4	trans_mtx;
+	t_mtx4	rot_mtx;
+	t_vcpnt	scale_vec;
+	t_mtx4	scale_mtx;
+	t_mtx4	temp;
+	t_mtx4	res;
+}	t_cl_pr;
+
+typedef struct s_ambient
+{
+	double	ratio;  // The 0.2
+	t_vcpnt	color;  // The 255,255,255
+	int		is_amb;
+}	t_ambient;
+
 typedef struct s_master
 {
+	t_ambient	amb;
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	t_world		world;
@@ -223,6 +301,13 @@ typedef struct s_master
 	bool		is_rotating;
 	double		prev_mouse_x;
 	double		prev_mouse_y;
+	int			qty_amb;
+	int			qty_cam;
+	int			qty_light;
+	t_counters	counts;
+	char		**split;
+	char		*cur_line;
+	int			o_fd;
 }	t_master;
 
 typedef struct s_mov_supp

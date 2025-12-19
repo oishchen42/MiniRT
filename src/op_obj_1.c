@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/17 23:25:10 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/19 01:05:01 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	material(t_material	*mat)
 	mat->color = (t_vcpnt){0.3, 0.4, 0.9, 0};
 }
 
-t_obj	*sphere(t_material *mat, t_vcpnt *orig)
+t_obj	*sphere(t_vcpnt *clr)
 {
 	t_obj	*obj;
 
@@ -45,14 +45,9 @@ t_obj	*sphere(t_material *mat, t_vcpnt *orig)
 	if (!obj)
 		return (NULL);
 	obj->type = SPHERE;
-	if (orig)
-		obj->data.sp.orig = *orig;
-	else
-		obj->data.sp.orig = (t_vcpnt){0, 0, 0, 1};
-	if (!mat)
-		material(&obj->data.sp.mat);
-	else
-		obj->data.sp.mat = *mat;
+	obj->data.sp.orig = (t_vcpnt){0, 0, 0, 1};
+	obj->data.sp.mat = init_mat();
+	obj->data.sp.mat.color = *clr;
 	get_id_mtx4(&obj->data.sp.transform);
 	obj->data.sp.inv_mtx = mtx4_inverse(&obj->data.sp.transform);
 	obj->data.sp.tr_inv_mtx = transpose(&obj->data.sp.inv_mtx);
@@ -61,7 +56,7 @@ t_obj	*sphere(t_material *mat, t_vcpnt *orig)
 	return (obj);
 }
 
-t_obj	*plane(void)
+t_obj	*plane(t_vcpnt *clr)
 {
 	t_obj	*obj;
 
@@ -77,10 +72,11 @@ t_obj	*plane(void)
 	obj->data.pl.mat.diffuse = 0.9;
 	obj->data.pl.mat.specular = 0.1;
 	obj->data.pl.mat.shiness = 200;
+	obj->data.pl.mat.color = *clr;
 	return (obj);
 }
 
-t_obj	*cylinder(t_material *mat, t_vcpnt *orig, double min, double max)
+t_obj	*cylinder(t_vcpnt *clr, t_vcpnt *orig, double min, double max)
 {
 	t_obj	*obj;
 
@@ -95,10 +91,8 @@ t_obj	*cylinder(t_material *mat, t_vcpnt *orig, double min, double max)
 		obj->data.cl.orig = *orig;
 	else
 		obj->data.cl.orig = (t_vcpnt){0, 0, 0, 1};
-	if (!mat)
-		material(&obj->data.cl.mat);
-	else
-		obj->data.cl.mat = *mat;
+	obj->data.cl.mat = init_mat();
+	obj->data.cl.mat.color = *clr;
 	obj->data.cl.min = min;
 	obj->data.cl.max = max;
 	obj->data.cl.is_closed = true;

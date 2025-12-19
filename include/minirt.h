@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 21:27:43 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/17 23:40:44 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/19 01:09:48 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 # define MINIRT_H
 
 # include "structs.h"
-
-/* Function Prototypes */
-
-int			is_rt(char *str);
-t_test		*get_value(char *file);
 
 /* Rays */
 int			inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
@@ -95,19 +90,19 @@ t_vcpnt		normal_pl(t_plane *pl);
 t_vcpnt		normal_sphere(t_sphere *obj, t_vcpnt *pnt);
 t_vcpnt		normal_cl(t_cl *cl, t_vcpnt *world_pnt);
 t_type		get_obj(t_obj *obj);
-t_obj		*sphere(t_material *mat, t_vcpnt *orig);
+t_obj		*sphere(t_vcpnt *clr);
 t_material	create_material(t_vcpnt *color, double diffuse, double specular);
-t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color);
-t_obj		*plane(void);
-t_obj		*cylinder(t_material *mat, t_vcpnt *orig, double min, double max);
+t_light		*create_light(t_vcpnt *pnt, t_vcpnt *color, double ratio);
+t_obj		*plane(t_vcpnt *clr);
+t_obj		*cylinder(t_vcpnt *clr, t_vcpnt *orig, double min, double max);
 void		resize_cm(t_camera *cm, t_vcpnt	*new_from);
-int			check_cup(t_ray *ray, double t);
+int			check_cap(t_ray *ray, double t);
 
 /* World Functions */
 t_world		init_world(void);
 void		wadd_obj(t_world *world, t_light *light, t_obj *obj);
 void		wclear_world(t_world *world);
-t_vcpnt		world_inter(t_world *wrld, t_ray *r);
+t_vcpnt		world_inter(t_master *app, t_ray *r);
 
 /* Camera Functions */
 void		setup_camera(t_camera *c, double hsize, double vsize, double fov);
@@ -118,29 +113,65 @@ t_mtx4		view_transform(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up);
 /* Hooks & Rendering */
 void		controls_hook(void *param);
 void		render_hook(void *param);
-void		render(t_world *w, t_camera *cm, mlx_image_t *img);
+void		render(t_master *app, t_camera *cm, mlx_image_t *img);
 
 //light
-t_prlgt	pre_calc(t_world *wrld, t_hit *hit, t_ray *r);
-void	record_hit(t_hit *hit, t_inter *inter, int *pos);
-int		is_inter_shd(t_world *wrld, t_ray *r, double dis);
-t_vcpnt	lighting(t_material *mat, t_light *light, t_prlgt *l);
-int		is_shadowed(t_world *wrld, t_vcpnt *pnt);
-void	sp_pre_light(t_prlgt *pr, t_light *l);
-void	sp_pre_plane(t_prlgt *pr, t_light *l);
-
-// undefinable stuff
-void	ft_swap(double *t1, double *t2);
+t_prlgt		pre_calc(t_master *app, t_hit *hit, t_ray *r);
+void		record_hit(t_hit *hit, t_inter *inter, int *pos);
+int			is_inter_shd(t_world *wrld, t_ray *r, double dis);
+t_vcpnt		lighting(t_material *mat, t_light *light, t_prlgt *l);
+int			is_shadowed(t_world *wrld, t_vcpnt *pnt);
+void		sp_pre_light(t_master *app, t_prlgt *pr, t_light *l);
+void		sp_pre_plane(t_master *app, t_prlgt *pr, t_light *l);
+void		sp_pre_cylinder(t_master *app, t_prlgt *pr, t_light *l);
+t_material	init_mat();
+t_vcpnt		shade_hit(t_world *w, t_prlgt *l);
 
 /* MLX_control */
-// mlx control
-void	mlx_hook_keys(mlx_key_data_t keydata, void *master);
-void	key_rotate(t_camera *cam, double yaw_speed, double pitch_speed);
-t_mtx4	rotate_any_axis(t_vcpnt axis, double angle);
-t_mtx4	rotate_any_axis(t_vcpnt axis, double angle);
-void	mlx_hook_keys(mlx_key_data_t keydata, void *master);
-void	mlx_hook_keys_supp(t_master *param, int key);
-void	rotate_camera(t_master *param, int key);
-void	resize_hook(int32_t width, int32_t height, void *param);
+void		mlx_hook_keys(mlx_key_data_t keydata, void *master);
+void		key_rotate(t_camera *cam, double yaw_speed, double pitch_speed);
+t_mtx4		rotate_any_axis(t_vcpnt axis, double angle);
+t_mtx4		rotate_any_axis(t_vcpnt axis, double angle);
+void		mlx_hook_keys(mlx_key_data_t keydata, void *master);
+void		mlx_hook_keys_supp(t_master *param, int key);
+void		rotate_camera(t_master *param, int key);
+void		resize_hook(int32_t width, int32_t height, void *param);
+
+/*Parsing*/
+int			parse_data(t_master *app, char *file);
+int			parse_line(t_master *app, char *line);
+int			check_extension(char *filename);
+t_mtx4		get_rotation_matrix(t_vcpnt *orient);
+int			check_extension(char *filename);
+int			check_main_obj(t_master *app);
+
+/*Parsing objects*/
+int			pr_amb(t_master *app, char **tokens);
+int			parse_2camera(t_master *app, char **tokens, t_cm_pr *pr_cm);
+int 		pr_cm(t_master *app, char **tokens);
+int			parse_light(t_master *app, char **tokens);
+int			pr_sp(t_master *app, char **tokens);
+int			pr_pl(t_master *app, char **tokens);
+int			pr_cl(t_master *app, char **tokens);
+
+/*Parsing support functions*/
+int			check_normalized(t_vcpnt *vec);
+void		record_cl_values(t_cl_pr cl_pr);
+int			valid_str(char *str);
+
+/*Support libft functons*/
+void		from_high_2_low(t_vcpnt *vcpnt);
+int			get_vector(char *str, t_vcpnt *vec, double is_pnt);
+int			check_tokens(char **split);
+t_master	init_master();
+void		ft_swap(double *t1, double *t2);
+void		free_split(char **split);
+t_material	init_mat();
+double		ft_atod(char *str);
+
+/*Cleanups && errors_prints*/
+int			prnt_err(char *str);
+int			p_err(char *msg, t_master *app, bool is_exit_nrm);
+int32_t		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 
 #endif

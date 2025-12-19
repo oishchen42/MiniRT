@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world_inter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 07:50:53 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/16 21:04:37 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/19 01:23:49 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,24 @@ t_vcpnt	shade_hit(t_world *w, t_prlgt *l)
 		return (l->ambient);
 	if (obj->type == SPHERE)
 		return (lighting(&obj->data.sp.mat, light, l));
-	else
+	else if (obj->type == PLANE)
 		return (lighting(&obj->data.pl.mat, light, l));
+	else
+		return (lighting(&obj->data.cl.mat, light, l));
 }
 
 void	record_hit(t_hit *hit, t_inter *inter, int *pos)
 {
 	int	i;
 
-	//printf("OUR POS: %d\n", *pos);
 	i = -1;
 	while (++i < *pos)
 	{
-		if (inter[i].t >= 0.0 && inter[i].t < hit->min) // do we need it to be >= 0.0 or > 0
+		if (inter[i].t >= 0.0 && inter[i].t < hit->min)
 		{
 			hit->min = inter[i].t;
-			//printf("CURRENT min is: %.1f\n", hit->min);
 			hit->pos = i;
-			//printf("hit->pos is: %d\n", hit->pos);
 			hit->obj = inter[i].obj;
-			//printf("RECORDED OBJ: %d\n", hit->obj->n);
 		}
 	}
 }
@@ -51,7 +49,7 @@ void	record_hit(t_hit *hit, t_inter *inter, int *pos)
 // Timo updated function. reduced to 5 var. Deleted var res & obj.
 // Directly return value of shade_hit (insted of seperate var res) and 
 // obj operation "obj = (t_obj *)cp_obj->content" is done in if codition 
-t_vcpnt	world_inter(t_world *wrld, t_ray *r)
+t_vcpnt	world_inter(t_master *app, t_ray *r)
 {
 	t_inter	inter[MAX_INTER];
 	t_list	*cp_obj;
@@ -62,19 +60,18 @@ t_vcpnt	world_inter(t_world *wrld, t_ray *r)
 	inter_count = 0;
 	hit.min = INT_MAX;
 	hit.pos = -1;
-	cp_obj = wrld->objs;
-	while (cp_obj && inter_count < MAX_INTER / 2) // TODO do smth with MAX_INTER
+	cp_obj = app->world.objs;
+	while (cp_obj && inter_count < MAX_INTER / 2)
 	{
-		//printf("THE OBJECT WE ARE WORKING WITH: %d\n", obj->n);
 		if (inter_obj((t_obj *)cp_obj->content, r, inter, &inter_count))
 			record_hit(&hit, inter, &inter_count);
 		cp_obj = cp_obj->next;
 	}
 	if (hit.pos != -1)
 	{
-		pre_light = pre_calc(wrld, &hit, r);
+		pre_light = pre_calc(app, &hit, r);
 		//printf("we are hree\n");
-		return (shade_hit(wrld, &pre_light));
+		return (shade_hit(&app->world, &pre_light));
 	}
 	return ((t_vcpnt){0, 0, 0, 1});
 }

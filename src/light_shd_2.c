@@ -3,17 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   light_shd_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 19:47:57 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/16 21:18:17 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/19 00:55:36 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-void	sp_pre_cylinder(t_prlgt *pr, t_light *l)
+void	sp_pre_cylinder(t_master *app, t_prlgt *pr, t_light *l)
 {
+	t_vcpnt scene_amb;
+
+	scene_amb = vec_scale(&app->amb.color, app->amb.ratio);
 	pr->eff_clr = vec_muls(&pr->obj->data.cl.mat.color, &l->intens);
 	pr->lightv = vec_subs(&l->pnt_light, &pr->hit_pnt);
 	pr->lightv_nrm = vec_norm(&pr->lightv);
@@ -23,12 +26,12 @@ void	sp_pre_cylinder(t_prlgt *pr, t_light *l)
 	pr->light_dot_nrm = vec_dot(&pr->lightv_nrm, &pr->normv);
 }
 
-t_prlgt	pre_calc(t_world *wrld, t_hit *hit, t_ray *r)
+t_prlgt	pre_calc(t_master *app, t_hit *hit, t_ray *r)
 {
 	t_prlgt	pre_light;
 	t_light	*light;
 
-	light = (t_light *)wrld->lights->content;
+	light = (t_light *)app->world.lights->content;
 	pre_light.t = hit->min;
 	pre_light.obj = hit->obj;
 	pre_light.eyev = vec_scale(&r->vec, -1);
@@ -41,11 +44,11 @@ t_prlgt	pre_calc(t_world *wrld, t_hit *hit, t_ray *r)
 		pre_light.normv = vec_scale(&pre_light.normv, -1);
 	}
 	if (pre_light.obj->type == SPHERE)
-		sp_pre_light(&pre_light, light);
+		sp_pre_light(app, &pre_light, light);
 	else if (pre_light.obj->type == PLANE)
-		sp_pre_plane(&pre_light, light);
+		sp_pre_plane(app, &pre_light, light);
 	else
-		sp_pre_cylinder(&pre_light, light);
+		sp_pre_cylinder(app, &pre_light, light);
 	return (pre_light);
 }
 
@@ -95,4 +98,15 @@ int	is_shadowed(t_world *wrld, t_vcpnt *pnt)
 			return (true);
 	}
 	return (false);
+}
+
+t_material	init_mat()
+{
+	t_material	mat;
+
+	mat.ambient = 0.1;
+	mat.diffuse = 0.9;
+	mat.specular = 0.9;
+	mat.shiness = 200.0;
+	return (mat);
 }

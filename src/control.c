@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   control.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 17:52:20 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/16 21:29:20 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/19 00:53:29 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	render_hook(void *param)
 		while (++i < app->camera.hsize)
 		{
 			ray = ray_for_pixel(&app->camera, i, j);
-			color = world_inter(&app->world, &ray);
+			color = world_inter(app, &ray);
 			//printf("we are in the render hook\n");
 			mlx_put_pixel(app->img, i, j, vcpnt_2_rgba(&color));
 		}

@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:24:24 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/17 23:27:14 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/19 00:07:01 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	check_cap(t_ray *ray, double t)
 	x = ray->pnt.vp[0] + t * ray->vec.vp[0];
 	z = ray->pnt.vp[2] + t * ray->vec.vp[2];
 	return (pow(x, 2.0) + pow(z, 2.0) <= 1);
-} // TODO finish the cup logic
+}
 
 void	inter_cap(t_obj *cl, t_ray *r, t_inter *i, int *count)
 {

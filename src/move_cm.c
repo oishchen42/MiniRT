@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 23:52:50 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/17 23:43:19 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/19 01:26:14 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	mlx_hook_keys(mlx_key_data_t keydata, void *master)
 			mlx_hook_keys_supp(param, keydata.key);
 		setup_camera(&param->camera, param->camera.hsize,param->camera.vsize, param->camera.field_of_view);
 		printf("Re-rendering...\n");
-		render(&param->world, &param->camera, param->img);
+		render(param, &param->camera, param->img);
 	}
 }
 
