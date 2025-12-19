@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:24:24 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 00:07:01 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/19 03:18:04 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	inter_cap(t_obj *cl, t_ray *r, t_inter *i, int *count)
 {
 	double	t;
 
-	if (cl->data.cl.is_closed != true || r->vec.vp[1] < EPSILON)
+	if (cl->data.cl.is_closed != true || fabs(r->vec.vp[1]) < EPSILON)
 		return ;
 	t = (cl->data.cl.min - r->pnt.vp[1]) / r->vec.vp[1];
 	if (check_cap(r, t))
