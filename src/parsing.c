@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 14:05:08 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 01:59:16 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/19 03:07:22 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,70 @@ int	check_extension(char *filename)
 	return (1);
 }
 
-int	parse_line(t_master *app, char *line)
+int	parse_figures(t_master *app, char **tokens)
+{
+	if (ft_strncmp(tokens[0], "sp", 3) == 0)
+	{
+		if (!pr_sp(app, tokens))
+			p_err("Spotted wrong input in Sphere", app, false);
+	}
+	else if (ft_strncmp(tokens[0], "pl", 3) == 0)
+	{
+		if (!pr_pl(app, tokens))
+			p_err("Spotted wrong input in Plane", app, false);
+	}
+	else if (ft_strncmp(tokens[0], "cy", 3) == 0)
+	{
+		if (!pr_cl(app, tokens))
+			p_err("Spotted wrong input in Cylinder", app, false);
+	}
+	else
+	{
+		p_err("Unknown identifier in scene file", app, false);
+	}
+	return (1);
+}
+
+int	parse_mobjects(t_master *app, char **tokens)
+{
+	if (ft_strncmp(tokens[0], "A", 2) == 0)
+	{
+		if (!pr_amb(app, tokens))
+			p_err("Spotted wrong input in Ambient", app, false);
+		else
+			return (1);
+	}
+	else if (ft_strncmp(tokens[0], "C", 2) == 0)
+	{
+		if (!pr_cm(app, tokens))
+			p_err("Spotted wrong input in Camera", app, false);
+		else
+			return (1);
+	}
+	else if (ft_strncmp(tokens[0], "L", 2) == 0)
+	{
+		if (!parse_light(app, tokens))
+			p_err("Spotted wrong input in Light", app, false);
+		else
+			return (1);
+	}
+	return (0);
+}
+
+int parse_line(t_master *app, char *line)
 {
 	char	**tokens;
 
 	tokens = ft_split(line, ' ');
-	app->split = tokens;
-	app->cur_line = line;
 	if (!tokens || !tokens[0])
-		return (free_split(tokens), 1);
-	if (ft_strncmp(tokens[0], "A", 2) == 0)
-		return (pr_amb(app, tokens));
-	else if (ft_strncmp(tokens[0], "C", 1) == 0)
-		return (pr_cm(app, tokens));
-	else if (ft_strncmp(tokens[0], "L", 1) == 0 && !parse_light(app, tokens))
-		p_err("Spotted wrong input", app, false);
-	else if (ft_strncmp(tokens[0], "sp", 2) == 0 && !pr_sp(app, tokens))
-		p_err("Spotted wrong input", app, false);
-	else if (ft_strncmp(tokens[0], "pl", 2) == 0 && !pr_pl(app, tokens))
-		p_err("Spotted wrong input", app, false);
-	else if (ft_strncmp(tokens[0], "cy", 2) == 0 && !pr_cl(app, tokens))
-		p_err("Spotted wrong input", app, false);
-	else
-		p_err("Unknown identifier in scene file", app, false);
+		return (prnt_err("Malloc failed in parse_line"));
+	printf("cur token is: %s\n", tokens[0]);
+	app->split = tokens;
+	if (!parse_mobjects(app, tokens))
+	{
+		if (!parse_figures(app, tokens))
+			return (0);
+	}
 	free_split(tokens);
 	return (1);
 }
@@ -54,7 +95,10 @@ int	parse_line(t_master *app, char *line)
 int	check_main_obj(t_master *app)
 {
 	if (app->counts.amb_count != 1)
+	{
+		printf("ambinet n: %d\n", app->counts.amb_count);
 		return (prnt_err("Error: Scene must have exactly one Ambient Light (A)"));
+	}
 	if (app->counts.cam_count != 1)
 		return (prnt_err("Error: Scene must have exactly one Camera (C)"));
 	if (app->counts.light_count != 1)
@@ -67,6 +111,7 @@ int	parse_data(t_master *app, char *file)
 {
 	int		fd;
 	char	*line;
+	size_t	len;
 
 	if (!check_extension(file))
 		p_err("Invalid file extension", NULL, false);
@@ -78,9 +123,13 @@ int	parse_data(t_master *app, char *file)
 	while (1)
 	{
 		line = get_next_line(fd);
+		len = ft_strlen(line);
+		if (len > 0 && line[len - 1] == '\n')
+			line[len - 1] = '\0';
+		app->cur_line = line;
 		if (!line)
 			break;
-		if (line[0] != '\n') 
+		if (line[0] != '\0') 
 			if (!parse_line(app, line))
 				break;
 		free(line);
@@ -89,6 +138,7 @@ int	parse_data(t_master *app, char *file)
 	close(fd);
 	if (!check_main_obj(app))
 		p_err("Missing mandatory objects", app, true);
+	printf("all good\n");
 	return (1);
 }
 
@@ -97,6 +147,7 @@ int	pr_amb(t_master *app, char **tokens)
 	if (app->counts.amb_count > 0)
 		p_err("Duplicate Ambient Light defined", app, false);
 	app->counts.amb_count++;
+	printf("here in ambinet\n");
 	if (!tokens[1] || !tokens[2] || tokens[3])
 		p_err("Invalid Ambient Light arguments", app, false);
 	if (!valid_str(tokens[1]))
@@ -169,6 +220,7 @@ int	parse_light(t_master *app, char **tokens)
 	if (!get_vector(tokens[3], &n_light.color, 0.0))
 		return (prnt_err("Invalid Light Color format"));
 	from_high_2_low(&n_light.color);
+	print_vpnt4(&n_light.color);
 	n_light.new_light = create_light(&n_light.pos, &n_light.color, n_light.ratio);
 	if (!n_light.new_light)
 		return (prnt_err("Malloc err"));
@@ -184,6 +236,7 @@ int		pr_sp(t_master *app, char **tokens)
 		return (prnt_err("Invalid Sphere arguments"));
 	if (!get_vector(tokens[3], &sp_pr.mat_clr, 0.0))
 		return (prnt_err("Invalid Sphere Color"));
+	from_high_2_low(&sp_pr.mat_clr);
 	sp_pr.obj = sphere(&sp_pr.mat_clr);
 	if (!sp_pr.obj)
 		return (prnt_err("Malloc failed"));
@@ -196,7 +249,6 @@ int		pr_sp(t_master *app, char **tokens)
 	if (sp_pr.dia < 0.0)
 		return (prnt_err("Sphere diameter cannot be negative"));
 	sp_pr.radi = sp_pr.dia / 2.0;
-	from_high_2_low(&sp_pr.mat_clr);
 	sp_pr.trans_mtx = trans4(&sp_pr.sp.orig);
 	sp_pr.scale_vec = (t_vcpnt){sp_pr.radi, sp_pr.radi, sp_pr.radi, 0};
 	sp_pr.scale_mtx = scale4(&sp_pr.scale_vec);
@@ -227,7 +279,11 @@ int		pr_pl(t_master *app, char **tokens)
 	if (!tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
 		return (prnt_err("Invalid Plane arguments"));
 	if (!get_vector(tokens[3], &pl_pr.mat_clr, 0.0))
+	{
+		printf("token[3] in plane: |%s|\n", tokens[3]);
 		return (prnt_err("Invalid Plane Color"));
+	}
+	from_high_2_low(&pl_pr.mat_clr);
 	pl_pr.obj = plane(&pl_pr.mat_clr);
 	if (!pl_pr.obj)
 		return (prnt_err("Malloc failed"));

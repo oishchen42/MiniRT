@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 17:30:49 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 01:36:40 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/19 03:02:52 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,38 @@ char	*get_filename(char *str)
 	return (res + 1);
 }
 
+void	print_obj_color(t_world *wrld)
+{
+	t_list	*cp_obj;
+	t_obj	*obj;
+
+	cp_obj = wrld->objs;
+	while (cp_obj)
+	{
+		obj = cp_obj->content;
+		printf("cur obj: ");
+		if (obj->type == SPHERE)
+		{
+			printf("S\n");
+			printf("color is: ");
+			print_vpnt4(&obj->data.sp.mat.color);
+		}
+		if (obj->type == PLANE)
+		{
+			printf("PL\n");
+			printf("color is: ");
+			print_vpnt4(&obj->data.pl.mat.color);
+		}
+		if (obj->type == CYLINDER)
+		{
+			printf("CL\n");
+			printf("color is: ");
+			print_vpnt4(&obj->data.cl.mat.color);
+		}
+		cp_obj = cp_obj->next;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	char		*str;
@@ -94,8 +126,12 @@ int	main(int ac, char **av)
 	//str = get_filename(str);
 	//printf("my file name is: %s\n", str);
 	if (!parse_data(&app, str))
+		return (1);
+	printf("no segfault\n");
 	if (!init_mlx_hooks(&app))
 		return (prnt_err("MLX init failed"));
+	printf("no segfault\n");
+	print_obj_color(&app.world);
 	render(&app, &app.camera, app.img);
 	mlx_loop(app.mlx);
 	mlx_close_window(app.mlx);

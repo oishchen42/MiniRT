@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 02:12:16 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 01:45:06 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/19 02:51:55 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,12 @@ int	get_vector(char *str, t_vcpnt *vec, double is_pnt)
 
 void	from_high_2_low(t_vcpnt *vcpnt)
 {
+	//printf("before ");
+	//print_vpnt4(vcpnt);
 	vcpnt->vp[0] /= 255.0;
-	vcpnt->vp[0] /= 255.0;
-	vcpnt->vp[0] /= 255.0;
+	vcpnt->vp[1] /= 255.0;
+	vcpnt->vp[2] /= 255.0;
 	vcpnt->vp[3] = 1.0;
+	//printf("after ");
+	//print_vpnt4(vcpnt);
 }
