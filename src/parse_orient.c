@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 13:28:35 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 03:29:19 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 05:18:11 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ void	fill_mtx_xyz(t_mtx4 *res, t_vcpnt new_x, t_vcpnt new_y, t_vcpnt new_z)
 t_mtx4	get_rotation_matrix(t_vcpnt *orient)
 {
 	t_mtx4	res;
-	t_vcpnt new_y;
-	t_vcpnt new_x;
-	t_vcpnt new_z;
-	t_vcpnt guide;
+	t_vcpnt	new_y;
+	t_vcpnt	new_x;
+	t_vcpnt	new_z;
+	t_vcpnt	guide;
 
 	new_y = vec_norm(orient);
 	if (fabs(new_y.vp[0]) < EPSILON && fabs(new_y.vp[2]) < EPSILON)
 	{
 		get_id_mtx4(&res);
-		if (new_y.vp[1] < 0) 
+		if (new_y.vp[1] < 0)
 			res.mtx[1][1] = -1;
 		return (res);
 	}

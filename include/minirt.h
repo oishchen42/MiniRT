@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 21:27:43 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/20 01:44:10 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:03:07 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int			inter_obj(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
 int			inter_sp(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
 int			inter_cl(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count);
 void		get_inter(t_obj *obj, int count, double t, t_inter *inter);
+void		record_t12(t_supitr *itr);
 t_ray		ray_transform(t_ray *ray, t_mtx4 *mtx);
 
 /* Vector Operations */
@@ -124,7 +125,6 @@ int			is_shadowed(t_world *wrld, t_vcpnt *pnt);
 void		sp_pre_light(t_master *app, t_prlgt *pr, t_light *l);
 void		sp_pre_plane(t_master *app, t_prlgt *pr, t_light *l);
 void		sp_pre_cylinder(t_master *app, t_prlgt *pr, t_light *l);
-t_material	init_mat();
 t_vcpnt		shade_hit(t_world *w, t_prlgt *l);
 
 /* MLX_control */
@@ -148,7 +148,7 @@ int			check_main_obj(t_master *app);
 /*Parsing objects*/
 int			pr_amb(t_master *app, char **tokens);
 int			parse_2camera(t_master *app, char **tokens, t_cm_pr *pr_cm);
-int 		pr_cm(t_master *app, char **tokens);
+int			pr_cm(t_master *app, char **tokens);
 int			parse_light(t_master *app, char **tokens);
 int			pr_sp(t_master *app, char **tokens);
 int			pr_pl(t_master *app, char **tokens);
@@ -163,10 +163,10 @@ int			valid_str(char *str);
 void		from_high_2_low(t_vcpnt *vcpnt);
 int			get_vector(char *str, t_vcpnt *vec, double is_pnt);
 int			check_tokens(char **split);
-t_master	init_master();
+t_master	init_master(void);
 void		ft_swap(double *t1, double *t2);
 void		free_split(char **split);
-t_material	init_mat();
+t_material	init_mat(void);
 double		ft_atod(char *str);
 
 /*Cleanups && errors_prints*/

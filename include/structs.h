@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 21:27:51 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/20 02:10:45 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:02:20 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@
 # define EPSILON	0.00001
 
 /* Typedefs & Structs */
+
+typedef struct s_struct
+{
+	double	x;
+	double	y;
+	double	z;
+}	t_xyz;
 
 typedef struct s_vcpnt
 {
@@ -223,10 +230,10 @@ typedef struct s_prlgt
 
 typedef struct s_counters
 {
-	int amb_count;
-	int cam_count;
-	int light_count;
-} t_counters;
+	int	amb_count;
+	int	cam_count;
+	int	light_count;
+}	t_counters;
 
 typedef struct s_cm_pr
 {
@@ -283,8 +290,8 @@ typedef struct s_cl_pr
 
 typedef struct s_ambient
 {
-	double	ratio;  // The 0.2
-	t_vcpnt	color;  // The 255,255,255
+	double	ratio;
+	t_vcpnt	color;
 	int		is_amb;
 }	t_ambient;
 
@@ -320,15 +327,21 @@ typedef struct s_mov_supp
 	t_vcpnt	mv_vec;
 }	t_mov_supp;
 
-typedef struct	s_rotate
+typedef struct s_rotate
 {
-	t_vcpnt direction;
-	t_vcpnt temp_dir;
-	t_vcpnt right;
-	t_vcpnt world_up;
-	t_mtx4  rot_mtx;
-	double  dot;
+	t_vcpnt	direction;
+	t_vcpnt	temp_dir;
+	t_vcpnt	right;
+	t_vcpnt	world_up;
+	t_mtx4	rot_mtx;
+	double	dot;
 }	t_rotate;
 
+typedef struct s_parse
+{
+	int		fd;
+	char	*line;
+	size_t	len;
+}	t_parse;
 
 #endif

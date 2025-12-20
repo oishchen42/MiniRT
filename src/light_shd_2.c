@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 19:47:57 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/20 01:51:20 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 05:59:55 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	sp_pre_cylinder(t_master *app, t_prlgt *pr, t_light *l)
 {
-	t_vcpnt scene_amb;
+	t_vcpnt	scene_amb;
 
 	scene_amb = vec_scale(&app->amb.color, app->amb.ratio);
 	pr->eff_clr = vec_muls(&pr->obj->data.cl.mat.color, &l->intens);
@@ -64,10 +64,9 @@ int	is_inter_shd(t_world *wrld, t_ray *r, double dis)
 	cp_obj = wrld->objs;
 	hit.min = INT_MAX;
 	hit.pos = -1;
-	while (cp_obj && inter_count < MAX_INTER / 2) // TODO do smth with MAX_INTER
+	while (cp_obj && inter_count < MAX_INTER / 2)
 	{
 		obj = (t_obj *)cp_obj->content;
-		//printf("THE OBJECT WE ARE WORKING WITH: %d\n", obj->n);
 		if (inter_obj(obj, r, inter, &inter_count))
 			record_hit(&hit, inter, &inter_count);
 		cp_obj = cp_obj->next;
@@ -100,12 +99,12 @@ int	is_shadowed(t_world *wrld, t_vcpnt *pnt)
 	return (false);
 }
 
-t_material	init_mat()
+t_material	init_mat(void)
 {
 	t_material	mat;
 
 	mat.ambient = 0.9;
-	mat.diffuse = 0.7;
+	mat.diffuse = 0.9;
 	mat.specular = 0.7;
 	mat.shiness = 200.0;
 	return (mat);

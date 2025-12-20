@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_op_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:54:26 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/16 21:20:10 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/20 05:50:38 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_mtx4	mtx4_inverse(t_mtx4 *mtx)
 
 	i = -1;
 	determ = mtx4_determ(mtx);
-	//printf("determ: %f\n", determ);
 	if (determ != 0)
 	{
 		while (++i < SIZE_MTX4)
@@ -49,10 +48,6 @@ t_mtx4	mtx4_inverse(t_mtx4 *mtx)
 			while (++j < SIZE_MTX4)
 			{
 				sub_mtx = sub_mtx4(mtx, i, j);
-				//print_mtx3(&sub_mtx);
-				//printf("------------------------------\n");
-				//printf("my powerfor row: %d col: %d is: %f\n", i, j, pow(-1.0, (double)i + j));
-				//printf("my minor at[%d][%d] is: %.4f\n", i, j, minor);
 				mtx_inver.mtx[j][i] = mtx3_determ(&sub_mtx)
 					/ determ * pow(-1.0, (double)i + j);
 			}

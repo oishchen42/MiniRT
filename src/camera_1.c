@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:05:38 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/20 01:43:37 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:01:17 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ t_mtx4	mtx4_ornt(t_vcpnt *left, t_vcpnt *true_up, t_vcpnt *forward)
 	mtx.mtx[2][1] = -forward->vp[1];
 	mtx.mtx[2][2] = -forward->vp[2];
 	mtx.mtx[3][3] = 1.0;
-	//print_inv4(&mtx);
 	return (mtx);
 }
 

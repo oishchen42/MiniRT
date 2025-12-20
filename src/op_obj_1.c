@@ -6,27 +6,11 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/20 01:50:49 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 05:32:34 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
-
-//void	point_light(t_obj *obj, t_vcpnt *pnt, t_vcpnt *intens)
-//{
-//	//t_obj	figure;
-
-//	//figure = get_obj_type(obj); //delete
-//	if (!pnt)
-//		obj->data.sp.light.pnt_light = (t_vcpnt){0,0,0,0};
-//	else
-//		obj->data.sp.light.pnt_light = *pnt;
-//	if (!intens)
-//		obj->data.sp.light.intens = (t_vcpnt){1,1,1,0};
-//	else
-//		obj->data.sp.light.intens = *intens;
-
-//}
 
 void	material(t_material	*mat)
 {
@@ -104,7 +88,6 @@ t_type	get_obj(t_obj *obj)
 	t_type	obj_type;
 
 	(void)obj;
-	//if (obj->type == SPHERE)
 	obj_type = SPHERE;
 	return (obj_type);
 }

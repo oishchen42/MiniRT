@@ -13,11 +13,11 @@ SRC_FILES := camera_1.c camera_2.c control.c dummy_utils.c light_shd_1.c \
 			light_shd_2.c main.c math_utils.c matrix_op_1.c matrix_op_2.c \
 			op_mtx_mov_1.c op_mtx_mov_2.c op_mtx_mov_3.c op_obj_1.c \
 			op_obj_2.c op_obj_3.c op_ray_1.c op_ray_2.c parse_data.c \
-			parse_file.c parse_main.c parse_obj.c parse_orient.c \
-			parse_test.c parsing.c render.c test_main.c test_utils_1.c \
+			parse_main.c parse_obj.c parse_orient.c supp_libft.c\
+			parse_obj2.c parsing.c render.c test_utils_1.c \
 			test_utils_2.c test_utils_3.c vec_mtx_op.c vec_op_1.c \
 			vec_op_2.c world_inter.c world_utils.c resize_hook.c \
-			move_cm.c mouse_mv.c supp_libft.c
+			move_cm.c supp_libft.c default_supp.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_mtx_mov_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:43:20 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/16 21:21:36 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/20 05:32:47 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_mtx4	transpose(t_mtx4 *mtx)
 	return (trans);
 }
 
-t_mtx4	trans4(t_vcpnt *trans_vec) // translation
+t_mtx4	trans4(t_vcpnt *trans_vec)
 {
 	t_mtx4	mtx;
 

@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 02:12:16 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 02:51:55 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 05:13:39 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ void	free_split(char **split)
 	if (!split)
 		return ;
 	while (split[++i])
-		{
-			free(split[i]);
-			split[i] = NULL;
-		}
+	{
+		free(split[i]);
+		split[i] = NULL;
+	}
 	free(split);
 	split = NULL;
 }
@@ -109,16 +109,4 @@ int	get_vector(char *str, t_vcpnt *vec, double is_pnt)
 	vec->vp[3] = is_pnt;
 	free_split(tokens);
 	return (1);
-}
-
-void	from_high_2_low(t_vcpnt *vcpnt)
-{
-	//printf("before ");
-	//print_vpnt4(vcpnt);
-	vcpnt->vp[0] /= 255.0;
-	vcpnt->vp[1] /= 255.0;
-	vcpnt->vp[2] /= 255.0;
-	vcpnt->vp[3] = 1.0;
-	//printf("after ");
-	//print_vpnt4(vcpnt);
 }

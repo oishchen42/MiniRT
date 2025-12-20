@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec_op_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:13:50 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/16 16:14:03 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/20 05:14:20 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_vcpnt	vec_scale(t_vcpnt *vec, double scale)
 	res.vp[1] = vec->vp[1] * scale;
 	res.vp[2] = vec->vp[2] * scale;
 	res.vp[3] = 0;
-	//res.vp[3] = vec->vp[3] * scale;
 	return (res);
 }
 
@@ -29,7 +28,6 @@ void	vec_div(t_vcpnt *vec, double divisor)
 	vec->vp[0] = vec->vp[0] / divisor;
 	vec->vp[1] = vec->vp[1] / divisor;
 	vec->vp[2] = vec->vp[2] / divisor;
-	//vec->vp[3] = vec->vp[3] / divisor;
 }
 
 double	vec_dot(t_vcpnt *vec1, t_vcpnt *vec2)

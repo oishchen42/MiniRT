@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   resize_hook.c                                      :+:      :+:    :+:   */
+/*   default_supp.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/17 22:55:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/20 05:15:57 by oishchen         ###   ########.fr       */
+/*   Created: 2025/12/20 05:55:20 by oishchen          #+#    #+#             */
+/*   Updated: 2025/12/20 05:56:03 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-void	resize_hook(int32_t width, int32_t height, void *param)
+t_master	init_master(void)
 {
-	t_master	*app;
+	t_master	mstr;
 
-	app = (t_master *)param;
-	if (width == 0 || height == 0)
-		return ;
-	mlx_resize_image(app->img, width, height);
-	app->camera.hsize = (double)width;
-	app->camera.vsize = (double)height;
-	setup_camera(&app->camera, app->camera.hsize,
-		app->camera.vsize, app->camera.field_of_view);
-	render(app, &app->camera, app->img);
+	mstr.world = init_world();
+	mstr.split = NULL;
+	mstr.cur_line = NULL;
+	mstr.amb.is_amb = 0;
+	mstr.o_fd = -1;
+	mstr.counts.amb_count = 0;
+	mstr.counts.cam_count = 0;
+	mstr.counts.light_count = 0;
+	return (mstr);
 }

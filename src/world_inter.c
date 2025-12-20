@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 07:50:53 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 02:58:15 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 05:13:58 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_vcpnt	shade_hit(t_world *w, t_prlgt *l)
 	t_obj	*obj;
 	t_light	*light;
 
-	//obj = get_obj(w);
 	obj = l->obj;
 	light = (t_light *)w->lights->content;
 	if (is_shadowed(w, &l->over_pnt))
@@ -70,33 +69,7 @@ t_vcpnt	world_inter(t_master *app, t_ray *r)
 	if (hit.pos != -1)
 	{
 		pre_light = pre_calc(app, &hit, r);
-		//printf("we are hree\n");
 		return (shade_hit(&app->world, &pre_light));
 	}
 	return ((t_vcpnt){0, 0, 0, 1});
 }
-
-//int	main()
-//{
-//	t_obj	*cl;
-//	t_world	wrld;
-//	t_light	*light;
-//	t_vcpnt l_pnt;
-//	t_vcpnt	l_intens;
-
-//	wrld = init_world();
-//	l_pnt = (t_vcpnt){10, 10, -10, 1};
-//	l_intens = (t_vcpnt){1, 1, 1, 1};
-//	light = create_light(&l_pnt, &l_intens);
-//	wadd_obj(&wrld, light, NULL);
-
-//	cl = cylinder(NULL, NULL);
-//	wadd_obj(&wrld, NULL, cl);
-//	t_ray r;
-//	t_vcpnt	orig = {0.5, 0, -5, 1};
-//	t_vcpnt	vec = {0.1, 1, 1, 1};
-
-//	vec = vec_norm(&vec);
-//	r = (t_ray){orig, vec};
-//	world_inter(&wrld, &r);
-//}

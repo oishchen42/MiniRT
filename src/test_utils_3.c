@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_utils_3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:18:07 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/16 16:19:10 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/20 04:04:35 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	get_rgba(int r, int g, int b, int a)
 
 int	to_byte(double val)
 {
+	(void)val;
 	if (val < 0)
 		val = 0;
 	if (val > 1)

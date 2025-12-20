@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 14:21:47 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/20 01:55:00 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:00:13 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_light	*create_light(t_vcpnt *pnt, t_vcpnt *color, double ratio)
 
 void	sp_pre_light(t_master *app, t_prlgt *pr, t_light *l)
 {
-	t_vcpnt scene_amb;
+	t_vcpnt	scene_amb;
 
 	scene_amb = vec_scale(&app->amb.color, app->amb.ratio);
 	pr->ambient = vec_muls(&scene_amb, &pr->obj->data.sp.mat.color);
@@ -71,7 +71,7 @@ void	sp_pre_light(t_master *app, t_prlgt *pr, t_light *l)
 
 void	sp_pre_plane(t_master *app, t_prlgt *pr, t_light *l)
 {
-	t_vcpnt scene_amb;
+	t_vcpnt	scene_amb;
 
 	scene_amb = vec_scale(&app->amb.color, app->amb.ratio);
 	pr->ambient = vec_muls(&scene_amb, &pr->obj->data.pl.mat.color);

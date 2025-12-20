@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 20:51:43 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/19 00:55:08 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 05:51:51 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,36 @@
 //	light = create_light(&l_pnt, &l_int);
 //	wadd_obj(wrld, light, NULL);
 //	add_default_spheres(wrld);
+//}
+
+//void	print_obj_color(t_world *wrld)
+//{
+//	t_list	*cp_obj;
+//	t_obj	*obj;
+
+//	cp_obj = wrld->objs;
+//	while (cp_obj)
+//	{
+//		obj = cp_obj->content;
+//		printf("cur obj: ");
+//		if (obj->type == SPHERE)
+//		{
+//			printf("S\n");
+//			printf("color is: ");
+//			print_vpnt4(&obj->data.sp.mat.color);
+//		}
+//		if (obj->type == PLANE)
+//		{
+//			printf("PL\n");
+//			printf("color is: ");
+//			print_vpnt4(&obj->data.pl.mat.color);
+//		}
+//		if (obj->type == CYLINDER)
+//		{
+//			printf("CL\n");
+//			printf("color is: ");
+//			print_vpnt4(&obj->data.cl.mat.color);
+//		}
+//		cp_obj = cp_obj->next;
+//	}
 //}
