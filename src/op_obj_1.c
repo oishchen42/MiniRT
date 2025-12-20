@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:32:46 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 02:56:39 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 01:50:49 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 
 void	material(t_material	*mat)
 {
-	mat->ambient = 0.2;
-	mat->diffuse = 0.0;
+	mat->ambient = 0.9;
+	mat->diffuse = 0.9;
 	mat->shiness = 200;
 	mat->specular = 0.7;
 	mat->color = (t_vcpnt){0.3, 0.4, 0.9, 0};

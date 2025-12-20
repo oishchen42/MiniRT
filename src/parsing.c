@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 14:05:08 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 03:07:22 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 03:42:57 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,18 +145,18 @@ int	parse_data(t_master *app, char *file)
 int	pr_amb(t_master *app, char **tokens)
 {
 	if (app->counts.amb_count > 0)
-		p_err("Duplicate Ambient Light defined", app, false);
+		return (prnt_err("Duplicate Ambient Light defined"));
 	app->counts.amb_count++;
 	printf("here in ambinet\n");
 	if (!tokens[1] || !tokens[2] || tokens[3])
-		p_err("Invalid Ambient Light arguments", app, false);
+		return (prnt_err("Invalid Ambient Light arguments"));
 	if (!valid_str(tokens[1]))
-		return (free_split(tokens), 0);
+		return (0);
 	app->amb.ratio = ft_atod(tokens[1]);
 	if (app->amb.ratio < 0.0 || app->amb.ratio > 1.0)
-		p_err("Ambient ratio must be between 0.0 and 1.0", app, false);
+		return (prnt_err("Ambient ratio must be between 0.0 and 1.0"));
 	if (!get_vector(tokens[2], &app->amb.color, 0.0))
-		return (free_split(tokens), 0);
+		return (0);
 	from_high_2_low(&app->amb.color);
 	return (1);
 }
@@ -168,6 +168,8 @@ int	parse_2camera(t_master *app, char **tokens, t_cm_pr *pr_cm)
 	app->camera.from.vp[3] = 1.0;
 	if (!get_vector(tokens[2], &pr_cm->dir_vec, 0.0))
 		return (prnt_err("Invalid Camera Orientation"));
+	if (fabs(pr_cm->dir_vec.vp[0]) < EPSILON && fabs(pr_cm->dir_vec.vp[2]) < EPSILON)
+		pr_cm->dir_vec.vp[0] += 0.1;
 	pr_cm->dir_vec.vp[3] = 0.0;
 	pr_cm->dir_vec = vec_norm(&pr_cm->dir_vec);
 	app->camera.to = vec_add(&app->camera.from, &pr_cm->dir_vec);

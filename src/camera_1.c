@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:05:38 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/17 23:45:42 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 01:43:37 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,21 @@ t_mtx4	mtx4_ornt(t_vcpnt *left, t_vcpnt *true_up, t_vcpnt *forward)
 	return (mtx);
 }
 
-static t_mtx4	get_orientation_matrix(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up)
+static t_mtx4	get_orientation_matrix(t_vcpnt *from, t_vcpnt *to)
 {
 	t_vcpnt	fwd;
 	t_vcpnt	left;
 	t_vcpnt	true_up;
 	t_vcpnt	up_n;
+	t_vcpnt	up;
 
 	fwd = vec_subs(to, from);
 	fwd = vec_norm(&fwd);
-	up_n = vec_norm(up);
+	if (fabs(fwd.vp[0]) < EPSILON && fabs(fwd.vp[2]) < EPSILON)
+		up = (t_vcpnt){0, 0, 1, 0};
+	else
+		up = (t_vcpnt){0, 1, 0, 0};
+	up_n = vec_norm(&up);
 	left = vec_cross(&fwd, &up_n);
 	left = vec_norm(&left);
 	true_up = vec_cross(&left, &fwd);
@@ -48,14 +53,14 @@ static t_mtx4	get_orientation_matrix(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up)
 }
 
 //Timo updated function. To many declarations
-t_mtx4	view_transform(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up)
+t_mtx4	view_transform(t_vcpnt *from, t_vcpnt *to)
 {
 	t_mtx4	ornt;
 	t_mtx4	trans;
 	t_mtx4	res;
 	t_vcpnt	neg_from;
 
-	ornt = get_orientation_matrix(from, to, up);
+	ornt = get_orientation_matrix(from, to);
 	neg_from = vec_scale(from, -1);
 	trans = trans4(&neg_from);
 	res = mtxs_mult4(&ornt, &trans);

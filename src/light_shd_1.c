@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 14:21:47 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/18 20:43:50 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 01:55:00 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ void	sp_pre_plane(t_master *app, t_prlgt *pr, t_light *l)
 	t_vcpnt scene_amb;
 
 	scene_amb = vec_scale(&app->amb.color, app->amb.ratio);
+	pr->ambient = vec_muls(&scene_amb, &pr->obj->data.pl.mat.color);
 	pr->eff_clr = vec_muls(&pr->obj->data.pl.mat.color, &l->intens);
 	pr->lightv = vec_subs(&l->pnt_light, &pr->hit_pnt);
 	pr->lightv_nrm = vec_norm(&pr->lightv);
 	pr->over_pnt = vec_scale(&pr->normv, EPSILON);
 	pr->over_pnt = vec_add(&pr->hit_pnt, &pr->over_pnt);
-	pr->ambient = vec_scale(&pr->eff_clr, pr->obj->data.pl.mat.ambient);
 	pr->light_dot_nrm = vec_dot(&pr->lightv_nrm, &pr->normv);
 }

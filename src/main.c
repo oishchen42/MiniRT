@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 17:30:49 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 03:02:52 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 02:39:10 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,19 @@ int	p_err(char *msg, t_master *app, bool is_exit_nrm)
 	ft_putstr_fd(msg, STDERR_FILENO);
 	if (app)
 	{
+		printf("no segfault before the wclear world\n");
 		wclear_world(&app->world);
+		printf("no segfault after the wclear world\n");
 		if (app->split)
-			free_split(app->split);
+		{
+			//free_split(app->split);
+			printf("no sef fault after the free_split\n");
+		}
 		if (app->cur_line)
+		{
 			free(app->cur_line);
+			printf("no seg fault after the free line\n");
+		}
 		close(app->o_fd);
 	}
 	if (is_exit_nrm)

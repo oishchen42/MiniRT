@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 21:27:43 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/19 01:09:48 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 01:44:10 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ t_vcpnt		world_inter(t_master *app, t_ray *r);
 void		setup_camera(t_camera *c, double hsize, double vsize, double fov);
 t_ray		ray_for_pixel(t_camera *camera, int px, int py);
 void		camera(t_camera *camera);
-t_mtx4		view_transform(t_vcpnt *from, t_vcpnt *to, t_vcpnt *up);
+t_mtx4		view_transform(t_vcpnt *from, t_vcpnt *to);
 
 /* Hooks & Rendering */
 void		controls_hook(void *param);

@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 21:27:51 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/18 23:18:47 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 02:10:45 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,5 +319,16 @@ typedef struct s_mov_supp
 	t_vcpnt	wrld_up;
 	t_vcpnt	mv_vec;
 }	t_mov_supp;
+
+typedef struct	s_rotate
+{
+	t_vcpnt direction;
+	t_vcpnt temp_dir;
+	t_vcpnt right;
+	t_vcpnt world_up;
+	t_mtx4  rot_mtx;
+	double  dot;
+}	t_rotate;
+
 
 #endif

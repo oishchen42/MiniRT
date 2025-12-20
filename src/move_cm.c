@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 23:52:50 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/19 01:26:14 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 02:12:15 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,37 +141,28 @@ t_mtx4 rotate_any_axis(t_vcpnt axis, double angle)
 	return (m);
 }
 
-// Rotates the camera target around the position
 void key_rotate(t_camera *cam, double yaw_speed, double pitch_speed)
 {
-	t_vcpnt direction;
-	t_vcpnt right;
-	t_vcpnt world_up = {0, 1, 0, 0}; // Standard Up
-	t_mtx4  rot_mtx;
+	t_rotate	rt;
 
-	// 1. Get current direction vector
-	direction = vec_subs(&cam->to, &cam->from);
-
-	// 2. YAW (Left/Right) - Rotate around World Up (Y-axis)
+	rt.world_up = (t_vcpnt){0, 1, 0, 0};
+	rt.direction = vec_subs(&cam->to, &cam->from);
+	rt.direction = vec_norm(&rt.direction);
 	if (fabs(yaw_speed) > EPSILON)
 	{
-		// Use your existing rotation matrix helper (rotate_y or generic)
-		// If you don't have generic, standard rotate_y works for Yaw
-		rot_mtx = rotate_any_axis(world_up, yaw_speed); 
-		direction = mult_mtx4_vcpnt4(&rot_mtx, &direction);
+		rt.rot_mtx = rotate_any_axis(rt.world_up, yaw_speed);
+		rt.direction = mult_mtx4_vcpnt4(&rt.rot_mtx, &rt.direction);
 	}
-
-	// 3. PITCH (Up/Down) - Rotate around Local Right Vector
 	if (fabs(pitch_speed) > EPSILON)
 	{
-		// Calculate the "Right" vector relative to where we are looking
-		right = vec_cross(&direction, &world_up);
-		right = vec_norm(&right);
-
-		rot_mtx = rotate_any_axis(right, pitch_speed);
-		direction = mult_mtx4_vcpnt4(&rot_mtx, &direction);
+		rt.right = vec_cross(&rt.direction, &rt.world_up);
+		rt.right = vec_norm(&rt.right);
+		rt.rot_mtx = rotate_any_axis(rt.right, pitch_speed);
+		rt.temp_dir = mult_mtx4_vcpnt4(&rt.rot_mtx, &rt.direction);
+		rt.dot = vec_dot(&rt.temp_dir, &rt.world_up);
+		if (rt.dot < 0.99 && rt.dot > -0.99)
+			rt.direction = rt.temp_dir;
 	}
-
-	// 4. Apply the new direction
-	cam->to = vec_add(&cam->from, &direction);
+	rt.direction = vec_norm(&rt.direction);
+	cam->to = vec_add(&cam->from, &rt.direction);
 }

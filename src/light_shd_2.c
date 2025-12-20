@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 19:47:57 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/19 00:55:36 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 01:51:20 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ t_material	init_mat()
 {
 	t_material	mat;
 
-	mat.ambient = 0.1;
-	mat.diffuse = 0.9;
-	mat.specular = 0.9;
+	mat.ambient = 0.9;
+	mat.diffuse = 0.7;
+	mat.specular = 0.7;
 	mat.shiness = 200.0;
 	return (mat);
 }
