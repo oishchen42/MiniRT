@@ -17,28 +17,38 @@ SRC_FILES := camera_1.c camera_2.c control.c dummy_utils.c light_shd_1.c \
 			parse_obj2.c parsing.c render.c test_utils_1.c \
 			test_utils_2.c test_utils_3.c vec_mtx_op.c vec_op_1.c \
 			vec_op_2.c world_inter.c world_utils.c resize_hook.c \
-			move_cm.c supp_libft.c default_supp.c
+			move_cm.c move_cm2.c supp_libft2.c default_supp.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
+# --- MLX CONFIG ---
 MLX_PATH := ./MLX42
 MLX_LIB := $(MLX_PATH)/build/libmlx42.a
 MLX_INC := -I$(MLX_PATH)/include/MLX42/
 MLX_REPO := https://github.com/codam-coding-college/MLX42.git
 
+# --- LIB CONFIG ---
 LIB_REPO_PASS := https://github.com/oishchen42/42_lib_mix
 LIBNAME = mixlibft
 LIBNAME_A = $(LIBNAME)/mixlibft.a
 MIX_INCLUDE := -I$(LIBNAME)/libft/includes/ \
-		-I$(LIBNAME)/printf/includes/ \
-		-I$(LIBNAME)/get_next_line/includes/
+			-I$(LIBNAME)/printf/includes/ \
+			-I$(LIBNAME)/get_next_line/includes/
 
-$(NAME) : $(OBJ) $(MLX_LIB) $ | $(LIBNAME_A)
+# --- SCENES CONFIG (New) ---
+SCENES_REPO := https://github.com/oishchen42/scenes.git
+SCENES_DIR := scenes
+
+# --- MAIN TARGET ---
+# Added $(SCENES_DIR) to the dependencies here
+$(NAME) : $(OBJ) $(MLX_LIB) | $(LIBNAME_A) $(SCENES_DIR)
 	$(CC) $(CFLAGS) $(MLX_INC) -I$(MINIRT_INC) $(MIX_INCLUDE) $(OBJ) $(MLX_LIB) $(LIBNAME_A) $(LIBS) -o $(NAME)
 
-all: $(NAME) | $(LIBNAME) $(MLX_PATH)
+# Added $(SCENES_DIR) here so "make all" ensures it exists
+all: $(NAME) | $(LIBNAME) $(MLX_PATH) $(SCENES_DIR)
 
+# --- REPO CLONING RULES ---
 $(MLX_LIB):
 	@if [ ! -d "$(MLX_PATH)" ]; then \
 		echo "MLX42 was not found. Cloning from the $(MLX_REPO)..."; \
@@ -46,7 +56,6 @@ $(MLX_LIB):
 	else \
 		echo "MLX42 directory found."; \
 	fi
-
 	@echo "Building MLX42..." 
 	@cmake -S $(MLX_PATH) -B $(MLX_PATH)/build
 	@cmake --build $(MLX_PATH)/build -j4
@@ -57,6 +66,15 @@ $(LIBNAME):
 		git clone $(LIB_REPO_PASS) $(LIBNAME); \
 	else \
 		echo "REPOSITORY EXISTS"; \
+	fi
+
+# Rule to clone the scenes directory
+$(SCENES_DIR):
+	@if [ ! -d "$(SCENES_DIR)" ]; then \
+		echo "Scenes directory not found. Cloning from $(SCENES_REPO)..."; \
+		git clone $(SCENES_REPO) $(SCENES_DIR); \
+	else \
+		echo "Scenes directory found."; \
 	fi
 
 $(LIBNAME_A): $(LIBNAME)
@@ -75,7 +93,12 @@ fclean: clean
 	@$(RM) $(NAME)
 	@make fclean -C $(LIBNAME)
 	@echo "FULL CLEAN COMPLETE"
+	
+# Optional: Add a rule to remove scenes if you want a deep clean
+clean_scenes:
+	@$(RM) $(SCENES_DIR)
+	@echo "Scenes directory removed"
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re clean_scenes

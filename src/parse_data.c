@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 20:49:05 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/20 05:25:43 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:14:44 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	check_if_open(char *file, int *fd)
 	*fd = open(file, O_RDONLY);
 	if (*fd < 0)
 		p_err("Could not open file", NULL, false);
+	return (1);
 }
 
 int	parse_data(t_master *app, char *file)

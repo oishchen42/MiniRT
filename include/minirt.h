@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 21:27:43 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/20 06:03:07 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:14:23 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ int			check_extension(char *filename);
 t_mtx4		get_rotation_matrix(t_vcpnt *orient);
 int			check_extension(char *filename);
 int			check_main_obj(t_master *app);
+int			parse_figures(t_master *app, char **tokens);
+int			parse_mobjects(t_master *app, char **tokens);
 
 /*Parsing objects*/
 int			pr_amb(t_master *app, char **tokens);
