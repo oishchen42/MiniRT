@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:24:24 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/20 05:32:16 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:57:50 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,23 @@ int	check_cap(t_ray *ray, double t)
 	return (pow(x, 2.0) + pow(z, 2.0) <= 1);
 }
 
-void	inter_cap(t_obj *cl, t_ray *r, t_inter *i, int *count)
+void	inter_cap(t_obj *cl, t_supitr *itr, t_inter *i, int *count)
 {
 	double	t;
 
-	if (cl->data.cl.is_closed != true || fabs(r->vec.vp[1]) < EPSILON)
+	if (cl->data.cl.is_closed != true || fabs(itr->lcl.vec.vp[1]) < EPSILON)
 		return ;
-	t = (cl->data.cl.min - r->pnt.vp[1]) / r->vec.vp[1];
-	if (check_cap(r, t))
+	t = (cl->data.cl.min - itr->lcl.pnt.vp[1]) / itr->lcl.vec.vp[1];
+	if (check_cap(&itr->lcl, t))
 	{
+		itr->bl = true;
 		get_inter(cl, 1, t, &i[*count]);
 		(*count)++;
 	}
-	t = (cl->data.cl.max - r->pnt.vp[1]) / r->vec.vp[1];
-	if (check_cap(r, t))
+	t = (cl->data.cl.max - itr->lcl.pnt.vp[1]) / itr->lcl.vec.vp[1];
+	if (check_cap(&itr->lcl, t))
 	{
+		itr->bl = true;
 		get_inter(cl, 1, t, &i[*count]);
 		(*count)++;
 	}
@@ -72,7 +74,7 @@ int	inter_cl(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
 	itr.lcl = ray_transform(ray_orig, &obj->data.cl.inv_mtx);
 	itr.a = pow(itr.lcl.vec.vp[0], 2.0) + pow(itr.lcl.vec.vp[2], 2.0);
 	if (itr.a < EPSILON)
-		return (inter_cap(obj, &itr.lcl, inter, count), false);
+		return (inter_cap(obj, &itr, inter, count), false);
 	itr.b = 2.0 * itr.lcl.pnt.vp[0] * itr.lcl.vec.vp[0]
 		+ 2.0 * itr.lcl.pnt.vp[2]
 		* itr.lcl.vec.vp[2];
@@ -89,6 +91,6 @@ int	inter_cl(t_obj *obj, t_ray *ray_orig, t_inter *inter, int *count)
 	itr.y1 = itr.lcl.pnt.vp[1] + itr.t2 * itr.lcl.vec.vp[1];
 	if (itr.y1 > obj->data.cl.min && itr.y1 < obj->data.cl.max)
 		call_get_inter(obj, itr.t2, &inter[(*count)++], &itr);
-	inter_cap(obj, &itr.lcl, inter, count);
+	inter_cap(obj, &itr, inter, count);
 	return (itr.bl);
 }

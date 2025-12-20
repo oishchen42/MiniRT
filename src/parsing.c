@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 14:05:08 by oishchen          #+#    #+#             */
-/*   Updated: 2025/12/20 05:17:53 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:41:22 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	check_main_obj(t_master *app)
 {
 	if (app->counts.amb_count != 1)
 	{
-		printf("ambinet n: %d\n", app->counts.amb_count);
 		return (
 			prnt_err("Error: Scene must have exactly one Ambient Light (A)"));
 	}

@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 20:49:05 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/20 06:14:44 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:36:01 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	parse_line(t_master *app, char *line)
 	tokens = ft_split(line, ' ');
 	if (!tokens || !tokens[0])
 		return (prnt_err("Malloc failed in parse_line"));
-	printf("cur token is: %s\n", tokens[0]);
 	if (!parse_mobjects(app, tokens))
 	{
 		if (!parse_figures(app, tokens))

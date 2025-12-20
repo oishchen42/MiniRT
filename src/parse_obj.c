@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 20:49:33 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/20 05:24:54 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:37:44 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	pr_amb(t_master *app, char **tokens)
 	if (app->counts.amb_count > 0)
 		return (prnt_err("Duplicate Ambient Light defined"));
 	app->counts.amb_count++;
-	printf("here in ambinet\n");
 	if (!tokens[1] || !tokens[2] || tokens[3])
 		return (prnt_err("Invalid Ambient Light arguments"));
 	if (!valid_str(tokens[1]))
@@ -94,7 +93,6 @@ int	parse_light(t_master *app, char **tokens)
 	if (!get_vector(tokens[3], &n_light.color, 0.0))
 		return (prnt_err("Invalid Light Color format"));
 	from_high_2_low(&n_light.color);
-	print_vpnt4(&n_light.color);
 	n_light.new_light = create_light(&n_light.pos, &n_light.color,
 			n_light.ratio);
 	if (!n_light.new_light)

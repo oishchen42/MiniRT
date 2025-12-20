@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdietz-r <tdietz-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:17:37 by tdietz-r          #+#    #+#             */
-/*   Updated: 2025/12/16 16:17:56 by tdietz-r         ###   ########.fr       */
+/*   Updated: 2025/12/20 06:36:20 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	print_mtx2(t_mtx2 *mtx)
 	}
 }
 
-void	print_vpnt4(t_vcpnt *ent)
-{
-	printf("{%f, %f, %f, %f}\n", ent->vp[0], ent->vp[1], ent->vp[2], ent->vp[3]);
-}
+//void	print_vpnt4(t_vcpnt *ent)
+//{
+//	printf("{%f, %f, %f, %f}\n", ent->vp[0], ent->vp[1], ent->vp[2], ent->vp[3]);
+//}
